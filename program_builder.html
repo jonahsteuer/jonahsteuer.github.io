@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Log Weight</title>
+
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+	 /* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+#dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+#dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+#dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+#dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu on hover */
+#dropdown:hover #dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+#dropdown:hover #dropbtn {
+    background-color: #3e8e41;
+} 
+	</style>
+</head>
+<body>
+							<!-- navigation bar -->
+	<div class = "w3-container w3-black w3-top">
+
+	
+	<a href="#" target = "_top">
+
+		<button class = "w3-btn w3-hover-red" >
+			Home
+		</button>
+
+	</a>
+	
+
+	<button class = "w3-btn w3-hover-red">
+		About
+	</button>
+	<button class = "w3-btn w3-hover-red">
+		Log Workout
+	</button>
+
+	<div id = "dropdown">
+		<button id = dropdown-btn class = "w3-btn w3-hover-red">
+			Track nutrition
+			 <i class="fa fa-caret-down"></i>
+		</button>
+
+		<div id = "dropdown-content">
+			<a href="file:///Users/h205p6/Documents/workout_tracker/log_weight.html">Log weight</a>
+			<a href="#">Log calories</a>
+		</div>
+	</div>
+
+
+	<a href="file:///Users/h205p6/Documents/workout_tracker/max_calc.html">
+	<button class = "w3-btn w3-hover-red">
+		1RM Calculator
+	</button>
+	</a>
+	<a href="program_builder.html">
+		<button onclick = "login()" class = "w3-btn w3-hover-red "> Program builder </button>	
+	</a>
+	
+	
+	
+</div> 
+
+<br>
+<br>
+
+										<!-- content -->
+
+				<!-- what is so special about personlized programs -->
+<div class = "w3-continer w3-content">
+	<h2 class = "w3-center">Why use personalized programs?</h2>
+	<p class = "w3-justify">Anyone can put together a bunch of exercises with specific set and rep ranges and claim they have the best program. Although this may work very well for the individual who made the program, it might not work for you. Research has shown that everyone resonds to training in a different way. For example, some people might be able to grow their chest very easily off of only a few sets of bench, where as others might have to do much more to get the same adaptation. Factors such as, training age(how long you've been lifting), genetics, and simply individual goals, play a huge role in what program a lifter should run. Workout tracker takes all of these factors into account and creates the best program for you. </p>
+	
+</div>
+
+	                              <!-- input form -->
+<div class = "w3-container w3-content w3-padding-16" >
+	<div class = "w3-card w3-content w3-round-large" style = "max-width:600px;">
+
+					<!-- inputs -->
+			<div class = "w3-padding">
+				Weight:<br>
+				<input class = "w3-input" type="text" name="weight" placeholder="weight"><br>
+				How long have you been lifting?:<br>
+				<input class = "w3-input" type="text" name="weight" placeholder="training age"><br>
+				What is your goal?:<br>
+				<select>
+					<option>powerlifting</option>
+					<option>bodybuilding</option>
+				</select>
+
+				Units:<br>
+				<input type="radio" name = "weight_type"> Imperial/U.S.
+				<input type="radio" name = "weight_type"> Metric<br>
+
+			</div>
+			
+	</div>
+		
+			
+
+		
+		
+	
+	
+</div>
+
+</body>
+</html>
