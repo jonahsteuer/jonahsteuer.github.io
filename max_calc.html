@@ -68,7 +68,7 @@
 <div id = "nav_bar" class = "w3-container w3-black w3-top">
 
 	
-	<a href="index.html" target = "_top">
+	<a href="file:///Users/jonahsteuer/Documents/workout_tracker/home.html#" target = "_top">
 
 
 		<button class = "w3-btn w3-hover-red" >
@@ -81,7 +81,7 @@
 	<button class = "w3-btn w3-hover-red">
 		About
 	</button>
-	<a href="log_workout.html">
+	<a href="file:///Users/jonahsteuer/Documents/workout_tracker/log_workout.html">
 		<button class = "w3-btn w3-hover-red">
 		Log Workout
 		</button>
@@ -437,14 +437,14 @@ function data(){
 
 	//if doesnt exist, make it exist
 	}else{
-		localStorage[exercise + "_max"] = JSON.stringify(max);
+		localStorage[exercise + "_max"] = JSON.stringify(max + ",");
 		var maxes = max;
 	}
 	
 
-
-	maxes = maxes.filter(Boolean);
 	maxes = maxes.map(Number);
+	maxes = maxes.filter(Boolean);
+
 	
 	
 	graph_lift_entry(maxes,exercise+" maxe");
