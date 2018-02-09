@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Log Weight</title>
+	<title>Program Builder</title>
 
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -115,23 +115,57 @@
 
 	                              <!-- input form -->
 <div class = "w3-container w3-content w3-padding-16" >
-	<div class = "w3-card w3-content w3-round-large" style = "max-width:600px;">
+	
 
 					<!-- inputs -->
-			<div class = "w3-padding">
-				Weight:<br>
-				<input class = "w3-input" type="text" name="weight" placeholder="weight"><br>
-				How long have you been lifting?:<br>
-				<input class = "w3-input" type="text" name="weight" placeholder="training age"><br>
-				What is your goal?:<br>
-				<select>
-					<option>powerlifting</option>
-					<option>bodybuilding</option>
-				</select>
+			<div class = "w3-card w3-content w3-round-large" style = "max-width:600px;">
 
-				Units:<br>
-				<input type="radio" name = "weight_type"> Imperial/U.S.
-				<input type="radio" name = "weight_type"> Metric<br>
+				<div class = "w3-padding">
+					What are some of your favorite exercises?:<br>
+					<input class = "w3-input" onkeyup = "showResult(this.value)" type="text" name="weight" placeholder="search"><br>
+					<div id = "exercise_inputs"></div>
+					
+				</div>
+
+			</div>
+
+			<br>
+
+			
+
+			<div class = "w3-row w3-padding-16 w3-content" style = "max-width:600px;">
+				<div class = "w3-card w3-content w3-round-large w3-half" > 
+					<div class = "w3-padding">
+						What is your goal?:<br>
+						<select>
+							<option>powerlifting</option>
+							<option>bodybuilding</option>
+							<option>powerbuilding</option>
+
+						</select>
+					
+					</div>
+				</div>
+				<div class = "w3-card w3-content w3-round-large w3-half" > 
+					<div class = "w3-padding">
+						How long have you been lifting?:<br>
+						<select>
+							<option> < 2 years</option>
+							<option> 2-10 years </option>
+							<option> > 10 years</option>
+
+						</select>
+					
+					</div>
+				</div>
+
+				
+				
+			</div>
+				
+
+				<br>
+				
 
 			</div>
 			
@@ -144,6 +178,27 @@
 	
 	
 </div>
+<script src = "exercises.js"></script>
+
+<script>
+	function showResult(input){
+		//iterate through exercises
+		loop1:
+			for(var exercise in exercises){
+				var word = "";
+			loop2:
+				for(var letter in exercise){
+					word += letter;
+					if(input == word){
+						var output = exercise;
+						break loop1;
+					}
+				}
+			}
+		document.getElementById("exercise_inputs").value += output;
+	}
+	
+</script>
 
 </body>
 </html>

@@ -1,5 +1,10 @@
+
+
 <!DOCTYPE html>
+
 <html>
+
+
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,13 +24,11 @@
     font-size: 16px;
     border: none;
 }
-
 /* The container <div> - needed to position the dropdown content */
 #dropdown {
     position: relative;
     display: inline-block;
 }
-
 /* Dropdown Content (Hidden by Default) */
 #dropdown-content {
     display: none;
@@ -35,7 +38,6 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-
 /* Links inside the dropdown */
 #dropdown-content a {
     color: black;
@@ -43,20 +45,16 @@
     text-decoration: none;
     display: block;
 }
-
 /* Change color of dropdown links on hover */
 #dropdown-content a:hover {background-color: #ddd}
-
 /* Show the dropdown menu on hover */
 #dropdown:hover #dropdown-content {
     display: block;
 }
-
 /* Change the background color of the dropdown button when the dropdown content is shown */
 #dropdown:hover #dropbtn {
     background-color: #3e8e41;
 } 
-
 </style>	
 
 
@@ -111,7 +109,7 @@
 </div>
 
 								<!--top image-->
-<img class = "w3-image" src="lifting_background.jpg" width = "1500" height = "600">
+<img class = "w3-image " src="lifting_background.jpg" width = "1500" height = "200" style = "max-height: 500px;">
 
 						<!-- why track you workouts -->
 <div class = "w3-container w3-content w3-center w3-padding-64" style = "max-width:700px;">
@@ -135,26 +133,26 @@
 
 	
 
+<div id = "values"></div>
 
 
 
 
 
 
-
-
+<script src = "exercises.js"></script>
 <script>
+
+
 //create date in mm/dd/yyyy format
 var today = new Date();
 var dd = today.getDate();
-
 var mm = today.getMonth()+1; 
 var yyyy = today.getFullYear();
 if(dd<10) 
 {
     dd='0'+dd;
 } 
-
 if(mm<10) 
 {
     mm='0'+mm;
@@ -167,53 +165,45 @@ today = dd+'-'+mm+'-'+yyyy;
 console.log(today);
 var today = mm+'/'+dd+'/'+yyyy;
 function showResult(str){
-	if(str.length == 0){
-		document.getElementById("liveSearch").innerHTML = "";
-		document.getElementById("liveSearch").style.border = "0px";
-		return;
-	}
+	var all_exercises = [];
 }
+function add_exercise(){
+	//create exercise input box w/ search reccomendztions
+	var exercise_input = document.createElement("input");
+	exercise_input.setAttribute("class","w3-input");
+	exercise_input.setAttribute("type","text");
+	exercise_input.setAttribute("onkeyup","showResult()")
+
+	//append exercise input to card
+	var card = document.getElementById("card");
+	card.appendChild(exercise_input);
+	
+	
 function create_workout(){
 	//create card element
 	var card = document.createElement("div");
 	card.setAttribute("class","w3-card w3-round")
-
+	card.setAttribute("id","card")
 	//create header
 	var header = document.createElement("h2");
 	header.setAttribute("class","w3-container w3-black");
 	header.setAttribute("style","width:55%;")
 	var header_node = document.createTextNode("Workout: " + today);
 	header.appendChild(header_node);
-
 	//create add exercise and superset buttons
 	var exercise = document.createElement("button");
 	exercise.setAttribute("class","w3-btn w3-black w3-round-xlarge w3-hover-red");
+	exercise.setAttribute("onclick","add_exercise()")
 	var exercise_node = document.createTextNode("+ add exercise");
 	exercise.appendChild(exercise_node);
-
 	//create input form
 	var form = document.createElement("form");
 
-	//create exercise input box w/ search reccomendztions
-	var exercise_input = document.createElement("input");
-	exercise_input.setAttribute("class","w3-input");
-	exercise_input.setAttribute("type","text");
-	exercise_input.setAttribute("onkeyup","showResult(this.value)")
-
-	//create search div 
-	var live_search = document.createElement("div");
-	live_search.setAttribute("id","liveSearch");
-
-	//append to form
-	form.appendChild(exercise_input);
-	form.appendChild(live_search);
 	
 	//append elements to card
 	card.appendChild(header);
 	card.appendChild(exercise);
-
 	var div = document.getElementById("workout_section");
-
 	div.appendChild(card);
 	
 	
