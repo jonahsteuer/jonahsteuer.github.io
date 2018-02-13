@@ -19,13 +19,11 @@
     font-size: 16px;
     border: none;
 }
-
 /* The container <div> - needed to position the dropdown content */
 #dropdown {
     position: relative;
     display: inline-block;
 }
-
 /* Dropdown Content (Hidden by Default) */
 #dropdown-content {
     display: none;
@@ -35,7 +33,6 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-
 /* Links inside the dropdown */
 #dropdown-content a {
     color: black;
@@ -43,20 +40,16 @@
     text-decoration: none;
     display: block;
 }
-
 /* Change color of dropdown links on hover */
 #dropdown-content a:hover {background-color: #ddd}
-
 /* Show the dropdown menu on hover */
 #dropdown:hover #dropdown-content {
     display: block;
 }
-
 /* Change the background color of the dropdown button when the dropdown content is shown */
 #dropdown:hover #dropbtn {
     background-color: #3e8e41;
 } 
-
 </style>	
 
 
@@ -148,14 +141,12 @@ exercise_count = 0;
 //create date in mm/dd/yyyy format
 var today = new Date();
 var dd = today.getDate();
-
 var mm = today.getMonth()+1; 
 var yyyy = today.getFullYear();
 if(dd<10) 
 {
     dd='0'+dd;
 } 
-
 if(mm<10) 
 {
     mm='0'+mm;
@@ -167,7 +158,6 @@ console.log(today);
 today = dd+'-'+mm+'-'+yyyy;
 console.log(today);
 var today = mm+'/'+dd+'/'+yyyy;
-
 function firstCharUpper(string){
 	//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
 	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -176,20 +166,24 @@ function fill_search(exercise){
 	//clear search options
 	var exercise_inputs = document.getElementById("exercise_inputs");
 	exercise_inputs.innerHTML = "";
-
 	//fill search box with clicked exercise
 	var search_box = document.getElementById("exercise_search");
-
 	search_box.value = exercise;
 }
 function create_add_set(){
+
 	var workout_card = document.getElementById("workout_card");
+
+	if(document.getElementById("set_button") !== null){
+		var set_button = document.getElementById("set_button");
+		workout_card.removeChild(set_button);
+	}
 
 	var add_set = document.createElement("button");
 	add_set.setAttribute("class"," w3-small w3-button w3-black w3-round-xlarge w3-hover-red");
 	add_set.setAttribute("onclick","add_set()");
-	// add_set.setAttribute("style","bottom:0;position:fixed;")
-
+	add_set.setAttribute("id","set_button");
+	// add_set.setAttribute("style","bottom:0;position:absolute;")
 	var set_node = document.createTextNode("+ add set");
 	add_set.appendChild(set_node);
 
@@ -197,37 +191,41 @@ function create_add_set(){
 }
 function add_set(){
 	set_count += 1;
-
+	
 	var exercise_section = document.getElementById("exercise_section");
 
 	var weight_input = document.createElement("input");
 	weight_input.setAttribute("type","text");
 	weight_input.setAttribute("placeholder","LBS");
 	weight_input.setAttribute("style","width:9%;")
+	weight_input.setAttribute("id","weight;" + exercise_count + ";" + set_count);
 
 	var rep_input = document.createElement("input");
 	rep_input.setAttribute("type","text");
 	rep_input.setAttribute("placeholder","reps");
-	rep_input.setAttribute("style","width:9%;")
+	rep_input.setAttribute("style","width:9%;");
+	rep_input.setAttribute("id","reps;" + exercise_count + ";" + set_count);
 
-	exercise_section.innerHTML += "<br>";
-	exercise_section.innerHTML += set_count + ".";
+	var x = document.createTextNode(" X ");
+	var set_num = document.createTextNode(set_count + ".");
+	var br = document.createElement("br");
+
+	exercise_section.appendChild(set_num);
 	exercise_section.appendChild(weight_input);
-	document.getElementById("exercise_section").innerHTML += " X ";
+	exercise_section.appendChild(x);
 	exercise_section.appendChild(rep_input);
-	document.getElementById("exercise_section").innerHTML += "<br>";
+	exercise_section.appendChild(br);
+
 }
 function add_exercise(){
 	
-	set_count = 1;
+	set_count = 0;
 	exercise_count += 1;
 
 	var workout_card = document.getElementById("workout_card");
-
 	var search_box = document.getElementById("exercise_search");
 
 	var exercise_node = document.createTextNode(search_box.value + ":");
-
 
 	var exercise_section = document.createElement("div");
 	exercise_section.setAttribute("class","w3-container w3-padding");
@@ -237,35 +235,41 @@ function add_exercise(){
 	weight_input.setAttribute("type","text");
 	weight_input.setAttribute("placeholder","LBS");
 	weight_input.setAttribute("style","width:9%;")
-	weight_input.setAttribute("id"," " + exercise_count + ";" + set_count);
+	weight_input.setAttribute("id","weight;" + exercise_count + ";" + set_count);
 
 	var rep_input = document.createElement("input");
 	rep_input.setAttribute("type","text");
 	rep_input.setAttribute("placeholder","reps");
 	rep_input.setAttribute("style","width:9%;")
+	rep_input.setAttribute("id","reps;" + exercise_count + ";" + set_count);
 	
+	var x = document.createTextNode(" X ");
+	var set_num = document.createTextNode(set_count + ".");
 
-	
+	var br = document.createElement("br");
 
-	workout_card.appendChild(exercise_section);
+	// workout_card.appendChild(exercise_section);
+
 	//append children
 	exercise_section.appendChild(exercise_node);
-	document.getElementById("exercise_section").innerHTML += "<br>";
-	document.getElementById("exercise_section").innerHTML += "1. ";
-	exercise_section.appendChild(weight_input);
-	document.getElementById("exercise_section").innerHTML += " X ";
-	exercise_section.appendChild(rep_input);
-	document.getElementById("exercise_section").innerHTML += "<br>";
 
+	exercise_section.appendChild(br);
+	exercise_section.appendChild(br);
 
+	// exercise_section.appendChild(set_num);
+		// exercise_section.appendChild(weight_input);
+	// exercise_section.appendChild(x);
+	// exercise_section.appendChild(rep_input);
+	// exercise_section.appendChild(br);
+	
 	//append exercise section to workout card
 	
 	workout_card.appendChild(exercise_section);
-	
-	if (exercise_count == 1){
-		create_add_set();
-	}
+	add_set();
 
+	
+	create_add_set();
+	
 }
 function showResult(input){
 		var outputs = [];
@@ -274,15 +278,12 @@ function showResult(input){
 			//cut off beginning section of exercise equal to the length of input
 			if(input.length > 1){
 				var input_match = exercises[exercise].substr(0,input.length);
-
 				input = firstCharUpper(input);
-
 				if(input == input_match){
 					var output = exercises[exercise];
 					outputs.push(output);
 				
 			}
-
 			}
 			
 		}
@@ -295,47 +296,36 @@ function showResult(input){
 			
 			li.setAttribute("class","w3-hover-grey w3-ripple w3-border w3-light-grey w3-padding");
 			var node = document.createTextNode(outputs[output]);
-
 			li.appendChild(node);
 			
 			list.appendChild(li);
 		}
 	}
-
 function create_workout(){
 	//create card element
 	var card = document.createElement("div");
 	card.setAttribute("class","w3-card w3-round");
 	card.setAttribute("id","workout_card");
-
 	//create header
 	var header = document.createElement("h2");
 	header.setAttribute("class","w3-container w3-black");
 	header.setAttribute("style","width:55%;")
 	var header_node = document.createTextNode("Workout: " + today);
 	header.appendChild(header_node);
-
 	var text_div = document.createElement("div");
 	text_div.setAttribute("class","w3-padding")
-
 	var text_node = document.createTextNode("Add exercise:");
-
 	text_div.appendChild(text_node);
-
 	var search_div = document.createElement("div");
 	search_div.setAttribute("class","w3-container w3-padding w3-row")
-
 	var search_icon = document.createElement("i");
 	search_icon.setAttribute("class","fa fa-search");
-
 	var add_icon = document.createElement("div");
 	add_icon.setAttribute("style","height:30px;")
 	add_icon.setAttribute("class"," w3-tiny w3-button w3-black w3-hover-red ")
 	add_icon.setAttribute("onclick", "add_exercise()");
-
 	var icon_text = document.createTextNode("+");
 	add_icon.appendChild(icon_text);
-
 	var exercise_search = document.createElement("input");
 	exercise_search.setAttribute("style","width:40%;height:30px;");
 	exercise_search.setAttribute("type","text");
@@ -343,14 +333,11 @@ function create_workout(){
 	exercise_search.setAttribute("id","exercise_search");
 	exercise_search.setAttribute("placeholder","search");
 	exercise_search.setAttribute("onkeyup","showResult(this.value)");
-
 	var ul = document.createElement("ul");
 	ul.setAttribute("id","exercise_inputs");
 	ul.setAttribute("style","list-style-type:none; padding:0; margin:0;")
-
 	exercise_search.appendChild(search_icon);
 	//append search icon and search box to div
-
 	search_div.appendChild(search_icon);
 	search_div.appendChild(exercise_search);
 	search_div.appendChild(add_icon);
@@ -359,9 +346,7 @@ function create_workout(){
 	card.appendChild(text_div);
 	card.appendChild(search_div);
 	card.appendChild(ul);
-
 	var div = document.getElementById("workout_section");
-
 	div.appendChild(card);
 	
 	
