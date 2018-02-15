@@ -15,11 +15,13 @@
     font-size: 16px;
     border: none;
 }
+
 /* The container <div> - needed to position the dropdown content */
 #dropdown {
     position: relative;
     display: inline-block;
 }
+
 /* Dropdown Content (Hidden by Default) */
 #dropdown-content {
     display: none;
@@ -29,6 +31,7 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
+
 /* Links inside the dropdown */
 #dropdown-content a {
     color: black;
@@ -36,46 +39,20 @@
     text-decoration: none;
     display: block;
 }
+
 /* Change color of dropdown links on hover */
 #dropdown-content a:hover {background-color: #ddd}
+
 /* Show the dropdown menu on hover */
 #dropdown:hover #dropdown-content {
     display: block;
 }
+
 /* Change the background color of the dropdown button when the dropdown content is shown */
 #dropdown:hover #dropbtn {
     background-color: #3e8e41;
 } 
-#exercise_inputs {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-#goal_card{
-	position: relative;
-	height:180px;
-}
-#stress_paragraph{
-	position:absolute;
-	top:0;
-	right: 0;
-	max-width:65%;
-}
-#stress_card{
-	position: relative;
-	height:200px;
-}
-#div_paragraph{
-	position:absolute;
-	top:0;
-	right: 0;
-	max-width:65%;
-}
-
-
 	</style>
-
 </head>
 <body>
 							<!-- navigation bar -->
@@ -137,68 +114,42 @@
 </div>
 
 	                              <!-- input form -->
-<div class = "w3-container w3-content w3-padding-16" style = "max-width:750px;" >
+<div class = "w3-container w3-content w3-padding-16" >
 	
 
-									<!-- favorite exercises -->
-			<div class = "w3-container w3-content w3-row"  onmouseleave = "clear_search()" style = "max-width:700px;">
-				<div class = "w3-card w3-round-large w3-half"  style = "width:55%;">
+					<!-- inputs -->
+			<div class = "w3-card w3-content w3-round-large" style = "max-width:600px;">
 
-					<div class = "w3-padding">
-						Preferred exercises:<br>
-						<i class = "fa fa-search"></i>
-						<input style = "width:80%;" onkeyup = "showResult(this.value)" type="text" name="weight" placeholder="search"><br>
-						<ul id = "exercise_inputs"></ul>
-						
-					</div>
-
+				<div class = "w3-padding">
+					What are some of your favorite exercises?:<br>
+					<input class = "w3-input" onkeyup = "showResult(this.value)" type="text" name="weight" placeholder="search"><br>
+					<div id = "exercise_inputs"></div>
+					
 				</div>
 
-				<div class = "w3-card w3-round-large w3-half" onmouseenter = "clear_search()" style = "width:45%;">
-					<div class = "w3-padding">
-						Chosen exercises:
-						<div id = "exercise"></div>
-					</div>
-				</div>
 			</div>
 
 			<br>
-									<!-- stress level -->
-			<div id = "stress_card" class = "w3-card w3-content w3-round-large " style = "max-width:670px;"> 
-				<div class = "w3-padding">
-					Stress level <br>
-					<div class = "w3-margin-top w3-margin-bottom">
-						<input id = "low" onclick = "stress_info()" type="radio" name="stress"> Low Stress<br>
-						<input id = "mod" onclick = "stress_info()" type="radio" name="stress"> Moderate stress<br>
-						<input id = "high" onclick = "stress_info()" type="radio" name="stress"> High Stress<br>
-						<div id = "stress_paragraph" class = "w3-container">
-							<p id = "stress_info"></p>
-						</div>
-					</div>
-					
-				</div>
-			</div>
-							<!-- days a week and training age -->
 
-			<div class = "w3-row w3-padding-16 w3-content" style = "max-width:670px;">
+			
 
+			<div class = "w3-row w3-padding-16 w3-content" style = "max-width:600px;">
 				<div class = "w3-card w3-content w3-round-large w3-half" > 
 					<div class = "w3-padding">
-						Days a week:
-						<select id = "days" class = "w3-select">
-							<option> 3 days</option>
-							<option> 4 days</option>
-							<option> 5 days</option>
-							<option> 6 days</option>
+						What is your goal?:<br>
+						<select>
+							<option>powerlifting</option>
+							<option>bodybuilding</option>
+							<option>powerbuilding</option>
+
 						</select>
-
+					
 					</div>
-				</div>	
-				
+				</div>
 				<div class = "w3-card w3-content w3-round-large w3-half" > 
 					<div class = "w3-padding">
-						Training age:<br>
-						<select id = "age" class = "w3-select">
+						How long have you been lifting?:<br>
+						<select>
 							<option> < 2 years</option>
 							<option> 2-10 years </option>
 							<option> > 10 years</option>
@@ -208,39 +159,21 @@
 					</div>
 				</div>
 
-			<br>
-			<br>
-
-			
-			</div>
-										<!-- goal -->
-		<div class = "w3-card w3-content w3-round-large " style = "max-width:670px;"> 
-					<div id = "goal_card" class = "w3-padding">
-						Goal:<br>
-						<select id = "goal" class = "w3-select" style = "width:30%;">
-							<option onclick = "para_info()">powerlifting</option>
-							<option onclick = "para_info()" >bodybuilding</option>
-							<option onclick = "para_info()">powerbuilding</option>
-
-						</select>
-
-						<div id = "div_paragraph" class = "w3-container">
-							<p id = "info_paragraph" ></p>
-					
-						</div>
-					</div>
-				</div>
-
-											<!-- submit button -->
-		<button class = "w3-padding w3-button w3-black w3-hover-red" onclick = "submit_data()" style = "width:100%;">Submit</button>
 				
-</div>
+				
+			</div>
+				
+
+				<br>
+				
+
+			</div>
 			
-	
-<div id = "values"></div>		
+	</div>
+		
 			
 
-
+		
 		
 	
 	
@@ -248,135 +181,21 @@
 <script src = "exercises.js"></script>
 
 <script>
-	var exercise_data = [];
-
-	stress_info();
-	para_info();
-	function submit_data(){
-		var stress_data, days_data, age_data, goal_data
-
-		
-		document.getElementById("values").innerHTML += exercise_data;
-		if(document.getElementById("low").checked){
-			stress_data = "low";
-		}else if(document.getElementById("mod").checked){
-			stress_data = "moderate";
-		}else if(document.getElementById("high").checked){
-			stress_data = "high"
-		}
-
-		days_data = document.getElementById("days").value;
-
-		age_data = document.getElementById("age").value;
-
-		goal_data = document.getElementById("goal").value;
-
-
-		create_program(exercise_data,stress_data,days_data,age_data,goal_data);
-	}
-	function create_program(favorite_exercises,stress_level,days,training_age,goal){
-
-	}
-	function stress_info(){
-		var low_stress, mod_stress, high_stress, paragraph;
-
-		low_stress = document.getElementById("low");
-		mod_stress = document.getElementById("mod");
-		high_stress = document.getElementById("high");
-
-		paragraph = document.getElementById("stress_info");
-
-		if(low_stress.checked){
-			paragraph.innerHTML = "Choose this option if: <br> 1. You get at least 7-8 hours of sleep <br> 2. Lifting is your only form of high intensity exercise(light-moderate cardio a couple times a week is ok) <br> 3. Your job/school does not make you feel overly stressed"
-		}else if(mod_stress.checked){
-			paragraph.innerHTML = "Choose this option if: <br> 1. You get around 6-7 hours of sleep <br> 2.  you do some other form of moderate-high intensity exercise 2-3 times per week(ex. cardio, ju-jitsu, sport practice etc.) <br> 3. Your job/school might give you a headache every once and a while or all the work makes you feel slightly overwhelmed "
-		}else if(high_stress.checked){
-			paragraph.innerHTML = "Choose this option if: <br> 1. you constantly get less than 6 hours of sleep <br> 2. You do another form of high-intensity exercise at least 3-4 times per week(ex. HIIT training, HARD sport practice, olympic weightlifting, etc.) <br> 3. Your job/school constantly makes you feel stressed and you travel a lot."
-		}
-	}
-	function para_info(){
-		var goal = document.getElementById("goal").value;
-		var paragraph = document.getElementById("info_paragraph");
-
-		if(goal == "powerlifting"){
-			paragraph.innerHTML = "This program is for those who mainly want to increase their squat, bench and deadlift. It uses a low to moderate amount of volume(sets) and will contain around 4-5 exercises per workout.  "
-		}else if(goal == "bodybuilding"){
-			paragraph.innerHTML = "This program is for those who want to gain as much muscle mass as possible. The favorite exercises chosen will determine which exercises you will be inducing progressive overload with and will overall help you adhere to the program. Contains around 5-6 exercises per workout and has more of a high amount of volume"
-		}else if(goal == "powerbuilding"){
-			paragraph.innerHTML = "This program is for those who want to increase their squat bench and deadlift while still gaining a decent amount of muscle. It has a relatively moderate amount of volume and has around 5-6 exercises per workout"
-		}
-		
-
-	}
-
-	function firstCharUpper(string){
-		//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
-		return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-	}
-	function remove_exercise(id){
-		document.getElementById("exercise_inputs").innerHTML = "";
-	}
-	function store_exercise(exercise){
-		exercise_data.push(exercise);
-
-		var section = document.getElementById("exercise");
-
-		//create div element
-		var div = document.createElement("div");
-		div.setAttribute("class","w3-border w3-light-grey w3-row w3-half")
-		div.setAttribute("style","width:50%;height:50px;")
-		div.setAttribute("id",exercise)
-		var node = document.createTextNode(" " + exercise);
-
-		//create x icon
-		var x_icon = document.createElement("i");
-		x_icon.setAttribute("class","fa fa-close w3-hover-grey w3-large");
-
-		x_icon.onclick = function(elementId){var element = document.getElementById(this.parentNode.id);
-		element.parentNode.removeChild(element);};
-
-		//append x icon and node to div
-		div.appendChild(x_icon);
-		div.appendChild(node);
-
-		section.appendChild(div);
-	}
-	function clear_search(){
-		document.getElementById("exercise_inputs").innerHTML = "";
-	}
 	function showResult(input){
-		var outputs = [];
 		//iterate through exercises
-		for(var exercise in exercises){
-			//cut off beginning section of exercise equal to the length of input
-			if(input.length > 1){
-				var input_match = exercises[exercise].substr(0,input.length);
-
-				input = firstCharUpper(input);
-
-				if(input == input_match){
-					var output = exercises[exercise];
-					outputs.push(output);
-				
+		loop1:
+			for(var exercise in exercises){
+				var word = "";
+			loop2:
+				for(var letter in exercise){
+					word += letter;
+					if(input == word){
+						var output = exercise;
+						break loop1;
+					}
+				}
 			}
-
-			}
-			
-		}
-		
-		var list = document.getElementById("exercise_inputs");
-		list.innerHTML = "";
-		for(var output in outputs){
-			var li = document.createElement("li");
-			li.setAttribute("onclick","store_exercise(this.innerHTML)");
-			
-			li.setAttribute("class","w3-hover-grey w3-ripple w3-border w3-light-grey w3-padding");
-			var node = document.createTextNode(outputs[output]);
-
-			li.appendChild(node);
-			
-			list.appendChild(li);
-		}
+		document.getElementById("exercise_inputs").value += output;
 	}
 	
 </script>
