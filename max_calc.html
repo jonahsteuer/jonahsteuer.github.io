@@ -68,7 +68,7 @@
 <div id = "nav_bar" class = "w3-container w3-black w3-top">
 
 	
-	<a href="file:///Users/jonahsteuer/Documents/workout_tracker/home.html#" target = "_top">
+	<a href="index.html" target = "_top">
 
 
 		<button class = "w3-btn w3-hover-red" >
@@ -81,7 +81,7 @@
 	<button class = "w3-btn w3-hover-red">
 		About
 	</button>
-	<a href="file:///Users/jonahsteuer/Documents/workout_tracker/log_workout.html">
+	<a href="log_workout.html">
 		<button class = "w3-btn w3-hover-red">
 		Log Workout
 		</button>
@@ -95,7 +95,7 @@
 		</button>
 
 		<div id = "dropdown-content">
-			<a href="#">Log weight</a>
+			<a href="log_weight.html">Log weight</a>
 			<a href="#">Log calories</a>
 		</div>
 	</div>
@@ -105,10 +105,14 @@
 		1RM Calculator
 	</button>
 
-	<button class = "w3-btn w3-hover-red w3-right"> Login </button>
+	<a href="program_builder.html">
+		<button class = "w3-btn w3-hover-red "> Program builder </button>	
+	</a>
 
 	
-	
+	<a href="lifting_data.html">
+		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
+	</a>
 	
 </div>
 <br>
@@ -195,7 +199,7 @@
 </div>
 <div id ="values" class = "w3-bottom"></div>
 
-<script src="Chart.js"></script>
+<script src="chart.js/dist/Chart.js"></script>
 <script>
 var all_maxes = [];
 function graph_lift_entry(lift_entry,label){

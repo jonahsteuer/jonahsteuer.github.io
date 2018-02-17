@@ -61,7 +61,7 @@
 <div id = "nav_bar" class = "w3-container w3-black w3-top">
 
 	
-	<a href="file:///Users/jonahsteuer/Documents/workout_tracker/home.html#" target = "_top">
+	<a href="index.html" target = "_top">
 
 
 		<button class = "w3-btn w3-hover-red" >
@@ -91,14 +91,18 @@
 	</div>
 
 
-	<a href="file:///Users/jonahsteuer/Documents/workout_tracker/max_calc.html">
+	<a href="max_calc.html">
 	<button class = "w3-btn w3-hover-red">
 		1RM Calculator
 	</button>
 	</a>
-	<button class = "w3-btn w3-hover-red w3-right"> Login </button>
+	<a href="program_builder.html">
+		<button class = "w3-btn w3-hover-red "> Program builder </button>	
+	</a>
 
-	
+	<a href="lifting_data.html">
+		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
+	</a>
 	
 	
 </div>
@@ -138,40 +142,48 @@
 
 <script src="exercises.js"></script>
 <script>
+localStorage.clear();
 exercise_count = 0;
 var all_exercises = [];
 var all_weights = [];
 var all_volume = [];
 var all_sets = [];
-//create date in mm/dd/yyyy format
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; 
-var yyyy = today.getFullYear();
-if(dd<10) 
-{
-    dd='0'+dd;
-} 
-if(mm<10) 
-{
-    mm='0'+mm;
-} 
-today = mm+'-'+dd+'-'+yyyy;
-console.log(today);
-today = mm+'/'+dd+'/'+yyyy;
-console.log(today);
-today = dd+'-'+mm+'-'+yyyy;
-console.log(today);
-var today = mm+'/'+dd+'/'+yyyy;
-keys = Object.keys(localStorage);
-if(keys.includes("dates")){
-	var data = JSON.parse(localStorage["dates"]);
+var all_maxes = [];
 
-	var data += today + ",";
+store_date();
 
-	localStorage["dates"] = JSON.stringify(data);
-}else{
-	localStorage["dates"] = JSON.stringify(today);
+function store_date(){
+	//create date in mm/dd/yyyy format
+	// localStorage.clear();
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; 
+	var yyyy = today.getFullYear();
+	if(dd<10) 
+	{
+	    dd='0'+dd;
+	} 
+	if(mm<10) 
+	{
+	    mm='0'+mm;
+	} 
+	today = mm+'-'+dd+'-'+yyyy;
+	
+	today = mm+'/'+dd+'/'+yyyy;
+
+	today = dd+'-'+mm+'-'+yyyy;
+
+	today = mm+'/'+dd+'/'+yyyy;
+	keys = Object.keys(localStorage);
+	if(keys.includes("workout_dates")){
+		var data = JSON.parse(localStorage["workout_dates"]);
+		// console.log(data);
+		data += today + ",";
+		localStorage["workout_dates"] = JSON.stringify(data);
+	}else{
+		localStorage["workout_dates"] = JSON.stringify(today + ",");
+	}
+
 }
 
 function firstCharUpper(string){
@@ -186,175 +198,164 @@ function fill_search(exercise){
 	var search_box = document.getElementById("exercise_search");
 	search_box.value = exercise;
 }
-function graph_lift_entry(lift_entry,label){
 
-	//add canvas to chart section
-	var element = document.createElement("canvas");
-	element.setAttribute("id",label);
-	element.setAttribute("width","660");
-	element.setAttribute("height","450");
-	element.setAttribute("class","w3-center")
-	element.setAttribute("style","max-width:660px;max-height:450px;")
-	var charts = document.getElementById("charts");
-	charts.appendChild(element);
-	//disable graphing button
-	var button = document.getElementById("submit_button");
-	button.setAttribute("class","w3-disabled")
-	button.setAttribute("disabled","disabled")
-	var colors = [
-	'rgba(255,99,132,1)',
-	'rgba(54, 162, 235, 1)',
-	'rgba(255, 206, 86, 1)',
-	'rgba(75, 192, 192, 1)',
-	'rgba(153, 102, 255, 1)',
-	'rgba(255, 159, 64, 1)'
-	]
-	//graph dataset
-	
-	var rand_num = Math.floor(Math.random() * colors.length);
-	var str_dates = JSON.parse(localStorage["dates"]);
-	var dates = str_dates.split(",");
-	var ctx = document.getElementById(label).getContext('2d');
-
-	var chart = new Chart(ctx,{
-		type: "line",
-		data: {
-			labels: dates,
-			datasets: [{
-				label: label,
-				data: [lift_entry],
-	            borderColor: [colors[rand_num]
-	            ],
-	            borderWidth: 1,
-	            }]
-		},
-		options: {
-			responsive: false,
-		        scales: {
-		            yAxes: [{
-		                ticks: {
-		                    beginAtZero:false
-		                }
-		            }]
-		        }
-	    }
-	});
-}
 function store_volume(){
 	//store data in localStorage
 	// localStorage.clear();
 	keys = Object.keys(localStorage);
-	console.log(keys);
 	for(var name in all_exercises){
 		var key_name = all_exercises[name] + "_volume";
-		if(keys.includes(all_exercises[name + "_volume"])){
-
+		if(keys.includes(key_name)){
 			var data = JSON.parse(localStorage[key_name]);
 			data += all_volume[name] + ",";
-
 			localStorage[key_name] = JSON.stringify(data);
-
 		}else{
-			localStorage[key_name] = JSON.stringify(all_volume[name]);
+			localStorage[key_name] = JSON.stringify(all_volume[name] + ",");
 		}
 		
 	}
 }
-function graph_volume(){
-	for(var z in keys){
-		var index = keys[z].indexOf("_");
-		if(keys[z].substr(index) == "_volume"){
-			var all_data = JSON.parse(localStorage[keys[z]]);
-			
-			if(typeof all_data == "string" && all_data.indexOf(",") > -1){
-				all_data = all_data.split(",");
+function store_maxes(){
+	keys = Object.keys(localStorage);
+	for(var exercise in all_exercises){
+		var key_name = all_exercises[exercise] + "_max";
+	if (keys.includes(key_name)) {
+		var data = JSON.parse(localStorage[key_name]);
+		data += all_maxes[exercise] + ",";
+		localStorage[key_name] = JSON.stringify(data);
 
-				all_data.map(Boolean);
-				all_data.map(Number);
-
-			}
-			
-			
-
-			graph_lift_entry(all_data,keys[z]);
-		}
 		
+	} else {
+		localStorage[key_name] = JSON.stringify(all_maxes[exercise] + ",");
+
 	}
+
+	}
+
+
 }
 function get_data(){
 	//volume
+	console.log(all_sets);
+	console.log(all_exercises);
+
 	if(exercise_count = 1){
 		all_sets.push(set_count);
 	}
-		//iterate through all exercises
+	// 	//iterate through all exercises
+	console.log(all_sets);
 	for(var i = 0; i < all_exercises.length; i++){
-		var volume = 0;
+		
+			
+				var volume = 0;
+			//iterate through all sets in that exercise
+			for(var x = 0; x < all_sets[i]; x++){
 
-		//iterate through all sets in that exercise
-		for(var x = 1; x <= all_sets[i]; x++){
+				var maxes = [];
+				//get weight and reps for each set 
+				
+				var exists1 = document.getElementById("weight;" + (i+1) + ";" + (x+1));
+				var exists2 = document.getElementById("reps;" + (i+1) + ";" + (x+1));
+				if(exists1 != null && exists2 != null){
+					console.log("went through");
+					var works = true;
+					var weight = exists1.value;
+					var reps = exists2.value;
 
-			//get weight and reps for each set 
-			var weight = document.getElementById("weight;" + (i+1) + ";" + x).value;
-			var reps = document.getElementById("reps;" + (i+1) + ";" + x).value;
+					volume += weight*reps;
 
+					var max = weight * (1 + reps/30);
 
-			volume += weight*reps;
+					maxes.push(max)
+
+				}else{
+					var works = false
+				}
+			
+			}
+
+			if(works === true){
+				maxes.max = function( array ){
+		    		return Math.max.apply( Math, array );
+				};
+				all_maxes.push(maxes);
+				all_volume.push(volume);
+
+			}
 
 		}
-		all_volume.push(volume);
-
-	}
-
-	store_volume();
-
-
-	
-	graph_volume();
-	
-	
+		
+		store_volume();
+		store_maxes();
+		console.log(all_volume);
+		console.log(all_maxes);
 }
+	
+
+
+	
 function create_submit(){
 	var workout_card = document.getElementById("workout_card");
-
 	if(document.getElementById("submit_button") !== null){
 		var submit_button = document.getElementById("submit_button");
 		submit_button.parentNode.removeChild(submit_button);
 	}
-
 	var submit = document.createElement("button");
 	submit.setAttribute("id","submit_button");
 	submit.setAttribute("class","w3-small w3-button w3-round-xlarge w3-black w3-hover-red");
 	submit.setAttribute("onclick","get_data()");
-
-	var submit_node = document.createTextNode("See gains");
-
+	var submit_node = document.createTextNode("Submit");
 	submit.appendChild(submit_node);
-
 	workout_card.appendChild(submit);
 }
 function create_add_set(){
-
 	var workout_card = document.getElementById("workout_card");
-
 	if(document.getElementById("set_button") !== null){
 		var set_button = document.getElementById("set_button");
 		set_button.parentNode.removeChild(set_button);
 	}
-
 	var add_set = document.createElement("button");
 	add_set.setAttribute("class"," w3-small w3-button w3-black w3-round-xlarge w3-hover-red");
 	add_set.setAttribute("onclick","add_set()");
 	add_set.setAttribute("id","set_button");
-
 	var set_node = document.createTextNode("+ add set");
 	add_set.appendChild(set_node);
-
 	workout_card.appendChild(add_set);
 }
+function remove_exercise(exercise_num){
+
+
+	var exercise = document.getElementById("exercise;" + exercise_num);
+
+
+	exercise.parentNode.removeChild(exercise);
+}
+
+function remove_set(exercise_num, set_num){
+
+
+	var set = document.getElementById("set;" + exercise_num + ";" + set_num);
+
+
+	set.parentNode.removeChild(set);
+}
+
 function add_set(){
 	set_count += 1;
-	
-	var exercise_section = document.getElementById("exercise_section;" + exercise_count);
+
+	var exercise_section = document.getElementById("exercise;" + exercise_count);
+
+	var set = document.createElement("div");
+	set.setAttribute("class","w3-container");
+	set.setAttribute("id","set;" + exercise_count + ";" + set_count);
+
+	var remove_set = document.createElement("button");
+	remove_set.setAttribute("class"," w3-small w3-round-xlarge w3-button w3-light-grey w3-hover-grey");
+	remove_set.setAttribute("style","padding:5px;");
+	remove_set.setAttribute("onclick","remove_set(" + exercise_count + "," + set_count + ")")
+	var remove_node = document.createTextNode("x");
+	remove_set.appendChild(remove_node);
+
 
 	var weight_input = document.createElement("input");
 	weight_input.setAttribute("type","text");
@@ -369,37 +370,43 @@ function add_set(){
 	rep_input.setAttribute("id","reps;" + exercise_count + ";" + set_count);
 
 	var x = document.createTextNode(" X ");
-	var set_num = document.createTextNode(set_count + ".");
 	var br = document.createElement("br");
 
-	exercise_section.appendChild(set_num);
-	exercise_section.appendChild(weight_input);
-	exercise_section.appendChild(x);
-	exercise_section.appendChild(rep_input);
-	exercise_section.appendChild(br);
+	set.appendChild(remove_set);
+	
+	set.appendChild(weight_input);
+	set.appendChild(x);
+	set.appendChild(rep_input);
+	set.appendChild(br);
 
+	exercise_section.appendChild(set);
 }
 function add_exercise(){
-	
-	
+
 	exercise_count += 1;
+
 	//add to a list the amount of sets in the previous exercise
 	if(exercise_count > 1){
 		all_sets.push(set_count);
 	}
-
 	set_count = 0;
+	
 
 	var workout_card = document.getElementById("workout_card");
 	var search_box = document.getElementById("exercise_search");
-
 	all_exercises.push(search_box.value);
 
-	var exercise_node = document.createTextNode(search_box.value + ":");
+	var remove_exercise = document.createElement("button");
+	remove_exercise.setAttribute("class"," w3-small w3-round-xlarge w3-button w3-light-grey w3-hover-grey");
+	remove_exercise.setAttribute("style","padding:5px;");
+	remove_exercise.setAttribute("onclick","remove_exercise(" + exercise_count  + ")")
+	var remove_node = document.createTextNode("x");
+	remove_exercise.appendChild(remove_node);
 
+	var exercise_node = document.createTextNode(search_box.value + ":");
 	var exercise_section = document.createElement("div");
 	exercise_section.setAttribute("class","w3-container w3-padding");
-	exercise_section.setAttribute("id","exercise_section;" + exercise_count );
+	exercise_section.setAttribute("id","exercise;" + exercise_count );
 
 	var weight_input = document.createElement("input");
 	weight_input.setAttribute("type","text");
@@ -415,27 +422,18 @@ function add_exercise(){
 	
 	var x = document.createTextNode(" X ");
 	var set_num = document.createTextNode(set_count + ".");
-
 	var br = document.createElement("br");
 
-
-
 	//append children
-	// workout_card.appendChild(exercise_section); //exercise text
-
+	exercise_section.appendChild(remove_exercise)
 	exercise_section.appendChild(exercise_node);
-
 	exercise_section.appendChild(br);
 	exercise_section.appendChild(br);
-
-
 	
 	//append exercise section to workout card
 	
 	workout_card.appendChild(exercise_section);
-
 	add_set();
-
 	
 	create_add_set();
 	create_submit();
@@ -478,8 +476,24 @@ function create_workout(){
 	//create header
 	var header = document.createElement("h2");
 	header.setAttribute("class","w3-container w3-black");
-	header.setAttribute("style","width:55%;")
-	var header_node = document.createTextNode("Workout: " + today);
+	header.setAttribute("style","width:55%;");
+
+	var today = JSON.parse(localStorage["workout_dates"]);
+	
+
+	today = today.split(",");
+	
+	today.splice(-1,1);
+
+	
+
+	var day = today[today.length - 1];
+	
+	
+	
+	
+
+	var header_node = document.createTextNode("Workout: " + day);
 	header.appendChild(header_node);
 	var text_div = document.createElement("div");
 	text_div.setAttribute("class","w3-padding")

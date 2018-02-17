@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<head>
+
+	<title>Lifting Data</title>
+	<meta charset="utf-8"/>
+
+	<style>
+			<style>
+	 /* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+/* The container <div> - needed to position the dropdown content */
+#dropdown {
+    position: relative;
+    display: inline-block;
+}
+/* Dropdown Content (Hidden by Default) */
+#dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+/* Links inside the dropdown */
+#dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+/* Change color of dropdown links on hover */
+#dropdown-content a:hover {background-color: #ddd}
+/* Show the dropdown menu on hover */
+#dropdown:hover #dropdown-content {
+    display: block;
+}
+/* Change the background color of the dropdown button when the dropdown content is shown */
+#dropdown:hover #dropbtn {
+    background-color: #3e8e41;
+} 
+</style>	
+
+
+
+</head>
+
+<body>
+
+								<!-- nav bar -->
+<div id = "nav_bar" class = "w3-container w3-black w3-top">
+
+	
+	<a href="index.html" target = "_top">
+
+
+		<button class = "w3-btn w3-hover-red" >
+			Home
+		</button>
+
+	</a>
+	
+
+	<button class = "w3-btn w3-hover-red">
+		About
+	</button>
+	<a href="log_workout.html">
+		<button class = "w3-btn w3-hover-red">Log Workout</button>
+
+	</a>
+	
+
+	<div id = "dropdown">
+		<button id = dropdown-btn class = "w3-btn w3-hover-red">
+			Track nutrition
+			 <i class="fa fa-caret-down"></i>
+		</button>
+
+		<div id = "dropdown-content">
+			<a href="log_weight.html">Log weight</a>
+			<a href="#">Log calories</a>
+		</div>
+	</div>
+
+
+	<a href="max_calc.html">
+	<button class = "w3-btn w3-hover-red">
+		1RM Calculator
+	</button>
+	</a>
+	<a href="program_builder.html">
+		<button class = "w3-btn w3-hover-red "> Program builder </button>	
+	</a>
+
+	<a href="lifting_data.html">
+		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
+	</a>
+	
+	
+	</div>
+			
+									<!-- header -->
+	<div class=" w3-container w3-content w3-center w3-padding-64">
+		<h2>Lifting Data</h2>
+
+		<p class = "w3-justify">
+			Seeing your lifting data is very useful in helping you understand how well your doing in your training. It not only allows you to see your one-rep max improvements over time, but also gives you insights on your rate of strength gain and how that changes from month to month. For all our aesthetic people out there, workout tracker also stores your training volume on a workout to workout basis, and this can help you find the optimal training volume in order for you to grow.
+		</p>
+	</div>
+									<!-- Data section -->
+	<div class = "w3-container w3-content">
+		<!-- 1RM improvements -->
+		<div class = "w3-container w3-center">
+			<h2>One rep max improvements</h2>
+			<div id = "1RM_charts"></div>
+		</div>
+
+		<!-- Rate of strength improvements -->
+		<div class = "w3-container w3-center">
+			<h2>Rate of strength improvements</h2>
+			<div id = "strength_improvement_charts"></div>
+		</div>
+
+		<!-- intensity -->
+		<div class = "w3-container w3-center">
+			<h2>Intensity</h2>
+			<div id = "intensity_charts"></div>
+		</div>
+
+		<!-- volume -->
+		<div class = "w3-container w3-center">
+			<h2>Volume</h2>
+			<div id = "volume_charts"></div>
+		</div>
+	</div>
+
+<script src="chart.js/dist/Chart.js"></script>
+
+<script src="exercises.js"></script>
+<script>
+
+graph_volume();
+graph_1RM();
+function graph_lift_entry(lift_entry,label,chart_type){
+	//add canvas to chart section
+	var element = document.createElement("canvas");
+	element.setAttribute("id",label);
+	element.setAttribute("width","500");
+	element.setAttribute("height","300");
+	element.setAttribute("class","w3-center")
+	element.setAttribute("style","max-width:660px;max-height:450px;")
+	var charts = document.getElementById(chart_type);
+	charts.appendChild(element);
+	//disable graphing button
+	
+	var colors = [
+	'rgba(255,99,132,1)',
+	'rgba(54, 162, 235, 1)',
+	'rgba(255, 206, 86, 1)',
+	'rgba(75, 192, 192, 1)',
+	'rgba(153, 102, 255, 1)',
+	'rgba(255, 159, 64, 1)'
+	]
+	//graph dataset
+	
+	var rand_num = Math.floor(Math.random() * colors.length);
+	var str_dates = JSON.parse(localStorage["workout_dates"]);
+	var dates = str_dates.split(",");
+	var ctx = document.getElementById(label).getContext('2d');
+	var chart = new Chart(ctx,{
+		type: "line",
+		data: {
+			labels: dates,
+			datasets: [{
+				label: label,
+				data: lift_entry,
+	            borderColor: [colors[rand_num]
+	            ],
+	            borderWidth: 1,
+	            }]
+		},
+		options: {
+			responsive: false,
+		        scales: {
+		            yAxes: [{
+		                ticks: {
+		                    beginAtZero:false
+		                }
+		            }]
+		        }
+	    }
+	});
+}	
+function graph_volume(){
+	keys = Object.keys(localStorage);
+	for(var z in keys){
+		var index = keys[z].indexOf("_");
+		if(keys[z].substr(index) == "_volume"){
+			var all_data = JSON.parse(localStorage[keys[z]]);
+			
+			if(typeof all_data == "string" && all_data.indexOf(",") > -1){
+				all_data = all_data.split(",");
+				all_data.map(Boolean);
+				all_data.splice(-1,1);
+				all_data = all_data.map(Number);
+
+			}else{
+				all_data = [all_data];
+			}
+			
+			
+			graph_lift_entry(all_data,keys[z],"volume_charts");
+		}
+		
+	}
+}
+function graph_1RM(){
+	keys = Object.keys(localStorage);
+	for(var key in keys){
+		var index = keys[key].indexOf("_");
+
+		if(keys[key].substr(index) == "_max"){
+			var all_data = JSON.parse(localStorage[keys[key]]);
+			
+			if(typeof all_data == "string" && all_data.indexOf(",") > -1){
+				all_data = all_data.split(",");
+				all_data.map(Boolean);
+				all_data.splice(-1,1);
+				all_data = all_data.map(Number);
+
+			}else{
+				all_data = [all_data];
+			}
+			
+			
+			graph_lift_entry(all_data,keys[key],"1RM_charts");
+		}
+	}
+}
+</script>
+</body>
+
+</html>
