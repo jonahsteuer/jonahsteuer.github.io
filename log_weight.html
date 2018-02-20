@@ -89,9 +89,17 @@
 			<button class = "w3-btn w3-hover-red "> Program builder </button>	
 		</a>
 
-		<a href="lifting_data.html">
-			<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
-		</a>
+		<div id = "dropdown">
+			<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
+				Data
+				<i class = "fa fa-caret-down"></i>
+			</button>
+
+			<div id = "dropdown-content">
+				<a href="lifting_data.html"> Lifting Data</a>
+				<a href="nutrition_data.html"> Nutrition Data</a>
+		</div>
+	</div>
 		
 	</div>
 
@@ -138,7 +146,7 @@
 	<h1 id = "values"></h1>
 	<div id = "charts"></div>
 
-	<script src="chart.js/dist/Chart.js"></script>
+	<script src="Chart.js"></script>
 	<script>
 	var all_exists = [];
 	function graph_lift_entry(lift_entry,label){
