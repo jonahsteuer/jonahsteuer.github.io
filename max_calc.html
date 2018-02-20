@@ -110,9 +110,17 @@
 	</a>
 
 	
-	<a href="lifting_data.html">
-		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
-	</a>
+	<div id = "dropdown">
+		<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
+			Data
+			<i class = "fa fa-caret-down"></i>
+		</button>
+
+		<div id = "dropdown-content">
+			<a href="lifting_data.html"> Lifting Data</a>
+			<a href="nutrition_data.html"> Nutrition Data</a>
+		</div>
+	</div>
 	
 </div>
 <br>
@@ -191,7 +199,7 @@
 	<p class = "w3-justify">With workout tracker, every one rep max entry gets stored in our database. All of your previous one rep maxes for each lift are then graphed over time. This can be very useful in seeing strength improvements for each lift.</p>
 	<br>
 	<br>
-	<button id = "graph_button"class = "w3-btn w3-black w3-hover-red" onclick = "data()">See the gains!!</button>
+	<button id = "graph_button" class = "w3-btn w3-black w3-hover-red" onclick = "data()">See the gains!!</button>
 </div>
 
 <div id = "charts" class = "w3-container w3-content w3-center"style = "max-width:700px;">

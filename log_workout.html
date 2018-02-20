@@ -100,9 +100,17 @@
 		<button class = "w3-btn w3-hover-red "> Program builder </button>	
 	</a>
 
-	<a href="lifting_data.html">
-		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
-	</a>
+	<div id = "dropdown">
+		<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
+			Data
+			<i class = "fa fa-caret-down"></i>
+		</button>
+
+		<div id = "dropdown-content">
+			<a href="lifting_data.html"> Lifting Data</a>
+			<a href="nutrition_data.html"> Nutrition Data</a>
+		</div>
+	</div>
 	
 	
 </div>
@@ -149,6 +157,7 @@ var all_weights = [];
 var all_volume = [];
 var all_sets = [];
 var all_maxes = [];
+var all_rpes = [];
 
 store_date();
 
@@ -199,96 +208,108 @@ function fill_search(exercise){
 	search_box.value = exercise;
 }
 
-function store_volume(){
+function store_inputs(end_tag,all_data){
 	//store data in localStorage
 	// localStorage.clear();
 	keys = Object.keys(localStorage);
 	for(var name in all_exercises){
-		var key_name = all_exercises[name] + "_volume";
+		var key_name = all_exercises[name] + end_tag;
 		if(keys.includes(key_name)){
 			var data = JSON.parse(localStorage[key_name]);
-			data += all_volume[name] + ",";
+			data += all_data[name] + ",";
 			localStorage[key_name] = JSON.stringify(data);
 		}else{
-			localStorage[key_name] = JSON.stringify(all_volume[name] + ",");
+			localStorage[key_name] = JSON.stringify(all_data[name] + ",");
 		}
 		
 	}
 }
-function store_maxes(){
-	keys = Object.keys(localStorage);
-	for(var exercise in all_exercises){
-		var key_name = all_exercises[exercise] + "_max";
-	if (keys.includes(key_name)) {
-		var data = JSON.parse(localStorage[key_name]);
-		data += all_maxes[exercise] + ",";
-		localStorage[key_name] = JSON.stringify(data);
 
-		
-	} else {
-		localStorage[key_name] = JSON.stringify(all_maxes[exercise] + ",");
-
-	}
-
-	}
-
-
-}
 function get_data(){
 	//volume
-	console.log(all_sets);
-	console.log(all_exercises);
 
 	if(exercise_count = 1){
 		all_sets.push(set_count);
 	}
 	// 	//iterate through all exercises
-	console.log(all_sets);
+	
 	for(var i = 0; i < all_exercises.length; i++){
-		
-			
-				var volume = 0;
-			//iterate through all sets in that exercise
-			for(var x = 0; x < all_sets[i]; x++){
+		var rpes = [];
+		var volume = 0;
+		//iterate through all sets in that exercise
+		for(var x = 0; x < all_sets[i]; x++){
 
-				var maxes = [];
-				//get weight and reps for each set 
+			var maxes = [];
+			//get weight and reps for each set 
+			
+			var weight_exists = document.getElementById("weight;" + (i+1) + ";" + (x+1));
+			var reps_exists = document.getElementById("reps;" + (i+1) + ";" + (x+1));
+			var rpe_exists = document.getElementById("rpe;" + (i+1) + ";" + (x+1));
+
+			if(weight_exists != null && reps_exists != null){
+
+				var vol_works = true;
+				var weight = weight_exists.value;
+				var reps = reps_exists.value;
+
+				volume += weight*reps;
+
+				var max = weight * (1 + reps/30);
+
+				maxes.push(max)
 				
-				var exists1 = document.getElementById("weight;" + (i+1) + ";" + (x+1));
-				var exists2 = document.getElementById("reps;" + (i+1) + ";" + (x+1));
-				if(exists1 != null && exists2 != null){
-					console.log("went through");
-					var works = true;
-					var weight = exists1.value;
-					var reps = exists2.value;
 
-					volume += weight*reps;
-
-					var max = weight * (1 + reps/30);
-
-					maxes.push(max)
-
-				}else{
-					var works = false
-				}
-			
+			}else{
+				var vol_works = false
 			}
 
-			if(works === true){
-				maxes.max = function( array ){
-		    		return Math.max.apply( Math, array );
-				};
-				all_maxes.push(maxes);
-				all_volume.push(volume);
-
+			if(rpe_exists != null){
+				rpes.push(rpe_exists.value);
+			}else{
+				var rpe_works = true;
 			}
 
+		
+		}
+		if(rpe_works === true){
+			//get average rpes for each exercise and push to all_rpes
+			rpes = rpes.map(Number);
+			var total_rpe = 0;
+			for(var rpe in rpes){	
+				total_rpe += rpes[rpe];
+
+				var avg_rpe = total_rpe/rpes.length;
+
+			}
+				
+			all_rpes.push(avg_rpe);
 		}
 		
-		store_volume();
-		store_maxes();
+
+
+		if(vol_works === true){
+			maxes.max = function( array ){
+	    		return Math.max.apply( Math, array );
+			};
+			all_maxes.push(maxes);
+			all_volume.push(volume);
+
+		}
+
+	}
+		if(vol_works === true){
+			store_inputs("_volume",all_volume);
+			store_inputs("_max",all_maxes);
+		}
+		
+		if(rpe_works === true){
+			store_inputs("_rpe",all_rpes);
+		}
+		
+
 		console.log(all_volume);
 		console.log(all_maxes);
+		console.log(all_rpes);
 }
 	
 
@@ -369,14 +390,23 @@ function add_set(){
 	rep_input.setAttribute("style","width:9%;");
 	rep_input.setAttribute("id","reps;" + exercise_count + ";" + set_count);
 
+	var rpe_input = document.createElement("input");
+	rpe_input.setAttribute("type","text");
+	rpe_input.setAttribute("placeholder","rpe");
+	rpe_input.setAttribute("style","width:9%;");
+	rpe_input.setAttribute("id","rpe;" + exercise_count + ";" + set_count);
+
 	var x = document.createTextNode(" X ");
 	var br = document.createElement("br");
+	var at_symbol = document.createTextNode("@");
 
 	set.appendChild(remove_set);
 	
 	set.appendChild(weight_input);
 	set.appendChild(x);
 	set.appendChild(rep_input);
+	set.appendChild(at_symbol);
+	set.appendChild(rpe_input);
 	set.appendChild(br);
 
 	exercise_section.appendChild(set);
@@ -495,20 +525,27 @@ function create_workout(){
 
 	var header_node = document.createTextNode("Workout: " + day);
 	header.appendChild(header_node);
+
 	var text_div = document.createElement("div");
-	text_div.setAttribute("class","w3-padding")
+	text_div.setAttribute("class","w3-padding");
+
 	var text_node = document.createTextNode("Add exercise:");
 	text_div.appendChild(text_node);
+
 	var search_div = document.createElement("div");
 	search_div.setAttribute("class","w3-container w3-padding w3-row")
+
 	var search_icon = document.createElement("i");
 	search_icon.setAttribute("class","fa fa-search");
+
 	var add_icon = document.createElement("div");
 	add_icon.setAttribute("style","height:30px;")
 	add_icon.setAttribute("class"," w3-tiny w3-button w3-black w3-hover-red ")
 	add_icon.setAttribute("onclick", "add_exercise()");
+
 	var icon_text = document.createTextNode("+");
 	add_icon.appendChild(icon_text);
+	
 	var exercise_search = document.createElement("input");
 	exercise_search.setAttribute("style","width:40%;height:30px;");
 	exercise_search.setAttribute("type","text");

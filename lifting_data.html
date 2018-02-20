@@ -103,9 +103,18 @@
 		<button class = "w3-btn w3-hover-red "> Program builder </button>	
 	</a>
 
-	<a href="lifting_data.html">
-		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
-	</a>
+	<div id = "dropdown">
+		<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
+			Data
+			<i class = "fa fa-caret-down"></i>
+		</button>
+
+		<div id = "dropdown-content">
+			<a href="lifting_data.html"> Lifting Data</a>
+			<a href="nutrition_data.html"> Nutrition Data</a>
+		</div>
+	</div>
+	
 	
 	
 	</div>
@@ -123,13 +132,19 @@
 		<!-- 1RM improvements -->
 		<div class = "w3-container w3-center">
 			<h2>One rep max improvements</h2>
-			<div id = "1RM_charts"></div>
+			<div id = "max_charts"></div>
 		</div>
 
 		<!-- Rate of strength improvements -->
 		<div class = "w3-container w3-center">
 			<h2>Rate of strength improvements</h2>
 			<div id = "strength_improvement_charts"></div>
+		</div>
+
+		<!-- rpe -->
+		<div class = "w3-container w3-center">
+			<h2>RPE</h2>
+			<div id = "rpe_charts"></div>
 		</div>
 
 		<!-- intensity -->
@@ -149,9 +164,30 @@
 
 <script src="exercises.js"></script>
 <script>
+keys = Object.keys(localStorage);
+var includes = [];
+console.log(keys);
+console.log(includes);
 
-graph_volume();
-graph_1RM();
+for(var key in keys){
+	var index = keys[key].indexOf("_");
+	var end_tag = keys[key].substr(index);
+
+	includes.push(end_tag);
+}
+if(includes.indexOf("_volume") > -1){
+	graph_stored("_volume","volume_charts");
+}
+
+if(includes.indexOf("_max") > -1){
+	graph_stored("_max","max_charts");
+}
+
+if(includes.indexOf("_rpe") > -1){
+	graph_stored("_rpe","rpe_charts");
+}
+
+
 function graph_lift_entry(lift_entry,label,chart_type){
 	//add canvas to chart section
 	var element = document.createElement("canvas");
@@ -202,35 +238,13 @@ function graph_lift_entry(lift_entry,label,chart_type){
 	    }
 	});
 }	
-function graph_volume(){
-	keys = Object.keys(localStorage);
-	for(var z in keys){
-		var index = keys[z].indexOf("_");
-		if(keys[z].substr(index) == "_volume"){
-			var all_data = JSON.parse(localStorage[keys[z]]);
-			
-			if(typeof all_data == "string" && all_data.indexOf(",") > -1){
-				all_data = all_data.split(",");
-				all_data.map(Boolean);
-				all_data.splice(-1,1);
-				all_data = all_data.map(Number);
 
-			}else{
-				all_data = [all_data];
-			}
-			
-			
-			graph_lift_entry(all_data,keys[z],"volume_charts");
-		}
-		
-	}
-}
-function graph_1RM(){
+function graph_stored(end_tag,chart){
 	keys = Object.keys(localStorage);
 	for(var key in keys){
 		var index = keys[key].indexOf("_");
 
-		if(keys[key].substr(index) == "_max"){
+		if(keys[key].substr(index) == end_tag){
 			var all_data = JSON.parse(localStorage[keys[key]]);
 			
 			if(typeof all_data == "string" && all_data.indexOf(",") > -1){
@@ -244,7 +258,7 @@ function graph_1RM(){
 			}
 			
 			
-			graph_lift_entry(all_data,keys[key],"1RM_charts");
+			graph_lift_entry(all_data,keys[key],chart);
 		}
 	}
 }
