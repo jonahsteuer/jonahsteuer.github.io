@@ -53,7 +53,6 @@
   padding: 0;
   margin: 0;
 }
-
 #goal_card{
 	position: relative;
 	height:180px;
@@ -74,19 +73,16 @@
 	right: 0;
 	max-width:65%;
 }
-
 #goals{
 	height: 480px;
 }
 #card_image{
 	width:100%;
-
 }
 #card_paragraph{
 	padding: 10px;
 	font-size: 85%;
 }
-
 .w3-col{
 	height: 38px;
 }
@@ -165,10 +161,15 @@
 </div>
 
 <div class = "w3-container w3-content" style = "padding:0px;max-width:900px;" >
-										<!-- goal -->
+	<div class = "w3-card w3-content w3-round-large w3-padding">
+		<h4>Step 1: Name your program</h4>
+		<input style = "width: 60%;" type="text" placeholder="John Doe's max muscle plan">
+	</div>
+	<br>
+								<!-- goal -->
 	<div class = "w3-card w3-content w3-round-large w3-padding" style = "height: 600px"> 
 				
-		<h3 style="width: 50%;"> Step 1: Choose your goal Goal</h3>
+		<h3 style="width: 50%;"> Step 2: Choose your goal Goal</h3>
 			<div class = "w3-row-padding">
 				<div id = "goals" class=" w3-third w3-card-4">
 							<!-- powerlifting goal -->
@@ -211,7 +212,7 @@
 	
 								<!-- stress level -->
 	<div id = "stress_card" class = "w3-padding w3-card w3-round-large " style="height: 750px;" > 
-		<h3> Step 2: Input Stress level </h3>
+		<h3> Step 3: Input Stress level </h3>
 
 									<!-- low stress -->
 		<div  class = "w3-card w3-row w3-third" style="height:210px;width: 30%;">
@@ -262,7 +263,7 @@
 	<br>
 	<div class = "w3-card w3-padding" >
 		<h4>
-			<strong>Step 3: Input Training Maxes</strong>
+			<strong>Step 4: Input Training Maxes</strong>
 		</h4>
 
 		<div class = "w3-row">
@@ -387,7 +388,6 @@
 								<!-- favorite exercises -->
 		<!-- <div class = "w3-container w3-content w3-row"  onmouseleave = "clear_search()" style = "max-width:700px;">
 			<div class = "w3-card w3-round-large w3-half"  style = "width:55%;">
-
 				<div class = "w3-padding">
 					Preferred exercises:<br>
 					<i class = "fa fa-search"></i>
@@ -397,9 +397,7 @@
 					<ul id = "exercise_inputs"></ul>
 					
 				</div>
-
 			</div>
-
 			<div class = "w3-card w3-round-large w3-half" onmouseenter = "clear_search()" style = "width:45%;">
 				<div class = "w3-padding">
 					Chosen exercises:
@@ -407,10 +405,8 @@
 				</div>
 			</div>
 		</div>
-
 		<br>
 						
-
 		
 </div> -->
 											<!-- submit button -->
@@ -431,7 +427,6 @@
 
 <script>
 	var exercise_data = [];
-
 	
 	function selected(button){
 		for(var i = 1; i<4; i++){
@@ -440,7 +435,6 @@
 			select_button.innerHTML = 'Select';
 		}
 	
-
 		if(button.innerHTML != "Selected"){
 			button.innerHTML = 'Selected';
 			button.setAttribute('class','w3-red w3-round-xlarge w3-btn');
@@ -457,7 +451,6 @@
 			select_button.innerHTML = 'Select';
 		}
 	
-
 		if(button.innerHTML != "Selected"){
 			button.innerHTML = 'Selected';
 			button.setAttribute('class'," w3-small w3-round-xlarge w3-btn w3-red");
@@ -465,17 +458,13 @@
 			button.innerHTML = "Select";
 			button.setAttribute('class'," w3-small w3-round-xlarge w3-btn w3-black w3-hover-red");
 		}
-
 	}
 	function calculate_max(input){
-
 		var _index = input.id.indexOf("_");
 		var beginning = input.id.substr(0,_index);
 		var end = input.id.substr(_index);
 		var num = input.id.substr(_index-1,1);
-
 		var input = Number(input.value);
-
 		if(end == "_weight"){
 			var other_input = Number(document.getElementById(beginning + "_reps").value);
 		}else{
@@ -489,8 +478,6 @@
 			var max = other_input * (1 + input/30);
 		}
 		document.getElementById("max" + num).innerHTML = ~~max;
-
-
 		document.getElementById("green_check" + num).setAttribute("class","w3-col w3-circle w3-center w3-green material-icons");
 		document.getElementById("red_x" + num).setAttribute("class","w3-hide w3-col w3-circle w3-center w3-red material-icons");
 		}else{
@@ -498,14 +485,11 @@
 		document.getElementById("red_x" + num).setAttribute("class"," w3-col w3-circle w3-center w3-red material-icons");
 		}
 		
-
-
 		
 	}
-	function get_volume_score(training_age,stress_level,goal){
+	function get_volume(training_age,stress_level,goal){
 		var volume_score = 0;//training age, goal, and stress level factor in to volume
 			//average volume scores: training age: 0.4, stress_level: 0.4, goal: 0.2
-
 			if(training_age == "< 2 years"){ //beginners don't require as much volume
 				volume_score += 0.3;
 			}else if(training_age == "2-10 years"){ //intermediates require average volume
@@ -513,18 +497,16 @@
 			}else{ //advanced trainees require mre volume
 				volume_score += 0.5;
 			}
-
-			if(stress_level == "Low Stress"){ //people with lower stress can recover from more volume
+			if(stress_level == "low"){ //people with lower stress can recover from more volume
 				volume_score += 0.5;
-			}else if(stress_level == "Moderate Stress"){ 
+			}else if(stress_level == "moderate"){ 
 				volume_score += 0.4;
 			}else{
 				volume_score += 0.3;
 			}
-
+			
 			//powerlifters should be doing lower volumes in order to maximize strength gains
 			if(goal == "powerlifting"){ 
-
 				volume_score += 0.1;
 			}else if(goal == "powerbuilding"){
 				volume_score += 0.2;
@@ -532,42 +514,63 @@
 				volume_score += 0.3;
 			}
 
-		return volume_score;
+		var avg_volumes = {
+			"chest":16, "lats": 10, "hamstrings": 13, "calves":14, "traps": 16, "quads": 15, "biceps": 17, "triceps": 12,"rear_delts": 7,"side_delts": 12, "front_delts": 6};
+
+		var volumes = Object.values(avg_volumes);
+		var keys = Object.keys(avg_volumes);
+
+		var program_volumes = {};
+
+		for(var i in volumes){
+			program_volumes[keys[i]] = ~~(volumes[i] * volume_score);
+		}
+
+		return program_volumes;
 	}
-
-	function get_intensity_score(training_age,stress_level,goal){
-		var intensity_score = 0;//training age, goal, and stress level factor in to intensity
+	function get_reps(training_age,stress_level,goal){
+		var rep_score = 0;//training age, goal, and stress level factor in to intensity
 			//average intensity scores: training age: 0.15, stress_level: 0.25, goal: 0.6
-
 			if(training_age == "< 2 years"){ //beginners can handle higher intensities
-				intensity_score += 0.2;
+				rep_score += 0.2;
 			}else if(training_age == "2-10 years"){ 
-				intensity_score += 0.15;
+				rep_score += 0.15;
 			}else{ 
-				intensity_score += 0.1;
+				rep_score += 0.1;
 			}
-
 			if(stress_level == "Low Stress"){ //people with lower stress can recover from higher intensities
-				intensity_score += 0.3;
+				rep_score += 0.3;
 			}else if(stress_level == "Moderate Stress"){ 
-				intensity_score += 0.25;
+				rep_score += 0.25;
 			}else{
-				intensity_score += 0.2;
+				rep_score += 0.2;
 			}
-
 			//powerlifters should be doing lower volumes in order to maximize strength gains
 			if(goal == "powerlifting"){ 
-				intensity_score += 0.8;
+				rep_score += 0.8;
 			}else if(goal == "powerbuilding"){
-				intensity_score += 0.7;
+				rep_score += 0.7;
 			}else{
-				intensity_score += 0.6;
+				rep_score += 0.6;
 			}
+		var avg_compound_reps = {
+			"chest":8, "lats": 10, "hamstrings": 8, "calves":12, "traps": 10, "quads": 8, "front_delts": 8};
 
-		return intensity_score;
+		var isolation_reps = {"biceps": 12, "triceps": 12,"rear_delts": 12,"side_delts": 12}
+
+		var keys = Object.keys(avg_compound_reps);
+		var values = Object.values(avg_compound_reps);
+
+		var program_reps = {};
+		for(var i in keys){
+			program_reps[keys[i]] = ~~(rep_score * values[i]);
+		}
+
+		program_reps = Object.assign(program_reps,isolation_reps);
+
+		return program_reps;
 	}
-
-	function get_frequency_score(training_age,stress_level,goal,days){
+	function get_frequency(training_age,stress_level,goal,days){
 		var frequency_score = 0;//training age, goal, days and stress level factor in to frequency
 			//average frequency scores: days: 0.6 training age: 0.1, goal: 0.3
 			if(days == "3 days"){
@@ -579,7 +582,6 @@
 			}else{
 				frequency_score += 0.7
 			}
-
 			if(training_age == "< 2 years"){ //beginners can handle higher intensities
 				frequency_score += .15;
 			}else if(training_age == "2-10 years"){ 
@@ -587,7 +589,6 @@
 			}else{ 
 				frequency_score += 0.5;
 			}
-
 			//powerlifters should be doing lower volumes in order to maximize strength gains
 			if(goal == "powerlifting"){ 
 				frequency_score += 0.4;
@@ -596,29 +597,44 @@
 			}else{
 				frequency_score += 0.2;
 			}
+		var avg_frequencies = {
+			"chest":1.75, "lats": 3, "hamstrings": 2.5, "calves":3, "traps": 3, "quads": 2, "biceps": 3, "triceps": 3,"rear_delts": 2,"side_delts": 2, "front_delts": 1.5};
 
-		return frequency_score;
+		var keys = Object.keys(avg_frequencies);
+		var values = Object.values(avg_frequencies);
+
+		var program_frequencies = {};
+		for(var i in keys){
+			program_frequencies[keys[i]] = ~~(frequency_score * values[i]);
+		}
+
+		return program_frequencies;
 	}
 	function submit_data(){
 		var stress_data, days_data, age_data, goal_data
-
 		
-		if(document.getElementById("low").checked){
-			stress_data = "low";
-		}else if(document.getElementById("mod").checked){
-			stress_data = "moderate";
-		}else if(document.getElementById("high").checked){
-			stress_data = "high"
+		if(document.getElementById("select_button1").innerHTML == "Selected"){
+			goal_data = "powerlifting";
+		}else if(document.getElementById("select_button2").innerHTML == "Selected"){
+			goal_data = "powerbuilding";
+		}else if(document.getElementById("select_button3").innerHTML == "selected"){
+			goal_data = "bodybuilding";
 		}
 
+		if(document.getElementById("stress_button1").innerHTML == "Selected"){
+			stress_data = "low";
+		}else if(document.getElementById("stress_button2").innerHTML == "Selected"){
+			stress_data = "moderate";
+		}else if(document.getElementById("stress_button3").innerHTML == "Selected"){
+			stress_data = "high"
+		}
 		days_data = document.getElementById("days").value;
-
 		age_data = document.getElementById("age").value;
 
-		goal_data = document.getElementById("goal").value;
-
+		
 
 		create_program(exercise_data,stress_data,days_data,age_data,goal_data);
+
 	}
 	function create_program(favorite_exercises,stress_level,days,training_age,goal){
 		var chosen_groups = [];
@@ -654,9 +670,11 @@
 			}
 		}
 		//volume score is multiplied by average volume to get the optimal volume for individual
-		var volume_score = get_volume_score(training_age, stress_level, goal);
-		var intensity_score = get_intensity_score(training_age, stress_level, goal);
-		var frequency_score = get_frequency_score(training_age, stress_level, goal, days);
+		var volumes = get_volume(training_age, stress_level, goal);
+		var reps = get_reps(training_age, stress_level, goal);
+		var frequencies = get_frequency(training_age, stress_level, goal, days);
+
+		console.log(volumes,frequencies,reps);
 	}
 	function is_optimal(){
 		var location = document.getElementById("is_optimal");
@@ -670,86 +688,74 @@
 	}
 	
 	
-
-	function firstCharUpper(string){
-		//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
-		return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-	}
-	function remove_exercise(id){
-		document.getElementById("exercise_inputs").innerHTML = "";
-	}
-	function store_exercise(exercise){
-		exercise_data.push(exercise);
-
-		var section = document.getElementById("exercise");
-
-		//create div element
-		var div = document.createElement("div");
-		div.setAttribute("class","w3-border w3-light-grey w3-row w3-half")
-		div.setAttribute("style","width:50%;height:50px;")
-		div.setAttribute("id",exercise)
-		var node = document.createTextNode(" " + exercise);
-
-		//create x icon
-		var x_icon = document.createElement("i");
-		x_icon.setAttribute("class","fa fa-close w3-hover-grey w3-large");
-
-		x_icon.onclick = function(elementId){var element = document.getElementById(this.parentNode.id);
-		element.parentNode.removeChild(element);};
-
-		//append x icon and node to div
-		div.appendChild(x_icon);
-		div.appendChild(node);
-
-		section.appendChild(div);
-
-		document.getElementById("exercise_search").value = "";
-	}
-	function clear_search(){
-		document.getElementById("exercise_inputs").innerHTML = "";
-	}
-	function fill_search(exercise){
-		//clear search options
-		var exercise_inputs = document.getElementById("exercise_inputs");
-		exercise_inputs.innerHTML = "";
-		//fill search box with clicked exercise
-		var search_box = document.getElementById("exercise_search");
-		search_box.value = exercise;
-	}
-	function showResult(input){
-		var outputs = [];
-		//iterate through exercises
-		for(var exercise in exercises){
-			//cut off beginning section of exercise equal to the length of input
-			if(input.length > 1){
-				var input_match = exercises[exercise].substr(0,input.length);
-
-				input = firstCharUpper(input);
-
-				if(input == input_match){
-					var output = exercises[exercise];
-					outputs.push(output);
+	// function firstCharUpper(string){
+	// 	//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
+	// 	return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	// }
+	// function remove_exercise(id){
+	// 	document.getElementById("exercise_inputs").innerHTML = "";
+	// }
+	// function store_exercise(exercise){
+	// 	exercise_data.push(exercise);
+	// 	var section = document.getElementById("exercise");
+	// 	//create div element
+	// 	var div = document.createElement("div");
+	// 	div.setAttribute("class","w3-border w3-light-grey w3-row w3-half")
+	// 	div.setAttribute("style","width:50%;height:50px;")
+	// 	div.setAttribute("id",exercise)
+	// 	var node = document.createTextNode(" " + exercise);
+	// 	//create x icon
+	// 	var x_icon = document.createElement("i");
+	// 	x_icon.setAttribute("class","fa fa-close w3-hover-grey w3-large");
+	// 	x_icon.onclick = function(elementId){var element = document.getElementById(this.parentNode.id);
+	// 	element.parentNode.removeChild(element);};
+	// 	//append x icon and node to div
+	// 	div.appendChild(x_icon);
+	// 	div.appendChild(node);
+	// 	section.appendChild(div);
+	// 	document.getElementById("exercise_search").value = "";
+	// }
+	// function clear_search(){
+	// 	document.getElementById("exercise_inputs").innerHTML = "";
+	// }
+	// function fill_search(exercise){
+	// 	//clear search options
+	// 	var exercise_inputs = document.getElementById("exercise_inputs");
+	// 	exercise_inputs.innerHTML = "";
+	// 	//fill search box with clicked exercise
+	// 	var search_box = document.getElementById("exercise_search");
+	// 	search_box.value = exercise;
+	// }
+	// function showResult(input){
+	// 	var outputs = [];
+	// 	//iterate through exercises
+	// 	for(var exercise in exercises){
+	// 		//cut off beginning section of exercise equal to the length of input
+	// 		if(input.length > 1){
+	// 			var input_match = exercises[exercise].substr(0,input.length);
+	// 			input = firstCharUpper(input);
+	// 			if(input == input_match){
+	// 				var output = exercises[exercise];
+	// 				outputs.push(output);
 				
-			}
-
-			}
+	// 		}
+	// 		}
 			
-		}
+	// 	}
 		
-		var list = document.getElementById("exercise_inputs");
-		list.innerHTML = "";
-		for(var output in outputs){
-			var li = document.createElement("li");
-			li.setAttribute("onclick","fill_search(this.innerHTML)");
+	// 	var list = document.getElementById("exercise_inputs");
+	// 	list.innerHTML = "";
+	// 	for(var output in outputs){
+	// 		var li = document.createElement("li");
+	// 		li.setAttribute("onclick","fill_search(this.innerHTML)");
 			
-			li.setAttribute("class","w3-hover-grey w3-ripple w3-border w3-light-grey w3-padding");
-			var node = document.createTextNode(outputs[output]);
-
-			li.appendChild(node);
+	// 		li.setAttribute("class","w3-hover-grey w3-ripple w3-border w3-light-grey w3-padding");
+	// 		var node = document.createTextNode(outputs[output]);
+	// 		li.appendChild(node);
 			
-			list.appendChild(li);
-		}
-	}
+	// 		list.appendChild(li);
+	// 	}
+	// }
 	
 </script>
 
