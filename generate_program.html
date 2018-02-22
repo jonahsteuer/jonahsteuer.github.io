@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -513,62 +512,15 @@
 			}else{
 				volume_score += 0.3;
 			}
-
 		var avg_volumes = {
-			"chest":16, "lats": 10, "hamstrings": 13, "calves":14, "traps": 16, "quads": 15, "biceps": 17, "triceps": 12,"rear_delts": 7,"side_delts": 12, "front_delts": 6};
-
+			"chest":16, "lats": 15, "hamstrings": 13, "calves":14, "traps": 16, "quads": 15, "biceps": 17, "triceps": 12,"rear_delts": 7,"side_delts": 12, "front_delts": 6};
 		var volumes = Object.values(avg_volumes);
 		var keys = Object.keys(avg_volumes);
-
 		var program_volumes = {};
-
 		for(var i in volumes){
 			program_volumes[keys[i]] = ~~(volumes[i] * volume_score);
 		}
-
 		return program_volumes;
-	}
-	function get_reps(training_age,stress_level,goal){
-		var rep_score = 0;//training age, goal, and stress level factor in to intensity
-			//average intensity scores: training age: 0.15, stress_level: 0.25, goal: 0.6
-			if(training_age == "< 2 years"){ //beginners can handle higher intensities
-				rep_score += 0.2;
-			}else if(training_age == "2-10 years"){ 
-				rep_score += 0.15;
-			}else{ 
-				rep_score += 0.1;
-			}
-			if(stress_level == "Low Stress"){ //people with lower stress can recover from higher intensities
-				rep_score += 0.3;
-			}else if(stress_level == "Moderate Stress"){ 
-				rep_score += 0.25;
-			}else{
-				rep_score += 0.2;
-			}
-			//powerlifters should be doing lower volumes in order to maximize strength gains
-			if(goal == "powerlifting"){ 
-				rep_score += 0.8;
-			}else if(goal == "powerbuilding"){
-				rep_score += 0.7;
-			}else{
-				rep_score += 0.6;
-			}
-		var avg_compound_reps = {
-			"chest":8, "lats": 10, "hamstrings": 8, "calves":12, "traps": 10, "quads": 8, "front_delts": 8};
-
-		var isolation_reps = {"biceps": 12, "triceps": 12,"rear_delts": 12,"side_delts": 12}
-
-		var keys = Object.keys(avg_compound_reps);
-		var values = Object.values(avg_compound_reps);
-
-		var program_reps = {};
-		for(var i in keys){
-			program_reps[keys[i]] = ~~(rep_score * values[i]);
-		}
-
-		program_reps = Object.assign(program_reps,isolation_reps);
-
-		return program_reps;
 	}
 	function get_frequency(training_age,stress_level,goal,days){
 		var frequency_score = 0;//training age, goal, days and stress level factor in to frequency
@@ -597,18 +549,59 @@
 			}else{
 				frequency_score += 0.2;
 			}
-		var avg_frequencies = {
-			"chest":1.75, "lats": 3, "hamstrings": 2.5, "calves":3, "traps": 3, "quads": 2, "biceps": 3, "triceps": 3,"rear_delts": 2,"side_delts": 2, "front_delts": 1.5};
 
+		var avg_frequencies = {
+			"chest":2, "lats": 3, "hamstrings": 2.5, "calves":3, "traps": 3, "quads": 2, "biceps": 3, "triceps": 3,"rear_delts": 2,"side_delts": 2, "front_delts": 1.75};
 		var keys = Object.keys(avg_frequencies);
 		var values = Object.values(avg_frequencies);
-
 		var program_frequencies = {};
 		for(var i in keys){
 			program_frequencies[keys[i]] = ~~(frequency_score * values[i]);
 		}
-
 		return program_frequencies;
+	}
+	function get_reps(training_age,stress_level,goal, avg_frequencies){
+		var rep_score = 0;//training age, goal, and stress level factor in to intensity
+			//average rep scores: training age: 0.15, stress_level: 0.25, goal: 0.6
+			
+			//powerlifters do lower reps
+			if(goal == "powerlifting"){ 
+				rep_score += 0.6;
+			}else if(goal == "powerbuilding"){
+				rep_score += 0.8;
+			}else{
+				rep_score += 0.1;
+			}
+		var avg_compound_reps = {
+			"chest_compounds":8, "lat_compounds": 10, "hamstring_compounds": 8, "trap_compounds": 10, "quad_compounds": 8, "front_delt_compounds": 8};
+		//isolation work isn't going to differ from person to person
+		var isolation_reps = {"chest_isolations":12, "lat_isolations": 12, "hamstring_isolations": 12,  "quad__isolations": 8, "front_delt_isolations": 8, "bicep_isolation": 12, "calve_isolations":12, "tricep_isolations": 12,"rear_delt_isolations": 12,"side_delt_isolations": 12}
+		var keys = Object.keys(avg_compound_reps);
+		var values = Object.values(avg_compound_reps);
+		var program_reps = {};
+
+		for(var i in keys){
+			//add undulation to these muscle groups 
+			if(keys[i] == "chest" || keys[i] == "quads" || keys[i] == "hamstrings" || keys[i] == "front_delts")
+			{	if(avg_frequencies[keys[i]] == 2){ //undulation for two days a week
+					program_reps[keys[i]] = [~~(rep_score * values[i]) - 2, ~~(rep_score * values[i]) + 2];
+				
+				}else if(avg_frequencies[keys[i]] == 3){
+					program_reps[keys[i]] = [~~(rep_score * values[i]) - 2, ~~(rep_score * values[i]), ~~(rep_score * values[i]) + 2];
+				}else{
+					program_reps[keys[i]] = ~~(rep_score * values[i]);
+				}
+			}
+
+			
+		}
+		//add isolation work to compound work
+		program_reps = Object.assign(program_reps,isolation_reps);
+		return program_reps;
+	}
+	
+	function get_intensity(avg_reps){
+		
 	}
 	function submit_data(){
 		var stress_data, days_data, age_data, goal_data
@@ -620,7 +613,6 @@
 		}else if(document.getElementById("select_button3").innerHTML == "selected"){
 			goal_data = "bodybuilding";
 		}
-
 		if(document.getElementById("stress_button1").innerHTML == "Selected"){
 			stress_data = "low";
 		}else if(document.getElementById("stress_button2").innerHTML == "Selected"){
@@ -630,50 +622,49 @@
 		}
 		days_data = document.getElementById("days").value;
 		age_data = document.getElementById("age").value;
-
 		
-
 		create_program(exercise_data,stress_data,days_data,age_data,goal_data);
-
 	}
 	function create_program(favorite_exercises,stress_level,days,training_age,goal){
 		var chosen_groups = [];
 		//if favorite exercise exists in object get the key
 		
-		for(var i in favorite_exercises){
-			//check if exercise exists
-			for(var array in Object.values(muscle_exercises)){
-				if(Object.values(muscle_exercises)[array].indexOf(favorite_exercises[i]) > -1){
-					var exercise_exists = true;
-					break;
-				}else{
-					var exercise_exists = false;
-				}
-			}
+		// for(var i in favorite_exercises){
+		// 	//check if exercise exists
+		// 	for(var array in Object.values(muscle_exercises)){
+		// 		if(Object.values(muscle_exercises)[array].indexOf(favorite_exercises[i]) > -1){
+		// 			var exercise_exists = true;
+		// 			break;
+		// 		}else{
+		// 			var exercise_exists = false;
+		// 		}
+		// 	}
 		
-			if(exercise_exists){
-				Object.prototype.getKey = function(value) {
-					var object = this;
-					for(var array in Object.values(object)){
-						var index = Object.values(object)[array].indexOf(value);
-						if(index > -1){
-							return Object.keys(object).find(key => object[key] ===Object.values(object)[ array]);
-						}
+		// 	if(exercise_exists){
+		// 		Object.prototype.getKey = function(value) {
+		// 			var object = this;
+		// 			for(var array in Object.values(object)){
+		// 				var index = Object.values(object)[array].indexOf(value);
+		// 				if(index > -1){
+		// 					return Object.keys(object).find(key => object[key] ===Object.values(object)[ array]);
+		// 				}
 						
-					}
+		// 			}
 					
-				};
-				console.log(muscle_exercises.getKey(favorite_exercises[i]))
-				chosen_groups.push(muscle_exercises.getKey(favorite_exercises[i]));
-			}else{
-				alert("error invalid exercise input. Please input another exercise");
-			}
-		}
+		// 		};
+		// 		console.log(muscle_exercises.getKey(favorite_exercises[i]))
+		// 		chosen_groups.push(muscle_exercises.getKey(favorite_exercises[i]));
+		// 	}else{
+		// 		alert("error invalid exercise input. Please input another exercise");
+		// 	}
+		// }
 		//volume score is multiplied by average volume to get the optimal volume for individual
 		var volumes = get_volume(training_age, stress_level, goal);
-		var reps = get_reps(training_age, stress_level, goal);
-		var frequencies = get_frequency(training_age, stress_level, goal, days);
+		var frequencies = get_frequency(training_age, stress_level, goal, days, );
+		var reps = get_reps(training_age, stress_level, goal, frequencies);
+		
 
+		var intensities = get_intensity(reps);
 		console.log(volumes,frequencies,reps);
 	}
 	function is_optimal(){
