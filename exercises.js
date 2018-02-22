@@ -311,38 +311,43 @@ var muscle_exercises = {
 ]
 
 }
-
-var bench_accessories = [
-"Close-Grip Bench Press",
+var bench_variations = [
 "Paused Bench Press",
 "Spoto Press",
 "Pin Press",
+"Floor Press"
+];
+var bench_accessories = [
+"Close-Grip Bench Press",
 "Incline Bench Press",
-"Floor Press",
 "Face Pull",
-"Barbell Row",
 "Chest-Supported Row"
 ];
 
-var squat_accessories = [
+var squat_variations = [
 "Front Squat",
 "Paused Squat",
 "Pin Squat",
 "High-bar Squat",
-"Low-bar Squat",
+];
+var squat_accessories = [
 "Belt Squat",
 "Leg Press",
 "Bulgarian Split Squat"
 ];
 
-var deadlift_accessories = [
+var deadlift_variations = [
 "Paused Deadlift",
 "Snatch-Grip Deadlift",
 "Sumo Deadlift",
 "Conventional Deadlift",
 "Deficit Deadlift",
 "Block Pull",
-"Rack Pull",
+];
+var deadlift_accessories = [
+"Romanian Deadlift",
+"Stiff-Legged Deadlift",
+"Good Morning",
 "Barbell Shrug",
 "Barbell Row"
 ];
