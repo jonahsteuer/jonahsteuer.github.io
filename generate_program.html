@@ -321,6 +321,8 @@
 			<select id = "exercise3" class = "w3-col w3-select" style="width:25%;">
 				<option>Bench Press</option>
 				<option>Close-Grip Bench</option>
+				<option>Incline Bench Press</option>
+				<option>Dumbbell Bench Press</option>
 				<option>Paused Bench Press</option>
 			</select>
 
@@ -513,12 +515,12 @@
 				volume_score += 0.3;
 			}
 		var avg_volumes = {
-			"chest":16, "lats": 15, "hamstrings": 13, "calves":14, "traps": 16, "quads": 15, "glutes": 8 "biceps": 17, "triceps": 12,"rear_delts": 7,"side_delts": 12, "front_delts": 6};
+			"chest":16, "lats": 15, "hamstrings": 13, "calves":14, "traps":15, "quads": 15, "glutes": 8, "biceps": 17, "triceps": 12,"rear_delts": 7,"side_delts": 12, "front_delts": 6 };
 		var volumes = Object.values(avg_volumes);
 		var keys = Object.keys(avg_volumes);
 		var program_volumes = {};
 		for(var i in volumes){
-			program_volumes[keys[i]] = ~~(volumes[i] * volume_score);
+			program_volumes[keys[i]] = Math.round(volumes[i] * volume_score);
 		}
 		var volumes = Object.values(program_volumes);
 		//if powerlifting seperate volume into mainlift, accessory pairs
@@ -551,32 +553,84 @@
 				if(keys[i] == "chest"){//seperate volume into bench, bench accessory pairs
 					var bench = volumes[i] * 0.65; //65% mainlift
 					var other = volumes[i] * 0.25;
-					mainlift_volumes["Bench Press"] = bench * 0.6;
-					mainlift_volumes["bench_variation"] = bench * 0.4;
-					compound_volumes["chest_compound"] = other * 0.6;
-					isolation_volumes["chest_isolation"] = other * 0.4;
+					mainlift_volumes[chest_main] = bench * 0.6;
+					mainlift_volumes[chest_main + "_variation"] = bench * 0.4;
+					compound_volumes["chest_compound"] = other;
 					
 				}else if(keys[i] == "quads"){
 					var squat = volumes[i] * 0.65;
 					var other = volumes[i] * 0.25;
-					mainlift_volumes["Back Squat"] = squat * 0.6;
-					mainlift_volumes["squat_variation"] = squat * 0.4;
-					compound_volumes["quad_compound"] = other * 0.6;
-					isolation_volumes["quad_isolation"] = other * 0.4;
+					mainlift_volumes[quad_main] = squat * 0.6;
+					mainlift_volumes[quad_main + "_variation"] = squat * 0.4;
+					compound_volumes["quad_compound"] = other;
+				
 				}else if(keys[i] == "glutes"){
 					var deadlift = volumes[i] * 0.85;
-					mainlift_volumes["Deadlift"] = deadlift * 0.6;
-					mainlift_volumes["deadlift_variation"] = deadlift * 0.4;
-				}else if(keys[i] == "lats")
-				{ //split other into compound and isolation work
+					mainlift_volumes[glute_main] = deadlift * 0.6;
+					mainlift_volumes[glute_main + "_variation"] = deadlift * 0.4;
+				}else if(keys[i] == "lats"){ //split other into compound and isolation work
 					compound_volumes[keys[i] + "_compound"] = volumes[i] * 0.75;
-					isolation_volumes[keys[i] + "_isolation"] = volumes[i] *0.25;
-				}else{
+					isolation_volumes[keys[i] + "_isolation"] = volumes[i] * 0.25;
+				}else if(keys[i] == "hamstrings"){
+					accessory_volumes["deadlift_accessories"] = volumes[i] * 0.75;
+					isolation_volumes["hamstring_isolations"] = volumes[i] * 0.25;
+
+				}else if(keys[i] != "traps" || keys[i] != "biceps" || keys[i] != "calves"){
+					console.log("hello");
 					compound_volumes[keys[i] + "_compound"] = volumes[i];
 				}
+				}
 
+			
+		}else if(goal == "bodybuilding"){
+			for(var i in keys){
+				if(keys[i] == "chest"){
+					var main = volumes[i] * .4;
+					var other = volumes[i] * 0.6;
+					mainlift_volumes[chest_main] = main;
+					compound_volumes["chest_compound"] = other * 0.65;
+					isolation_volumes["chest_isolation"] = other * 0.35;
+				}else if(keys[i] == "quads"){
+					var main = volumes[i] * .4;
+					var other = volumes[i] * 0.6;
+					mainlift_volumes[quads_main] = main;
+					compound_volumes["quad_compound"] = other * 0.65;
+					isolation_volumes["quad_isolation"] = other * 0.35;
+				}else if(keys[i] == "glutes"){
+					var main = volumes[i] * .4;
+					
+					mainlift_volumes[glute_main] = main;
+					
+				}else{
+					var main = volumes[i];
+					compound_volumes[keys[i] + "_compound"] = volumes[i] * .7;
+					isolation_volumes[keys[i] + "_compound"] = volumes[i] * 0.3;
+				}
 			}
+	
 		}
+		//round all values in objects
+		var volumes = Object.values(mainlift_volumes);
+		var keys = Object.keys(mainlift_volumes);
+		for(var i in volumes){
+			mainlift_volumes[keys[i]] = Math.round(volumes[i]);
+		}
+		var volumes = Object.values(compound_volumes);
+		var keys = Object.keys(compound_volumes);
+		for(var i in volumes){
+			compound_volumes[keys[i]] = Math.round(volumes[i]);
+		}
+		var volumes = Object.values(accessory_volumes);
+		var keys = Object.keys(accessory_volumes);
+		for(var i in volumes){
+			accessory_volumes[keys[i]] = Math.round(volumes[i]);
+		}
+		var volumes = Object.values(isolation_volumes);
+		var keys = Object.keys(isolation_volumes);
+		for(var i in volumes){
+			isolation_volumes[keys[i]] = Math.round(volumes[i]);
+		}
+	console.log(mainlift_volumes, compound_volumes, accessory_volumes, isolation_volumes, "//////");
 	}
 	function get_frequency(training_age,stress_level,goal,days){
 		var frequency_score = 0;//training age, goal, days and stress level factor in to frequency
@@ -628,7 +682,7 @@
 				rep_score += 0.1;
 			}
 		var avg_compound_reps = {
-			"chest_compounds":8, "lat_compounds": 10, "hamstring_compounds": 8, "trap_compounds": 10, "quad_compounds": 8, "glute_compounds":8 "front_delt_compounds": 8};
+			"chest_compounds":8, "lat_compounds": 10, "hamstring_compounds": 8, "trap_compounds": 10, "quad_compounds": 8, "glute_compounds":8, "front_delt_compounds": 8};
 		//isolation work isn't going to differ from person to person
 		var isolation_reps = {"chest_isolations":12, "lat_isolations": 12, "hamstring_isolations": 12,  "quad__isolations": 8, "front_delt_isolations": 8, "bicep_isolation": 12, "calve_isolations":12, "tricep_isolations": 12,"rear_delt_isolations": 12,"side_delt_isolations": 12}
 		var keys = Object.keys(avg_compound_reps);
@@ -675,7 +729,14 @@
 		}
 		days_data = document.getElementById("days").value;
 		age_data = document.getElementById("age").value;
-		
+
+		quad_main = document.getElementById("exercise1").value;
+		glute_main = document.getElementById("exercise2").value;
+		chest_main = document.getElementById("exercise3").value;
+		quad_weight = document.getElementById("exercise1_weight").value;
+		glute_weight = document.getElementById("exercise2_weight").value;
+		chest_weight = document.getElementById("exercise3_weight").value;
+
 		create_program(exercise_data,stress_data,days_data,age_data,goal_data);
 	}
 	function create_program(favorite_exercises,stress_level,days,training_age,goal){
