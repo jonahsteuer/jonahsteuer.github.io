@@ -168,7 +168,7 @@
 								<!-- goal -->
 	<div class = "w3-card w3-content w3-round-large w3-padding" style = "height: 600px"> 
 				
-		<h3 style="width: 50%;"> Step 2: Choose your goal Goal</h3>
+		<h3 style="width: 50%;"> Step 2: Choose your Goal</h3>
 			<div class = "w3-row-padding">
 				<div id = "goals" class=" w3-third w3-card-4">
 							<!-- powerlifting goal -->
@@ -366,8 +366,7 @@
 				<div class = "w3-padding">
 					Days a week: <div id = "is_optimal" style = "color: red;font-size: 10px;"></div>
 					<select id = "days" onclick = "is_optimal();" class = "w3-select">				
-						<option> 3 days</option>
-						<option> 4 days</option>
+						<option id = "before"> 4 days</option>
 						<option> 5 days</option>
 						<option> 6 days</option>
 					</select>
@@ -437,12 +436,24 @@
 		}
 	
 		if(button.innerHTML != "Selected"){
+			//add 3 day option if powerlifting is goal
+			if(button.id == "select_button1"){
+				var days =  document.getElementById("days");
+				var before = document.getElementById("before");
+				var option = document.createElement("option");
+				var node = document.createTextNode("3 days");
+
+				option.appendChild(node);
+
+				days.insertBefore(option, before);
+			}
 			button.innerHTML = 'Selected';
 			button.setAttribute('class','w3-red w3-round-xlarge w3-btn');
 		}else{
 			button.innerHTML = "Select";
 			button.setAttribute('class','w3-black w3-hover-red w3-round-xlarge w3-btn');
 		}
+
 		
 	}
 	function stress_selected(button){
@@ -488,7 +499,7 @@
 		
 		
 	}
-	function get_volume(training_age,stress_level,goal){
+	function get_volume(training_age,stress_level,goal, frequencies){
 		var volume_score = 0;//training age, goal, and stress level factor in to volume
 			//average volume scores: training age: 0.4, stress_level: 0.4, goal: 0.2
 			if(training_age == "< 2 years"){ //beginners don't require as much volume
@@ -510,146 +521,541 @@
 			if(goal == "powerlifting"){ 
 				volume_score += 0.1;
 			}else if(goal == "powerbuilding"){
-				volume_score += 0.2;
+				volume_score += .2;
 			}else{
-				volume_score += 0.3;
+				volume_score += .25;
 			}
 		var avg_volumes = {
-			"chest":16, "lats": 15, "hamstrings": 13, "calves":14, "traps":15, "quads": 15, "glutes": 8, "biceps": 17, "triceps": 12,"rear_delts": 7,"side_delts": 12, "front_delts": 6 };
+			"chest":16, "lats": 15, "hamstrings": 10, "calves":12, "traps":12, "quads": 15, "glutes": 8, "biceps": 15, "triceps": 12,"reardelts": 7,"sidedelts": 10, "frontdelts": 6 };
 		var volumes = Object.values(avg_volumes);
 		var keys = Object.keys(avg_volumes);
+		var orig_volumes = Object.values(avg_volumes);
 		var program_volumes = {};
 		for(var i in volumes){
 			program_volumes[keys[i]] = Math.round(volumes[i] * volume_score);
 		}
 		var volumes = Object.values(program_volumes);
+		var orig_volumes = Object.values(program_volumes);
 		//if powerlifting seperate volume into mainlift, accessory pairs
-		var mainlift_volumes = {};
-		var accessory_volumes = {};
-		var compound_volumes = {};
-		var isolation_volumes = {};
+		var all_volumes = {};
+		
 		if(goal == "powerlifting"){
 			for(var i in keys){
 				if(keys[i] == "chest"){//seperate volume into bench, bench accessory pairs
 					var bench = volumes[i] * 0.7; //70% mainlift
-					mainlift_volumes["Bench Press"] = bench * 0.6;
-					mainlift_volumes["bench_variation"] = bench * 0.4;
-					accessory_volumes["bench_accessories"] = volumes[i] * 0.3; //30% accessories
+					all_volumes[keys[i] + "_main"] = bench * 0.6;
+					all_volumes[keys[i] + "_variation"] = bench * 0.4;
+					all_volumes[keys[i] + "_accessories"] = volumes[i] * 0.3; //30% accessories
 				}else if(keys[i] == "quads"){
 					var squat = volumes[i] * 0.7;
-					mainlift_volumes["Back Squat"] = squat * 0.6;
-					mainlift_volumes["squat_variation"] = squat * 0.4;
-					accessory_volumes["squat_accessories"] = volumes[i] * 0.3;
+					all_volumes[keys[i] + "_main"] = squat * 0.6;
+					all_volumes[keys[i] + "_variation"] = squat * 0.4;
+					all_volumes[keys[i] + "_accessories"] = volumes[i] * 0.3;
 				}else if(keys[i] == "glutes"){
 					var deadlift = volumes[i];
-					mainlift_volumes["Deadlift"] = deadlift * 0.6;
-					mainlift_volumes["deadlift_variation"] = deadlift * 0.4;
+					all_volumes[keys[i] + "_main"] = deadlift * 0.6;
+					all_volumes[keys[i] + "_variation"] = deadlift * 0.4;
 				}else if(keys[i] == "hamstrings"){
-					accessory_volumes["deadlift_accessories"] = volumes[i]; //deadlift accessories is 100% of hamstring volume
+					all_volumes[keys[i] +"_accessories"] = volumes[i]; //deadlift accessories is 100% of hamstring volume
+				}else if(keys[i] == "lats"){
+					all_volumes[keys[i] + "_compound"] = volumes[i];
 				}
 			}
 		}else if(goal == "powerbuilding"){
 			for(var i in keys){
 				if(keys[i] == "chest"){//seperate volume into bench, bench accessory pairs
 					var bench = volumes[i] * 0.65; //65% mainlift
-					var other = volumes[i] * 0.25;
-					mainlift_volumes[chest_main] = bench * 0.6;
-					mainlift_volumes[chest_main + "_variation"] = bench * 0.4;
-					compound_volumes["chest_compound"] = other;
+					var other = volumes[i] * 0.35;
+					
+					all_volumes[keys[i] + "_main"] = bench * 0.6;
+					all_volumes[keys[i] +"_variation"] = bench * 0.4;
+					all_volumes[keys[i] + "_compound"] = other;
 					
 				}else if(keys[i] == "quads"){
 					var squat = volumes[i] * 0.65;
-					var other = volumes[i] * 0.25;
-					mainlift_volumes[quad_main] = squat * 0.6;
-					mainlift_volumes[quad_main + "_variation"] = squat * 0.4;
-					compound_volumes["quad_compound"] = other;
+					var other = volumes[i] * 0.35;
+					all_volumes[keys[i] + "_main"] = squat * 0.6;
+					all_volumes[keys[i] + "_variation"] = squat * 0.4;
+					all_volumes[keys[i] + "_compound"] = other;
 				
 				}else if(keys[i] == "glutes"){
-					var deadlift = volumes[i] * 0.85;
-					mainlift_volumes[glute_main] = deadlift * 0.6;
-					mainlift_volumes[glute_main + "_variation"] = deadlift * 0.4;
-				}else if(keys[i] == "lats"){ //split other into compound and isolation work
-					compound_volumes[keys[i] + "_compound"] = volumes[i] * 0.75;
-					isolation_volumes[keys[i] + "_isolation"] = volumes[i] * 0.25;
+					var deadlift = volumes[i] * 0.8;
+					all_volumes[keys[i] + "_main"] = deadlift * 0.6;
+					all_volumes[keys[i] + "_variation"] = deadlift * 0.4;
 				}else if(keys[i] == "hamstrings"){
-					accessory_volumes["deadlift_accessories"] = volumes[i] * 0.75;
-					isolation_volumes["hamstring_isolations"] = volumes[i] * 0.25;
-
-				}else if(keys[i] != "traps" || keys[i] != "biceps" || keys[i] != "calves"){
-					console.log("hello");
-					compound_volumes[keys[i] + "_compound"] = volumes[i];
+					all_volumes[keys[i] + "_accessories"] = volumes[i] * 0.75;
+					all_volumes[keys[i] + "_isolations"] = volumes[i] * 0.25;
+				}else if(keys[i] == "frontdelts" || keys[i] == "lats"){
+					
+					all_volumes[keys[i] + "_compound"] = volumes[i];
+				}else if(keys[i] == "triceps"){
+					all_volumes[keys[i] + "_exercise"] = volumes[i];
+				}else{
+					all_volumes[keys[i] + "_optional"] = volumes[i];
 				}
-				}
-
+			}
 			
 		}else if(goal == "bodybuilding"){
 			for(var i in keys){
 				if(keys[i] == "chest"){
 					var main = volumes[i] * .4;
 					var other = volumes[i] * 0.6;
-					mainlift_volumes[chest_main] = main;
-					compound_volumes["chest_compound"] = other * 0.65;
-					isolation_volumes["chest_isolation"] = other * 0.35;
+					
+					all_volumes[keys[i] + "_main"] = main;
+					all_volumes[keys[i] + "_compound"] = other * 0.65;
+					all_volumes[keys[i] + "_isolation"] = other * 0.35;
+
 				}else if(keys[i] == "quads"){
 					var main = volumes[i] * .4;
 					var other = volumes[i] * 0.6;
-					mainlift_volumes[quads_main] = main;
-					compound_volumes["quad_compound"] = other * 0.65;
-					isolation_volumes["quad_isolation"] = other * 0.35;
+					all_volumes[keys[i] + "_main"] = main;
+					all_volumes[keys[i] + "_compound"] = other * 0.65;
+					all_volumes[keys[i] + "_isolation"] = other * 0.35;
 				}else if(keys[i] == "glutes"){
 					var main = volumes[i] * .4;
 					
-					mainlift_volumes[glute_main] = main;
+					all_volumes[keys[i] + "_main"] = main;
 					
+				}else if(keys[i] == "lats" || keys[i] == "hamstrings"){
+					var main = volumes[i];
+					all_volumes[keys[i] + "_compound"] = volumes[i] * .7;
+					all_volumes[keys[i] + "_isolation"] = volumes[i] * 0.3;
 				}else{
 					var main = volumes[i];
-					compound_volumes[keys[i] + "_compound"] = volumes[i] * .7;
-					isolation_volumes[keys[i] + "_compound"] = volumes[i] * 0.3;
-				}
+					all_volumes[keys[i] + "_exercise"] = main;
+				}	
 			}
 	
 		}
+		
 		//round all values in objects
-		var volumes = Object.values(mainlift_volumes);
-		var keys = Object.keys(mainlift_volumes);
+		var volumes = Object.values(all_volumes);
+		var keys = Object.keys(all_volumes);
+		
 		for(var i in volumes){
-			mainlift_volumes[keys[i]] = Math.round(volumes[i]);
+			
+			all_volumes[keys[i]] = Math.round(volumes[i]);
+			
 		}
-		var volumes = Object.values(compound_volumes);
-		var keys = Object.keys(compound_volumes);
+		var volumes = Object.values(all_volumes);
+
+		
+		
+
+		var volume_groups = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+		var muscle_groups = ["chest","lats", "hamstrings" , "calves", "traps", "quads", "glutes" , "biceps", "triceps", "reardelts", "sidedelts","frontdelts"];
+		//add all muscle group volumes to array
 		for(var i in volumes){
-			compound_volumes[keys[i]] = Math.round(volumes[i]);
+			var muscle = keys[i].substr(0,keys[i].indexOf("_"));
+			volume_groups[muscle_groups.indexOf(muscle)] += volumes[i];
 		}
-		var volumes = Object.values(accessory_volumes);
-		var keys = Object.keys(accessory_volumes);
-		for(var i in volumes){
-			accessory_volumes[keys[i]] = Math.round(volumes[i]);
+		//check if new volume == old volume
+		for(var i in volume_groups){
+			var difference = Math.abs(volume_groups[i] - orig_volumes[i]);
+			// console.log(volume_groups[i], orig_volumes[i]);
+			if(difference < 3 && difference > 0){
+				
+				//find the difference
+				for(var x = 0; x < difference; x++){
+					if(x == 0 && all_volumes[muscle_groups[i] + "_compound"] != null){
+						
+						all_volumes[muscle_groups[i] + "_compound"] -= 1;
+
+					}else if(all_volumes[muscle_groups[i] + "_isolation"] != null){
+						all_volumes[muscle_groups[i] + "_isolation"] -= 1;
+					}
+				}
+			}
 		}
-		var volumes = Object.values(isolation_volumes);
-		var keys = Object.keys(isolation_volumes);
-		for(var i in volumes){
-			isolation_volumes[keys[i]] = Math.round(volumes[i]);
+		
+
+		var keys = Object.keys(all_volumes);
+		var volumes = Object.values(all_volumes);
+
+		var freq_keys = Object.keys(frequencies);
+		var freq_values = Object.values(frequencies);
+
+		
+		for(var i in freq_keys){
+			//get all volumes with that muscle group
+			for(var x in keys){
+				var orig_number  = all_volumes[keys[x]];
+				var muscle = keys[x].substr(0,keys[x].indexOf("_"));
+
+				if(freq_keys[i] == muscle){
+					
+					if(all_volumes[keys[x]] > 5 && all_volumes[keys[x]] < 10) {
+						
+
+						all_volumes[keys[x]] = [
+						Math.round(volumes[x] * 0.55), Math.round(volumes[x] * 0.45)];
+
+						var sum = all_volumes[keys[x]].reduce(add, 0);
+						
+						//subtract numbers equal to difference
+						var z = 1;
+						while(all_volumes[keys[x]].reduce(add, 0) != orig_number){
+							z += 1;
+							if(orig_number > sum){
+								if(z%2 == 0){
+									all_volumes[keys[x]][0] +=1;
+								}else{
+									all_volumes[keys[x]][1] +=1;
+								}
+								
+							}else if(orig_number < sum){
+								if(z%2 == 0){
+									all_volumes[keys[x]][0] -=1;
+								}else{
+									all_volumes[keys[x]][1] -=1;
+								}
+							}
+						}
+							
+	
+
+						
+					}else if(all_volumes[keys[x]] > 9){
+						var orig_number  = all_volumes[keys[x]];
+
+						all_volumes[keys[x]] = [Math.round(volumes[x] * 0.333), Math.round(volumes[x] * 0.333), Math.round(volumes[x] * 0.333)];  
+						var sum = all_volumes[keys[x]].reduce(add, 0);
+
+						var z = 1;
+						while(all_volumes[keys[x]].reduce(add, 0) != orig_number){
+							z += 1;
+							if(orig_number > sum){
+								if(z%2 == 0){
+									all_volumes[keys[x]][0] +=1;
+								}else if(z%3 == 0){
+									all_volumes[keys[x]][2] +=1;
+								}else{
+									all_volumes[keys[x]][1] +=1;
+								}
+								
+							}else if(orig_number < sum){
+								if(z%2 == 0){
+									all_volumes[keys[x]][0] -=1;
+								}else if(z%3 == 0){
+									all_volumes[keys[x]][2] -=1;
+								}else{
+									all_volumes[keys[x]][1] -=1;
+								}
+							}
+						}
+						
+
+					}
+
+
+				}
+
+			}
 		}
-	console.log(mainlift_volumes, compound_volumes, accessory_volumes, isolation_volumes, "//////");
+
+		
+		var keys = Object.keys(all_volumes);
+		console.log(keys);
+		var volumes = Object.values(all_volumes);
+		for(var i in keys){
+			//check if corresponding value is an array
+			if(volumes[i].length > 1){
+				var counter = 0;
+				for(var x in volumes[i]){
+					counter += 1;
+					all_volumes[keys[i] + counter] = volumes[i][x];
+				}
+				delete all_volumes[keys[i]];
+			}
+		}
+		return all_volumes;
+	}
+	function split_volume(volumes, frequencies, days, goal){
+		console.log("original:", volumes);
+		
+
+		
+
+		var keys = Object.keys(volumes);
+		var values = Object.values(volumes);
+		
+		var muscle_split = muscle_split(split, days, goal);
+
+		var week = [];
+		console.log(muscle_split);
+		var all_days = distrubute_volume(muscle_split, volumes, frequencies);
+		console.log(all_days);
+
+
+		// for(var i in muscle_split){
+			
+		// 	var day = [];
+		// 	if(muscle_split[i] != ["rest"]){
+		// 		for(var x in muscle_split[i]){
+				
+		// 		var muscle = {};
+		// 		for(var type in type_order){
+		// 			muscle[muscle_split[i][x] + type_order[type] + (x+1)] = 0;
+		// 		}
+		// 		// console.log(muscle);
+		// 		//get volume and frequency for muscle group
+		// 		for(var z in keys){
+
+		// 			var muscle_key = keys[z].substr(0,keys[z].indexOf("_"));
+		// 			var exercise_type = keys[z].substr(keys[z].indexOf("_"));
+		// 			if(muscle_key == muscle_split[i][x]){
+		// 				if(exercise_type == "_main"){
+		// 					delete muscle[muscle_key + "_variation"];
+		// 				}else if(exercise_type == "_variation"){
+		// 					delete muscle[muscle_key + "_main"];
+		// 				}
+		// 				if(volumes[muscle_key + exercise_type].length > 1){
+		// 					muscle[muscle_key + exercise_type] = volumes[muscle_key + exercise_type][0]
+
+		// 				}else if(typeof volumes[muscle_key + exercise_type] == "number"){
+		// 					muscle[muscle_key + exercise_type] = volumes[muscle_key + exercise_type]
+		// 				}
+						
+						
+
+
+		// 			}
+		// 		}
+		// 		//delete all 0 values
+		// 		var recent_keys = Object.keys(muscle);
+		// 		for(var key in recent_keys){
+		// 			if(muscle[recent_keys[key]] == 0){
+		// 				delete muscle[recent_keys[key]];
+		// 			}
+		// 		}
+
+		// 		console.log(muscle);
+		// 		day.push(muscle);
+		// 	}
+		// 	}
+			
+
+			
+		// }
+		// console.log("day:",day);
+		// week.push(day);
+	}
+	function distrubute_volume(muscle_split, volumes, frequencies){
+		var keys = Object.keys(volumes);
+		var values  = Object.values(volumes);
+		var freq_keys = Object.keys(frequencies);
+		var freq_values = Object.values(frequencies);
+
+		var all_muscles = [];
+		for(var i in keys){
+			var muscles = [];
+			var muscle_group = keys[i].substr(0, keys[i].indexOf("_"));
+
+			//find all keys corresponding to that muscle group
+			for(var x in keys){
+				var beginning = keys[x].substr(0, keys[x].indexOf("_"));
+				if(muscle_group == beginning){
+					muscles.push(keys[x]);
+					delete keys[x];
+				}
+			}
+
+			all_muscles.push(muscles);
+		}
+		console.log(all_muscles);
+		var all_days = [];
+		for(var i in all_muscles){
+			var day = [];
+			var muscle = all_muscles[i][0].substr(0,all_muscles[i][0].indexOf("_"));
+			var frequency = frequencies[muscle];
+			
+			//add amount of days for each muscle group == to frequency
+			for(var z = 0; z < frequency; z++){
+				day.push([]);
+			}
+			var place = 0;	
+			while(all_muscles[i].length > 0){
+
+				if(day[place] != undefined){
+					//get rid of number if exists
+					
+
+					//can't have two variations, two mains, or one of each in same day
+					if(day[place].length > 0){
+						for(var z in day[place]){
+						var to_exists = remove_end_num(all_muscles[i][0]);
+						var exists = remove_end_num(day[place][z]);
+						
+
+						if(to_exists == "_main" && exists == "_main"){
+							var push = false;
+						
+							break;
+						}else if(to_exists == "_variation" && exists == "_variation"){
+							var push = false;
+						
+							break;
+						}else if(to_exists == "_main" && exists == "_variation"){
+							var push = false;
+							console.log("don't push");
+							break;
+						}else if(to_exists == "_variation" && exists == "_main"){
+							var push = false;
+							
+							break;
+						}else{
+							var push = true;
+							
+						}
+						
+					}
+				}else{
+					var push = true
+				}
+					
+					//add first element of all_muscles[i] then remove it
+					if(push == true){
+						day[place].push(all_muscles[i][0]);
+						all_muscles[i].splice(0,1);
+					}	
+						// console.log(all_muscles[i][x],all_muscles);
+				}
+				
+				place += 1;
+
+				if(place == (day.length)){
+					place = 0;
+				}
+			}
+			
+			// console.log(day);
+			all_days.push(day);
+		}
+		
+		return all_days;
+	}
+	function remove(array, element) {
+	    const index = array.indexOf(element);
+	    array.splice(index, 1);
+	}
+	function remove_end_num(string){
+		var firstDigit = string.match(/\d/);
+		var index = string.indexOf(firstDigit);
+		var _index = string.indexOf("_");
+		var end_tag = string.substr(_index);
+		if(end_tag.endsWith("1") || end_tag.endsWith("2") || end_tag.endsWith("3")){
+			end_tag = end_tag.slice(0,-1);
+		}
+		return end_tag;
+	}
+	function muscle_split(days, goal){
+		if(days == "3 days"){
+			var split = ["fullbody", "rest", "fullbody", "rest", "fullbody", "rest", "rest"];
+		}else if(days == "4 days"){
+			var split = ["upper", "lower", "rest", "upper", "lower", "rest", "rest"];
+		}else if(days == "5 days"){
+			var split = ["upper", "lower", "rest", "upper", "lower", "upper", "rest"];
+
+		}else if(days == "6 days"){
+			var split = ["upper", "lower", "upper", "lower", "upper", "lower", "rest"];
+		}
+
+		if(goal == "powerlifting"){
+			if(days == "3 days"){			
+				var muscle_day1 = ["quads_main","chest_main", "glutes_main" ,"hamstrings_accessories", "quads_accessories" ,"lats_exercise"];
+				var muscle_day2 = ["quads_variation","chest_variation", "glutes_variation" ,"hamstrings_accessories", "chest_accessories","lats_exercise"];
+				var muscle_day3 = ["quads_main","chest_main", "glutes_main" ,"chest_accessories", "quads_accessories""lats_exercise"];	
+				for(var i in split){
+					
+					if(i == 0){
+						split[i] = muscle_day1;
+					}else if(i == 2){
+						split[i] = muscle_day2;
+					}else if(i == 4){
+						split[i] = muscle_day3;
+					}
+					
+				}
+
+				
+			}else if(days == "4 days"){
+				
+				var muscle_day1 = ["chest_main", "chest_accessories" ,"hamstrings_accessories""lats_exercise"];
+				var muscle_day2 = ["quads_main","glutes_main","quads_accessories", "lats_exercise"];
+				var muscle_day3 = ["chest_variation", "chest_accessories" ,"hamstrings_accessories",];
+				var muscle_day4 = ["quads_variation","glutes_variation","quads_accessories", "lats_exercise"];
+				
+				for(var i in split){
+					//upper 1
+					if(i == 0){
+						split[i] = muscle_day1;
+					//lower 1
+					}else if(i == 1){
+						split[i] = muscle_day2;
+					//upper 2	
+					}else if(i == 3){
+						split[i] = muscle_day3;
+					//lower 2	
+					}else if(i == 4){
+						split[i] = muscle_day4;
+					}
+				}
+			
+			}else if(days == "5 days"){
+				var muscle_day1 = ["chest_main" ,"hamstrings_accessories", "lats_exercise"];
+				var muscle_day2 = ["quads_main","glutes_main","quads_accessories"];
+				var muscle_day3 = ["chest_variation", "chest_accessories" ,"hamstrings_accessories","lats_exercise"];
+				var muscle_day4 = ["quads_variation","glutes_variation","quads_accessories"];
+				var muscle_day5 = ["chest_main","chest_accessories","lats_exercise"];
+			}else if(days == "6 days"){
+				
+			}
+
+			else if(goal == "powerbuilding"){
+				
+				if(days == "4 days"){
+				
+				}else if(days == "5 days"){
+
+				}else if(days == "6 days"){
+
+				}
+			}else if(goal == "bodybuilding"){
+				if(days == "4 days"){
+				
+				}else if(days == "5 days"){
+
+				}else if(days == "6 days"){
+					
+				}
+			}
+		}
+
+		return muscle_split;
+	}
+
+	function add(a, b) {
+	    return a + b;
 	}
 	function get_frequency(training_age,stress_level,goal,days){
 		var frequency_score = 0;//training age, goal, days and stress level factor in to frequency
-			//average frequency scores: days: 0.6 training age: 0.1, goal: 0.3
+			//average frequency scores: days: 0.4 training age: 0.3, goal: 0.3
 			if(days == "3 days"){
-				frequency_score += 0.45;
+				frequency_score += 0.3;
 			}else if(days == "4 days"){
-				frequency_score += 0.55;
+				frequency_score += 0.4;
 			}else if(days == "5 days"){
-				frequency_score += 0.65
+				frequency_score += 0.5
 			}else{
-				frequency_score += 0.7
+				frequency_score += 0.6
 			}
-			if(training_age == "< 2 years"){ //beginners can handle higher intensities
-				frequency_score += .15;
+			if(training_age == "< 2 years"){ //beginners should train more frequently
+				frequency_score += .4;
 			}else if(training_age == "2-10 years"){ 
-				frequency_score += 0.1;
+				frequency_score += 0.3;
 			}else{ 
-				frequency_score += 0.5;
+				frequency_score += 0.2;
 			}
 			//powerlifters should be doing lower volumes in order to maximize strength gains
 			if(goal == "powerlifting"){ 
@@ -659,13 +1065,15 @@
 			}else{
 				frequency_score += 0.2;
 			}
+
+			console.log(frequency_score);
 		var avg_frequencies = {
-			"chest":2, "lats": 3, "hamstrings": 2.5, "calves":3, "traps": 3, "quads": 2, "biceps": 3, "triceps": 3,"rear_delts": 2,"side_delts": 2, "front_delts": 1.75};
+			"chest":2.45, "lats": 2.75, "hamstrings": 2.45, "calves":3, "traps": 3, "quads": 2.2, "biceps": 3, "triceps": 3,"reardelts": 2,"sidedelts": 2, "frontdelts": 1.75, "glutes":2};
 		var keys = Object.keys(avg_frequencies);
 		var values = Object.values(avg_frequencies);
 		var program_frequencies = {};
 		for(var i in keys){
-			program_frequencies[keys[i]] = ~~(frequency_score * values[i]);
+			program_frequencies[keys[i]] = Math.round(frequency_score * values[i]);
 		}
 		return program_frequencies;
 	}
@@ -690,7 +1098,7 @@
 		var program_reps = {};
 		for(var i in keys){
 			//add undulation to these muscle groups 
-			if(keys[i] == "chest" || keys[i] == "quads" || keys[i] == "hamstrings" || keys[i] == "front_delts")
+			if(keys[i] == "chest" || keys[i] == "quads" || keys[i] == "hamstrings" || keys[i] == "frontdelts")
 			{	if(avg_frequencies[keys[i]] == 2){ //undulation for two days a week
 					program_reps[keys[i]] = [~~(rep_score * values[i]) - 2, ~~(rep_score * values[i]) + 2];
 				
@@ -717,9 +1125,10 @@
 			goal_data = "powerlifting";
 		}else if(document.getElementById("select_button2").innerHTML == "Selected"){
 			goal_data = "powerbuilding";
-		}else if(document.getElementById("select_button3").innerHTML == "selected"){
+		}else if(document.getElementById("select_button3").innerHTML == "Selected"){
 			goal_data = "bodybuilding";
 		}
+		
 		if(document.getElementById("stress_button1").innerHTML == "Selected"){
 			stress_data = "low";
 		}else if(document.getElementById("stress_button2").innerHTML == "Selected"){
@@ -729,14 +1138,12 @@
 		}
 		days_data = document.getElementById("days").value;
 		age_data = document.getElementById("age").value;
-
 		quad_main = document.getElementById("exercise1").value;
 		glute_main = document.getElementById("exercise2").value;
 		chest_main = document.getElementById("exercise3").value;
 		quad_weight = document.getElementById("exercise1_weight").value;
 		glute_weight = document.getElementById("exercise2_weight").value;
 		chest_weight = document.getElementById("exercise3_weight").value;
-
 		create_program(exercise_data,stress_data,days_data,age_data,goal_data);
 	}
 	function create_program(favorite_exercises,stress_level,days,training_age,goal){
@@ -773,12 +1180,19 @@
 		// 	}
 		// }
 		//volume score is multiplied by average volume to get the optimal volume for individual
-		var volumes = get_volume(training_age, stress_level, goal);
 		var frequencies = get_frequency(training_age, stress_level, goal, days, );
+		var volumes = get_volume(training_age, stress_level, goal, frequencies);
+
+		var volume_split = split_volume(volumes, frequencies, days, goal);
+		
+
+
 		var reps = get_reps(training_age, stress_level, goal, frequencies);
 		
-		var intensities = get_intensity(reps);
-		console.log(volumes,frequencies,reps);
+		// var intensities = get_intensity(reps);
+		// console.log(volumes,frequencies,reps);
+
+
 	}
 	function is_optimal(){
 		var location = document.getElementById("is_optimal");
