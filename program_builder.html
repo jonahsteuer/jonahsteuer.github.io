@@ -71,10 +71,252 @@
 	right: 0;
 	max-width:65%;
 }
-
-
+#modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 250px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+#modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
 	</style>
 
+<script src = "exercises.js"></script>
+<script>
+	var exercise_data = [];
+	function add_whitespace(str, char_num){
+		for(var i = 0; str.length < char_num; i++){
+			str += " ";
+		}
+
+		return str;
+
+	}
+	window.onload = function(){
+		// localStorage.clear();
+
+		var br = document.createElement("br");
+		var div = document.getElementById("programs");
+		var new_program = document.getElementById("new_programs");
+
+		var program_count = Number(localStorage["program_number"]);
+		for(var i = 1; i <= program_count; i++){
+			var card = document.createElement("div");
+			card.setAttribute("class","w3-card w3-col w3-center");
+			card.setAttribute("style", "width:33%;height:300px;");
+
+			var program_name = document.createElement("h3");
+			program_name.setAttribute("class","w3-container w3-center");
+			var name_node = document.createTextNode(localStorage["program" + i + "_name"]);
+			program_name.appendChild(name_node);
+
+			var start_date = document.createTextNode("Started on " + localStorage["program" + i + "_start_date"]);
+
+			var header_node = document.createTextNode("Maxes");
+
+			var program_maxes = document.createElement("div");
+			program_maxes.setAttribute("class","w3-container w3-left-align");
+
+			
+
+			var quad_main = localStorage["program" + i + "_quadMain"];
+			var chest_main = localStorage["program" + i + "_chestMain"];
+			var glute_main = localStorage["program" + i + "_gluteMain"];
+
+			var quad_max = localStorage["program" + i + "_quadMain_max"];
+			var chest_max = localStorage["program" + i + "_chestMain_max"];
+			var glute_max = localStorage["program" + i + "_gluteMain_max"];
+
+			var quad_div = document.createElement("pre");
+			
+			var quad_str = quad_main + ":";
+			quad_str = add_whitespace(quad_str, 23)  + quad_max;
+			var quad_node = document.createTextNode(quad_str);
+			console.log(quad_node);
+			quad_div.appendChild(quad_node);
+
+			var chest_div = document.createElement("pre");
+			var chest_str = add_whitespace(chest_main + ":",23) +  chest_max;		
+			var chest_node = document.createTextNode(chest_str);
+			chest_div.appendChild(chest_node);
+
+			var glute_div = document.createElement("pre");
+			var glute_str = add_whitespace(glute_main + ":",23) + glute_max;
+			var glute_node = document.createTextNode(glute_str);
+			glute_div.appendChild(glute_node);
+
+			var modal = document.getElementById("modal");
+
+			var modal_content = document.getElementById("modal-content");
+			if(localStorage["program" + i + "_goal"] == "powerlifting" || localStorage["program" + i + "_goal"] == "powerbuilding"){
+				//create modal for these two
+
+				//squat variations
+				var squat_variation = document.createElement("select");
+				squat_variation.setAttribute("class","w3-select w3-col");
+
+				var squat_option1 = document.createElement("option");
+				var squat_node1 = document.createTextNode("Paused Squat");
+				squat_option1.appendChild(squat_node1);
+
+				var squat_option2 = document.createElement("option");
+				var squat_node2 = document.createTextNode("Pin Squat");
+				squat_option2.appendChild(squat_node2);
+
+				var squat_option3 = document.createElement("option");
+				var squat_node3 = document.createTextNode("Tempo Squat");
+				squat_option3.appendChild(squat_node3);
+
+				squat_variation.appendChild(squat_option1);
+				squat_variation.appendChild(squat_option2);
+				squat_variation.appendChild(squat_option3);
+
+				//bench variations
+				var bench_variation = document.createElement("select");
+				bench_variation.setAttribute("class","w3-select w3-col");
+
+				var bench_option1 = document.createElement("option");
+				var bench_node1 = document.createTextNode("Paused Bench");
+				bench_option1.appendChild(bench_node1);
+
+				var bench_option2 = document.createElement("option");
+				var bench_node2 = document.createTextNode("Spoto Press");
+				bench_option2.appendChild(bench_node2);
+
+				var bench_option3 = document.createElement("option");
+				var bench_node3 = document.createTextNode("Pin Press");
+				bench_option3.appendChild(bench_node3);
+
+				bench_variation.appendChild(bench_option1);
+				bench_variation.appendChild(bench_option2);
+				bench_variation.appendChild(bench_option3);
+
+				//deadlift variations
+				var deadlift_variation = document.createElement("select");
+				deadlift_variation.setAttribute("class","w3-select w3-col");
+
+				var deadlift_option1 = document.createElement("option");
+				var deadlift_node1 = document.createTextNode("Paused Deadlift");
+				deadlift_option1.appendChild(deadlift_node1);
+
+				var deadlift_option2 = document.createElement("option");
+				var deadlift_node2 = document.createTextNode("Deficit Deadlift");
+				deadlift_option2.appendChild(deadlift_node2);
+
+				var deadlift_option3 = document.createElement("option");
+				var deadlift_node3 = document.createTextNode("Wide Stance Snatch-Grip Deadlift");
+				deadlift_option3.appendChild(deadlift_node3);
+
+				var deadlift_option4 = document.createElement("option");
+				var deadlift_node4 = document.createTextNode("Paused Deadlift");
+				deadlift_option4.appendChild(deadlift_node4);
+
+				deadlift_variation.appendChild(deadlift_option1);
+				deadlift_variation.appendChild(deadlift_option2);
+				deadlift_variation.appendChild(deadlift_option3);
+				deadlift_variation.appendChild(deadlift_option4);
+
+				//squat accessories
+				var squat_accessory = document.createElement("input");
+				squat_accessory.setAttribute("class","w3-radio w3-col");
+
+				squat_label1 = document.createElement("label");
+				label_node1 = document.createTextNode("Leg Press");
+				squat_label1.appendChild(label_node1);
+
+				squat_label2 = document.createElement("label");
+				label_node2 = document.createTextNode("Bulgarian Split Squat");
+				squat_label2.appendChild(label_node2);
+
+				squat_label3 = document.createElement("label");
+				label_node3 = document.createTextNode("Walking Lunges");
+				squat_label3.appendChild(label_node3);
+
+				squat_accessory.appendChild(squat_label1);
+				squat_accessory.appendChild(squat_label2);
+				squat_accessory.appendChild(squat_label3);
+
+				var bench_accessory = document.createElement("input");
+				bench_accessory.setAttribute("class","w3-radio w3-col");
+
+				var deadlift_accessory = document.createElement("input");
+				deadlift_accessory.setAttribute("class","w3-radio w3-col");
+
+
+			}
+
+
+			var program_button = document.createElement("button");
+			program_button.setAttribute("class","w3-button w3-black w3-hover-red");
+			program_button.setAttribute("id","pop_btn");
+			program_button.onclick = function() {
+    			modal.style.display = "block";
+			}
+
+			var program_node = document.createTextNode("Start Program");
+			program_button.appendChild(program_node);
+
+			program_maxes.appendChild(br);
+			program_maxes.appendChild(quad_div);
+			program_maxes.appendChild(br);
+			program_maxes.appendChild(chest_div);
+			program_maxes.appendChild(br);
+			program_maxes.appendChild(glute_div);
+
+			card.appendChild(program_name);
+			card.appendChild(start_date);
+			card.appendChild(br);
+			card.appendChild(header_node);
+			card.appendChild(program_maxes);
+			card.appendChild(program_button);
+			div.insertBefore(card, div.childNodes[0]);
+
+		}
+				
+			
+	}
+	function firstCharUpper(string){
+		//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
+		return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	}
+	function remove_exercise(id){
+		document.getElementById("exercise_inputs").innerHTML = "";
+	}
+	function store_exercise(exercise){
+		exercise_data.push(exercise);
+		var section = document.getElementById("exercise");
+		//create div element
+		var div = document.createElement("div");
+		div.setAttribute("class","w3-border w3-light-grey w3-row w3-half")
+		div.setAttribute("style","width:50%;height:50px;")
+		div.setAttribute("id",exercise)
+		var node = document.createTextNode(" " + exercise);
+		//create x icon
+		var x_icon = document.createElement("i");
+		x_icon.setAttribute("class","fa fa-close w3-hover-grey w3-large");
+		x_icon.onclick = function(elementId){var element = document.getElementById(this.parentNode.id);
+		element.parentNode.removeChild(element);};
+		//append x icon and node to div
+		div.appendChild(x_icon);
+		div.appendChild(node);
+		section.appendChild(div);
+		document.getElementById("exercise_search").value = "";
+	}
+	
+</script>
 </head>
 <body>
 							<!-- navigation bar -->
@@ -147,6 +389,15 @@
 </div>
 								<!-- Your Programs -->
 
+<div id = "modal">
+	<div id = "modal-content">Your program
+		
+						
+		
+	</div>
+	
+
+</div>
 
 <div class = "w3-content w3-card" style="max-width: 1000px">	
 	<div class = "w3-container w3-black " style="width: 280px;">
@@ -155,27 +406,15 @@
 	</div>
 
 	
-		<div class="w3-row w3-margin-left w3-padding-16">
-			<a href="generate_program.html">
-				<div class = "w3-row w3-card w3-button" style="width:25%;height:250px;">
-				<div style="width:100%; height:200px;font-size:150px;">&#65291; </div>
+		<div class="w3-row-padding w3-margin-left w3-margin-top" id = "programs">
+			<!-- <div class = "w3-col w3-row w3-card" id = "stored_programs" style="width: 25%;"></div> -->
+			<a id = "new_program" href="generate_program.html">
+				<div class = "w3-card w3-button w3-col" style="width:33%;height:300px;">
+					<div style="width:100%; height:200px;font-size:200px;">&#65291; </div>
 				</div>
 			</a>
 			
 		</div>
-		
-		
-		
-		<!-- <button class = " w3-button w3-margin-left w3-padding-16 w3-row w3-card w3-content w3-round " style="width:20%; height:200px;font-size:100px;"> 
-			
-		
-		</button> -->
-		
-		
-	
-
-	
-	
 
 </div>
 

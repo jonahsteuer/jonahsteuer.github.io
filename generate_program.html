@@ -150,11 +150,12 @@
 <br>
 <br>
 
-										<!-- content -->
-
-	                            
+										<!-- content -->	                            
 				  <!-- input form -->
+
 <div class = "w3-container w3-content" style="max-width:900px;">
+	<div id = "error" style="color: red;"></div>
+
 		<button class="w3-button w3-gray" style="width: 30%;">Personalized Program</button>
 		<button class="w3-button w3-light-gray" style="width:30%;">Build your own Program</button>
 </div>
@@ -162,7 +163,7 @@
 <div class = "w3-container w3-content" style = "padding:0px;max-width:900px;" >
 	<div class = "w3-card w3-content w3-round-large w3-padding">
 		<h4>Step 1: Name your program</h4>
-		<input style = "width: 60%;" type="text" placeholder="John Doe's max muscle plan">
+		<input style = "width: 60%;" type="text" id = "program_name" placeholder="John Doe's max muscle plan">
 	</div>
 	<br>
 								<!-- goal -->
@@ -186,7 +187,7 @@
 				<div id = "goals" class=" w3-card-4 w3-third">
 					<img id = "card_image" src="powerbuilding.jpg">
 					<h4 class = "w3-center"> <strong>Powerbuilding</strong></h4>
-					<p id ="card_paragraph">This program is for those who want to gain as much muscle mass as possible. Assistance exercises are customizable Contains around 5-6 exercises per workout and has more of a high amount of volume.</p>
+					<p id ="card_paragraph">This program is for those who want to increase their squat bench and deadlift while still gaining a decent amount of muscle. It has a relatively moderate amount of volume and has around 5-6 exercises per workout.</p>
 
 					<div class="w3-center">
 						<button id = "select_button2" class="w3-round-xlarge w3-btn w3-black w3-hover-red" onclick = "selected(this);" style="width: 40%;">Select</button>
@@ -195,7 +196,7 @@
 				<div id = "goals" class=" w3-card-4 w3-third">
 					<img id = "card_image" src="bodybuilding.jpg">
 					<h4 class="w3-center"><strong>Bodybuilding</strong></h4>
-					<p id ="card_paragraph">This program is for those who want to increase their squat bench and deadlift while still gaining a decent amount of muscle. It has a relatively moderate amount of volume and has around 5-6 exercises per workout.</p>
+					<p id ="card_paragraph">This program is for those who want to gain as much muscle mass as possible. Assistance exercises are customizable Contains around 5-6 exercises per workout and has more of a high amount of volume.</p>
 
 					<div class="w3-center">
 						<button id = "select_button3" class="w3-round-xlarge w3-btn w3-black w3-hover-red" onclick = "selected(this);" style="width: 40%;">Select</button>
@@ -347,70 +348,28 @@
 
 	</div>
 
-	<div class = "w3-row w3-padding-16 w3-content" >
+	<br>
 
-			<div class = "w3-card w3-content w3-round-large w3-half" > 
-				<div class = "w3-padding">
-					Training age:<br>
-					<select id = "age" onclick = "is_optimal();" class = "w3-select">
-						<option> < 2 years</option>
-						<option> 2-10 years </option>
-						<option> > 10 years</option>
+	<div class = "w3-card w3-content w3-round-large" style="width: 100%;"> 
+		<div class = "w3-padding">
+			Training age:<br>
+			<select id = "age" onclick = "is_optimal();" class = "w3-select">
+				<option> < 2 years</option>
+				<option> 2-10 years </option>
+				<option> > 10 years</option>
 
-					</select>
-				
-				</div>
-			</div>
-
-			<div class = "w3-card w3-content w3-round-large w3-half" > 
-				<div class = "w3-padding">
-					Days a week: <div id = "is_optimal" style = "color: red;font-size: 10px;"></div>
-					<select id = "days" onclick = "is_optimal();" class = "w3-select">				
-						<option id = "before"> 4 days</option>
-						<option> 5 days</option>
-						<option> 6 days</option>
-					</select>
-
-				</div>
-			</div>	
-			
-			
-
-		<br>
-		<br>
+			</select>
+		
+		</div>
 
 		
 	</div>	
 
 
-									<!-- training maxes -->
-	
-								<!-- favorite exercises -->
-		<!-- <div class = "w3-container w3-content w3-row"  onmouseleave = "clear_search()" style = "max-width:700px;">
-			<div class = "w3-card w3-round-large w3-half"  style = "width:55%;">
-				<div class = "w3-padding">
-					Preferred exercises:<br>
-					<i class = "fa fa-search"></i>
-					<input id = "exercise_search" style = "width:80%;" onkeyup = "showResult(this.value)" type="text" name="weight" placeholder="search">
-					<button class = "w3-small w3-black w3-button w3-hover-red" onclick = "store_exercise(document.getElementById('exercise_search').value);" style = "height:30px;">+</button>
-					<br>
-					<ul id = "exercise_inputs"></ul>
-					
-				</div>
-			</div>
-			<div class = "w3-card w3-round-large w3-half" onmouseenter = "clear_search()" style = "width:45%;">
-				<div class = "w3-padding">
-					Chosen exercises:
-					<div id = "exercise"></div>
-				</div>
-			</div>
-		</div>
 		<br>
-						
-		
-</div> -->
+
 											<!-- submit button -->
-		<button class = "w3-padding w3-button w3-black w3-hover-red" onclick = "submit_data()" style = "width:100%;">Submit</button>
+		<button class = "w3-padding w3-button w3-black w3-hover-red" onclick = "submit_data();store_name(document.getElementById('program_name').value);" style = "width:100%;">Submit</button>
 				
 </div>
 			
@@ -426,9 +385,43 @@
 <script src = "exercises.js"></script>
 
 <script>
+	name_is_selected = false;
+	max_is_selected = false;
+	stress_is_selected = false;
+	goal_is_selected = false;
+
 	var exercise_data = [];
+
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; 
+	var yyyy = today.getFullYear();
+	if(dd<10)
+	{
+	    dd='0'+dd;
+	} 
+	if(mm<10) 
+	{
+	    mm='0'+mm;
+	} 
+	
+	today = mm+'/'+dd+'/'+yyyy;
+	console.log(today);
+
+	function remove(str, element) {
+	    const index = str.indexOf(element);
+	    var element = str.slice(index, 1);
+	    return element;
+	}
+	function store_name(name){
+		
+		program_number = Number(localStorage["program_number"]);
+		localStorage["program" + program_number + "_name"] = name;
+		
+	}
 	
 	function selected(button){
+
 		for(var i = 1; i<4; i++){
 			var select_button = document.getElementById("select_button" + i);
 			select_button.setAttribute('class','w3-black w3-hover-red w3-round-xlarge w3-btn');
@@ -436,22 +429,14 @@
 		}
 	
 		if(button.innerHTML != "Selected"){
-			//add 3 day option if powerlifting is goal
-			if(button.id == "select_button1"){
-				var days =  document.getElementById("days");
-				var before = document.getElementById("before");
-				var option = document.createElement("option");
-				var node = document.createTextNode("3 days");
-				option.appendChild(node);
-				days.insertBefore(option, before);
-			}
+		
 			button.innerHTML = 'Selected';
 			button.setAttribute('class','w3-red w3-round-xlarge w3-btn');
 		}else{
 			button.innerHTML = "Select";
 			button.setAttribute('class','w3-black w3-hover-red w3-round-xlarge w3-btn');
 		}
-		
+		goal_is_selected = true;
 	}
 	function stress_selected(button){
 		for(var i = 1; i<4; i++){
@@ -467,6 +452,23 @@
 			button.innerHTML = "Select";
 			button.setAttribute('class'," w3-small w3-round-xlarge w3-btn w3-black w3-hover-red");
 		}
+
+		stress_is_selected = true;
+	}
+	function is_selected(){
+
+		var name = document.getElementById("program_name").value;
+		var max1 = document.getElementById("max1").innerHTML;
+		var max2 = document.getElementById("max2").innerHTML;
+		var max3 = document.getElementById("max3").innerHTML;
+		
+		if(name != undefined){
+			name_is_selected = true;
+		}
+		if(max1 != undefined && max2 != undefined && max3 != undefined ){
+			max_is_selected = true;
+		}
+
 	}
 	function calculate_max(input){
 		var _index = input.id.indexOf("_");
@@ -486,7 +488,7 @@
 		}else{
 			var max = other_input * (1 + input/30);
 		}
-		document.getElementById("max" + num).innerHTML = ~~max;
+		document.getElementById("max" + num).innerHTML = Math.round(max);
 		document.getElementById("green_check" + num).setAttribute("class","w3-col w3-circle w3-center w3-green material-icons");
 		document.getElementById("red_x" + num).setAttribute("class","w3-hide w3-col w3-circle w3-center w3-red material-icons");
 		}else{
@@ -498,152 +500,349 @@
 	}
 	function get_power_begin(stress){
 		//average sets for main: squat: 9, deadlift, 6, bench: 9
-		if(stress = "low"){
-			var main_volume = {"squat":5, "deadlift": 4, "bench":5, "squat_variation":5, "deadlift_variation":3, "bench_variation":5};
+		if(stress == "low"){
+			var main_volume = {"squat":"5x5", "deadlift": "4x5", "bench":"5x5", "squat_variation":"5x4", "deadlift_variation":"3x4", "bench_variation":"5x4"};
 			//squat_accessory: other quad movements, deadlift: hamstring/low back movements/barbell rows, bench: other chest/tri movements
-			var accessory_volume = {"squat_accessory":4, "deadlift_accessory":[4,3], "bench_accessory": [3,3]};
-			var other_volume = {"vert_pull":[4,4], "horizontal_pull":[3,3], "front_delts":[3,3]};
+			var accessory_volume = {"squat_accessory":["4x10"], "deadlift_accessory":["4x6","3x8"] , "bench_accessory": ["3x8","3x10"]};
+			var other_volume = {"vert_pull":["4x8","4x12"], "horizontal_pull":["3x6","3x10"], "front_delts":["3x6","3x8"]};
+		}else if(stress == "moderate"){
+			var main_volume = {"squat": "5x5", "deadlift": "3x5", "bench":"5x5", "squat_variation":"4x4", "deadlift_variation":"3x4", "bench_variation":"4x4"};
+			//squat_accessory: other quad movements, deadlift: hamstring/low back movements/barbell rows, bench: other chest/tri movements
+			var accessory_volume = {"squat_accessory":["4x10"], "deadlift_accessory":["3x6","3x8"], "bench_accessory": ["5x8"]};
+			var other_volume = {"vert_pull":["4x8","3x12"], "horizontal_pull":["3x6","3x10"], "front_delts":["3x6","3x8"]};
 
-
-		}else if(stress_level = "moderate"){
-			var main_volume = {"squat"5, "deadlift": 3, "bench":5, "squat_variation":4, "deadlift_variation":3, "bench_variation":4};
+			
+		}else if(stress == "high"){
+			var main_volume = {"squat":"4x5", "deadlift": "3x5", "bench":"5x4", "squat_variation":"4x4", "deadlift_variation":"3x4", "bench_variation":"4x4"};
 			//squat_accessory: other quad movements, deadlift: hamstring/low back movements/barbell rows, bench: other chest/tri movements
-			var accessory_volume = {"squat_accessory":4, "deadlift_accessory":[3,3], "bench_accessory": 5};
-			var other_volume = {"vert_pull":[3,4], "horizontal_pull":[3,3], "front_delts":[3,3]};
-		}else if(stress_level = "high"){
-			var main_volume = {"squat":5, "deadlift": 3, "bench":5, "squat_variation":4, "deadlift_variation":3, "bench_variation":4};
-			//squat_accessory: other quad movements, deadlift: hamstring/low back movements/barbell rows, bench: other chest/tri movements
-			var accessory_volume = {"squat_accessory":4, "deadlift_accessory":5, "bench_accessory": 4};
-			var other_volume = {"vert_pull":[3,3], "horizontal_pull":[3,3], "front_delts":[3,3]};
+			var accessory_volume = {"squat_accessory":["4x10"], "deadlift_accessory":["5x6"], "bench_accessory": ["4x9"]};
+			var other_volume = {"vert_pull":["3x8","3x12"], "front_delts":["3x6","2x8"], "horizontal_pull":["3x6","3x10"], };
 		}
+		var optional_volume = {"biceps_optional":["4x10","4x12"], "triceps_optional":["3x10","3x12"], "calves_optional":["4x12","4x15"]}
 
-		var optional_volume = {"biceps":[4,4], "triceps":[3,3], "calves":[4,4]}
 		//split: upper, lower, rest, upper, lower, rest rest
-		var week = {"day1":[main_volume['bench'], other_volume["front_delts"], ]}
-	}
+		//exercise order: main/variation, accessory, other, optional
+		
+
+		var week1 = {"day1":[], "day2":[], "day3":"rest", "day4":[], "day5":[], "day6":"rest", "day7":"rest"}
+		var main_keys = Object.keys(main_volume);
+		var main_values = Object.values(main_volume);
+		for(var i in main_keys){
+			if(main_keys[i] == "bench"){
+				var day1 = {};
+				day1[main_keys[i]] = main_values[i];
+				week1["day1"].push(day1);
+			}else if(main_keys[i] == "squat"){
+				var day2 = {};
+				day2[main_keys[i]] = main_values[i];
+				week1["day2"].push(day2);
+			}else if(main_keys[i] == "deadlift"){
+				var day2 = {};
+				day2[main_keys[i]] = main_values[i];
+				week1["day2"].push(day2);
+			}else if(main_keys[i] == "bench_variation"){
+				var day4 = {};
+				day4[main_keys[i]] = main_values[i];
+				week1["day4"].push(day4);
+			}else if(main_keys[i] == "squat_variation"){
+				var day5 = {};
+				day5[main_keys[i]] = main_values[i];
+				week1["day5"].push(day5);
+			}else if(main_keys[i] == "deadlift_variation"){
+				var day5 = {};
+				day5[main_keys[i]] = main_values[i];
+				week1["day5"].push(day5);
+			}
+		}
+		
+		var accessory_keys = Object.keys(accessory_volume);
+		var accessory_values = Object.values(accessory_volume);
+
+		for(var i in accessory_keys){
+			//add bench accessory to day one and day4
+			if(accessory_keys[i] == "bench_accessory") {
+				if(accessory_values[i].length == 2){
+					var day1 = {};
+					var day4 = {};
+
+					day1[accessory_keys[i]] = accessory_values[i][0];
+					day4[accessory_keys[i]] = accessory_values[i][1];
+
+					week1["day1"].push(day1);
+					week1["day4"].push(day4);
+				}else{
+					var day1 = {};
+					day1[accessory_keys[i]] = accessory_values[i][0];
+
+					week1["day1"].push(day1);
+				}
+			//add squat to day 2 and/or 5
+			}else if(accessory_keys[i] == "squat_accessory"){
+				if(accessory_values[i].length == 1){
+					var day2 = {};
+					day2[accessory_keys[i]] = accessory_values[i][0];
+
+					week1["day2"].push(day2);
+				}
+			//add deadlift to 2 and/or 5
+			}else if(accessory_keys[i] == "deadlift_accessory"){
+				if(accessory_values[i].length == 2){
+					var day2 = {};
+					var day5 = {};
+
+					day2[accessory_keys[i]] = accessory_values[i][0];
+					day5[accessory_keys[i]] = accessory_values[i][1];
+
+					week1["day2"].push(day2);
+					week1["day5"].push(day5);
+				}else{
+					var day5 = {};
+					day5[accessory_keys[i]] = accessory_values[i][0];
+
+					week1["day5"].push(day5);
+				}
+			}
+		}
+
+		var other_keys = Object.keys(other_volume);
+		var other_values = Object.values(other_volume);
+
+		for(var i in other_keys){
+			if(other_keys[i] == "vert_pull"){
+				var day1 = {};
+				var day4 = {};
+
+				day1[other_keys[i]] = other_values[i][0];
+				day4[other_keys[i]] = other_values[i][1];
+
+				week1["day1"].push(day1);
+				week1["day4"].push(day4);
+			}else if(other_keys[i] == "front_delts"){
+				var day1 = {};
+				var day4 = {};
+
+				day1[other_keys[i]] = other_values[i][0];
+				day4[other_keys[i]] = other_values[i][1];
+
+				week1["day1"].push(day1);
+				week1["day4"].push(day4);
+			}else if(other_keys[i] == "horizontal_pull"){
+				var day2 = {};
+				var day5 = {};
+
+				day2[other_keys[i]] = other_values[i][0];
+				day5[other_keys[i]] = other_values[i][1];
+
+				week1["day2"].push(day2);
+				week1["day5"].push(day5);
+			}
+		}
+		var optional_keys = Object.keys(optional_volume);
+		var optional_values = Object.values(optional_volume);
+
+		for(var i in optional_keys){
+			if(optional_keys[i] == "triceps_optional"){
+				var day1 = {};
+				var day4 = {};
+
+				day1[optional_keys[i]] = optional_values[i][0];
+				day4[optional_keys[i]] = optional_values[i][1];
+
+				week1["day1"].push(day1);
+				week1["day4"].push(day4);
+			}else if(optional_keys == "biceps_optional"){
+				var day2 = {};
+				var day5 = {};
+
+				day2[optional_keys[i]] = optional_values[i][0];
+				day5[optional_keys[i]] = optional_values[i][1];
+
+				week1["day2"].push(day2);
+				week1["day5"].push(day5);
+			}else if(optional_keys == "calves_optional"){
+				var day2 = {};
+				var day5 = {};
+
+				day2[optional_keys[i]] = optional_values[i][0];
+				day5[optional_keys[i]] = optional_values[i][1];
+
+				week1["day2"].push(day2);
+				week1["day5"].push(day5);
+			}
+		}
+		console.log(week1);
+		var all_weeks = [];
+		for(var i = 0; i < 12; i++){
+			all_weeks.push(week1);
+		}
+		console.log(all_weeks);
+		return all_weeks;
+		}	
 	function submit_data(){
-		var stress_data, days_data, age_data, goal_data
-		
-		if(document.getElementById("select_button1").innerHTML == "Selected"){
-			goal_data = "powerlifting";
-		}else if(document.getElementById("select_button2").innerHTML == "Selected"){
-			goal_data = "powerbuilding";
-		}else if(document.getElementById("select_button3").innerHTML == "Selected"){
-			goal_data = "bodybuilding";
+		is_selected();
+		if(stress_is_selected === false || goal_is_selected === false || name_is_selected === false || max_is_selected === false){
+			location.href = "#top";
+			var error = "*Please ";
+
+			if(stress_is_selected === false){
+				error += "select a stress level, ";
+			}
+			if(goal_is_selected === false){
+				error += "select a goal, ";
+			}
+			if(name_is_selected === false){
+				error += "name your program, ";
+			}
+			if(max_is_selected === false){
+				error += "enter all your maxes, ";
+			}
+
+			document.getElementById("error").innerHTML += error;
+		}else{
+			localStorage.clear();
+			var stress_data, days_data, age_data, goal_data;
+			
+			if(document.getElementById("select_button1").innerHTML == "Selected"){
+				goal_data = "powerlifting";
+			}else if(document.getElementById("select_button2").innerHTML == "Selected"){
+				goal_data = "powerbuilding";
+			}else if(document.getElementById("select_button3").innerHTML == "Selected"){
+				goal_data = "bodybuilding";
+			}
+			
+			if(document.getElementById("stress_button1").innerHTML == "Selected"){
+				stress_data = "low";
+			}else if(document.getElementById("stress_button2").innerHTML == "Selected"){
+				stress_data = "moderate";
+			}else if(document.getElementById("stress_button3").innerHTML == "Selected"){
+				stress_data = "high"
+			}
+			age_data = document.getElementById("age").value;
+
+			//get number of programs
+			keys = Object.keys(localStorage);
+			if(keys.includes("program_number")){
+				var num = Number(localStorage["program_number"]);
+				localStorage["program_number"] = num + 1;
+			}else{
+				localStorage["program_number"] = 1;
+			}
+
+			quad_main = document.getElementById("exercise1").value;
+			glute_main = document.getElementById("exercise2").value;
+			chest_main = document.getElementById("exercise3").value;
+
+			quad_max = document.getElementById("exercise1_weight").value;
+			glute_max = document.getElementById("exercise2_weight").value;
+			chest_max = document.getElementById("exercise3_weight").value;
+
+			var program_number = localStorage["program_number"];
+
+			localStorage["program" + program_number + "_start_date"] = today;
+			localStorage["program" + program_number + "_goal"] = goal_data;
+
+			localStorage["program" + program_number + "_quadMain"] = quad_main;
+			localStorage["program" + program_number + "_chestMain"] = chest_main;
+			localStorage["program" + program_number + "_gluteMain"] = glute_main;
+
+			localStorage["program" + program_number + "_chestMain_max"] = chest_max;
+			localStorage["program" + program_number + "_quadMain_max"] = quad_max;
+			localStorage["program" + program_number + "_gluteMain_max"] = glute_max;
+			get_program(stress_data,days_data,age_data,goal_data);
 		}
 		
-		if(document.getElementById("stress_button1").innerHTML == "Selected"){
-			stress_data = "low";
-		}else if(document.getElementById("stress_button2").innerHTML == "Selected"){
-			stress_data = "moderate";
-		}else if(document.getElementById("stress_button3").innerHTML == "Selected"){
-			stress_data = "high"
-		}
-		days_data = document.getElementById("days").value;
-		age_data = document.getElementById("age").value;
-		quad_main = document.getElementById("exercise1").value;
-		glute_main = document.getElementById("exercise2").value;
-		chest_main = document.getElementById("exercise3").value;
-		quad_max = document.getElementById("exercise1_weight").value;
-		glute_max = document.getElementById("exercise2_weight").value;
-		chest_max = document.getElementById("exercise3_weight").value;
-		get_program(stress_data,days_data,age_data,goal_data);
 	}
 	function get_program(stress_level,days,training_age,goal){
+
 		if(goal == "powerlifting"){
 			//beginner powerlifter
 			if(training_age == "< 2 years"){
 				if(stress_level == "low"){
-					get_power_begin("low");
+					var program = get_power_begin("low");
 				}else if(stress_level == "moderate"){
-					get_power_begin("moderate");
+					var program = get_power_begin("moderate");
 				}else if(stress_level == "high"){
-					get_power_begin("high");
+					var program = get_power_begin("high");
 				}
 			}else if(training_age == "2-10 years"){
 				if(stress_level == "low"){
-					get_power_intermed("low");
+					var program = get_power_intermed("low");
 				}else if(stress_level == "moderate"){
-					get_power_intermed("moderate");
+					var program = get_power_intermed("moderate");
 				}else if(stress_level == "high"){
-					get_power_intermed("high");
+					var program = get_power_intermed("high");
 				}
 				
 			}else if(training_age == "> 10 years"){
 				if(stress_level == "low"){
-					get_power_advance("low");
+					var program = get_power_advance("low");
 				}else if(stress_level == "moderate"){
-					get_power_advance("moderate");
+					var program = get_power_advance("moderate");
 				}else if(stress_level == "high"){
-					get_power_advance("high");
+					var program = get_power_advance("high");
 				}
 			}
 		}else if(goal == "powerbuilding"){
 			if(training_age == "< 2 years"){
 				if(stress_level == "low"){
-					get_powerbuild_begin("low");
+					var program = get_powerbuild_begin("low");
 				}else if(stress_level == "moderate"){
-					get_powerbuild_begin("moderate");
+					var program = get_powerbuild_begin("moderate");
 				}else if(stress_level == "high"){
-					get_powerbuild_begin("high");
+					var program = get_powerbuild_begin("high");
 				}
 			}else if(training_age == "2-10 years"){
 				if(stress_level == "low"){
-					get_powerbuild_intermed("low");
+					var program = get_powerbuild_intermed("low");
 				}else if(stress_level == "moderate"){
-					get_powerbuild_intermed("moderate");
+					var program = get_powerbuild_intermed("moderate");
 				}else if(stress_level == "high"){
-					get_powerbuild_intermed("high");
+					var program = get_powerbuild_intermed("high");
 				}
 				
 			}else if(training_age == "> 10 years"){
 				if(stress_level == "low"){
-					get_powerbuild_advance("low");
+					var program = get_powerbuild_advance("low");
 				}else if(stress_level == "moderate"){
-					get_powerbuild_advance("moderate");
+					var program = get_powerbuild_advance("moderate");
 				}else if(stress_level == "high"){
-					get_powerbuild_advance("high");
+					var program = get_powerbuild_advance("high");
 				}
 			}
 		}else if(goal == "bodybuilding"){
 			if(training_age == "< 2 years"){
 				if(stress_level == "low"){
-					get_bodybuild_begin("low");
+					var program = get_bodybuild_begin("low");
 				}else if(stress_level == "moderate"){
-					get_bodybuild_begin("moderate");
+					var program = get_bodybuild_begin("moderate");
 				}else if(stress_level == "high"){
-					get_bodybuild_begin("high");
+					var program = get_bodybuild_begin("high");
 				}
 			}else if(training_age == "2-10 years"){
 				if(stress_level == "low"){
-					get_bodybuild_intermed("low");
+					var program = get_bodybuild_intermed("low");
 				}else if(stress_level == "moderate"){
-					get_bodybuild_intermed("moderate");
+					var program = get_bodybuild_intermed("moderate");
 				}else if(stress_level == "high"){
-					get_bodybuild_intermed("high");
+					var program = get_bodybuild_intermed("high");
 				}
 				
 			}else if(training_age == "> 10 years"){
 				if(stress_level == "low"){
-					get_bodybuild_advance("low");
+					var program = get_bodybuild_advance("low");
 				}else if(stress_level == "moderate"){
-					get_bodybuild_advance("moderate");
+					var program = get_bodybuild_advance("moderate");
 				}else if(stress_level == "high"){
-					get_bodybuild_advance("high");
+					var program = get_bodybuild_advance("high");
 				}
 			}
 		}
+		var program_number = localStorage["program_number"];
+
+		localStorage["program" + program_number] = JSON.stringify(program);
+
+		// location.href = "program_builder.html";
 		
-	}
-	function is_optimal(){
-		var location = document.getElementById("is_optimal");
-		var days = document.getElementById("days").value;
-		var training_age = document.getElementById("age").value;
-		if(training_age == "< 2 years" && days == "3 days"){
-			location.innerHTML = "* training 3 days a week isn't optimal for a beginnner";
-		}else{
-			location.innerHTML = "";
-		}
 	}
 	
 	
