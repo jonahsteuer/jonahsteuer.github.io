@@ -389,9 +389,7 @@
 	max_is_selected = false;
 	stress_is_selected = false;
 	goal_is_selected = false;
-
 	var exercise_data = [];
-
 	var today = new Date();
 	var dd = today.getDate();
 	var mm = today.getMonth()+1; 
@@ -407,7 +405,6 @@
 	
 	today = mm+'/'+dd+'/'+yyyy;
 	console.log(today);
-
 	function remove(str, element) {
 	    const index = str.indexOf(element);
 	    var element = str.slice(index, 1);
@@ -421,7 +418,6 @@
 	}
 	
 	function selected(button){
-
 		for(var i = 1; i<4; i++){
 			var select_button = document.getElementById("select_button" + i);
 			select_button.setAttribute('class','w3-black w3-hover-red w3-round-xlarge w3-btn');
@@ -452,11 +448,9 @@
 			button.innerHTML = "Select";
 			button.setAttribute('class'," w3-small w3-round-xlarge w3-btn w3-black w3-hover-red");
 		}
-
 		stress_is_selected = true;
 	}
 	function is_selected(){
-
 		var name = document.getElementById("program_name").value;
 		var max1 = document.getElementById("max1").innerHTML;
 		var max2 = document.getElementById("max2").innerHTML;
@@ -468,7 +462,6 @@
 		if(max1 != undefined && max2 != undefined && max3 != undefined ){
 			max_is_selected = true;
 		}
-
 	}
 	function calculate_max(input){
 		var _index = input.id.indexOf("_");
@@ -510,7 +503,6 @@
 			//squat_accessory: other quad movements, deadlift: hamstring/low back movements/barbell rows, bench: other chest/tri movements
 			var accessory_volume = {"squat_accessory":["4x10"], "deadlift_accessory":["3x6","3x8"], "bench_accessory": ["5x8"]};
 			var other_volume = {"vert_pull":["4x8","3x12"], "horizontal_pull":["3x6","3x10"], "front_delts":["3x6","3x8"]};
-
 			
 		}else if(stress == "high"){
 			var main_volume = {"squat":"4x5", "deadlift": "3x5", "bench":"5x4", "squat_variation":"4x4", "deadlift_variation":"3x4", "bench_variation":"4x4"};
@@ -519,11 +511,9 @@
 			var other_volume = {"vert_pull":["3x8","3x12"], "front_delts":["3x6","2x8"], "horizontal_pull":["3x6","3x10"], };
 		}
 		var optional_volume = {"biceps_optional":["4x10","4x12"], "triceps_optional":["3x10","3x12"], "calves_optional":["4x12","4x15"]}
-
 		//split: upper, lower, rest, upper, lower, rest rest
 		//exercise order: main/variation, accessory, other, optional
 		
-
 		var week1 = {"day1":[], "day2":[], "day3":"rest", "day4":[], "day5":[], "day6":"rest", "day7":"rest"}
 		var main_keys = Object.keys(main_volume);
 		var main_values = Object.values(main_volume);
@@ -557,23 +547,19 @@
 		
 		var accessory_keys = Object.keys(accessory_volume);
 		var accessory_values = Object.values(accessory_volume);
-
 		for(var i in accessory_keys){
 			//add bench accessory to day one and day4
 			if(accessory_keys[i] == "bench_accessory") {
 				if(accessory_values[i].length == 2){
 					var day1 = {};
 					var day4 = {};
-
 					day1[accessory_keys[i]] = accessory_values[i][0];
 					day4[accessory_keys[i]] = accessory_values[i][1];
-
 					week1["day1"].push(day1);
 					week1["day4"].push(day4);
 				}else{
 					var day1 = {};
 					day1[accessory_keys[i]] = accessory_values[i][0];
-
 					week1["day1"].push(day1);
 				}
 			//add squat to day 2 and/or 5
@@ -581,7 +567,6 @@
 				if(accessory_values[i].length == 1){
 					var day2 = {};
 					day2[accessory_keys[i]] = accessory_values[i][0];
-
 					week1["day2"].push(day2);
 				}
 			//add deadlift to 2 and/or 5
@@ -589,83 +574,65 @@
 				if(accessory_values[i].length == 2){
 					var day2 = {};
 					var day5 = {};
-
 					day2[accessory_keys[i]] = accessory_values[i][0];
 					day5[accessory_keys[i]] = accessory_values[i][1];
-
 					week1["day2"].push(day2);
 					week1["day5"].push(day5);
 				}else{
 					var day5 = {};
 					day5[accessory_keys[i]] = accessory_values[i][0];
-
 					week1["day5"].push(day5);
 				}
 			}
 		}
-
 		var other_keys = Object.keys(other_volume);
 		var other_values = Object.values(other_volume);
-
 		for(var i in other_keys){
 			if(other_keys[i] == "vert_pull"){
 				var day1 = {};
 				var day4 = {};
-
 				day1[other_keys[i]] = other_values[i][0];
 				day4[other_keys[i]] = other_values[i][1];
-
 				week1["day1"].push(day1);
 				week1["day4"].push(day4);
 			}else if(other_keys[i] == "front_delts"){
 				var day1 = {};
 				var day4 = {};
-
 				day1[other_keys[i]] = other_values[i][0];
 				day4[other_keys[i]] = other_values[i][1];
-
 				week1["day1"].push(day1);
 				week1["day4"].push(day4);
 			}else if(other_keys[i] == "horizontal_pull"){
 				var day2 = {};
 				var day5 = {};
-
 				day2[other_keys[i]] = other_values[i][0];
 				day5[other_keys[i]] = other_values[i][1];
-
 				week1["day2"].push(day2);
 				week1["day5"].push(day5);
 			}
 		}
 		var optional_keys = Object.keys(optional_volume);
 		var optional_values = Object.values(optional_volume);
-
 		for(var i in optional_keys){
 			if(optional_keys[i] == "triceps_optional"){
 				var day1 = {};
 				var day4 = {};
-
 				day1[optional_keys[i]] = optional_values[i][0];
 				day4[optional_keys[i]] = optional_values[i][1];
-
 				week1["day1"].push(day1);
 				week1["day4"].push(day4);
 			}else if(optional_keys == "biceps_optional"){
 				var day2 = {};
 				var day5 = {};
-
 				day2[optional_keys[i]] = optional_values[i][0];
 				day5[optional_keys[i]] = optional_values[i][1];
-
 				week1["day2"].push(day2);
 				week1["day5"].push(day5);
 			}else if(optional_keys == "calves_optional"){
 				var day2 = {};
 				var day5 = {};
-
 				day2[optional_keys[i]] = optional_values[i][0];
 				day5[optional_keys[i]] = optional_values[i][1];
-
 				week1["day2"].push(day2);
 				week1["day5"].push(day5);
 			}
@@ -683,7 +650,6 @@
 		if(stress_is_selected === false || goal_is_selected === false || name_is_selected === false || max_is_selected === false){
 			location.href = "#top";
 			var error = "*Please ";
-
 			if(stress_is_selected === false){
 				error += "select a stress level, ";
 			}
@@ -696,7 +662,6 @@
 			if(max_is_selected === false){
 				error += "enter all your maxes, ";
 			}
-
 			document.getElementById("error").innerHTML += error;
 		}else{
 			localStorage.clear();
@@ -718,7 +683,6 @@
 				stress_data = "high"
 			}
 			age_data = document.getElementById("age").value;
-
 			//get number of programs
 			keys = Object.keys(localStorage);
 			if(keys.includes("program_number")){
@@ -727,24 +691,18 @@
 			}else{
 				localStorage["program_number"] = 1;
 			}
-
 			quad_main = document.getElementById("exercise1").value;
 			glute_main = document.getElementById("exercise2").value;
 			chest_main = document.getElementById("exercise3").value;
-
 			quad_max = document.getElementById("exercise1_weight").value;
 			glute_max = document.getElementById("exercise2_weight").value;
 			chest_max = document.getElementById("exercise3_weight").value;
-
 			var program_number = localStorage["program_number"];
-
 			localStorage["program" + program_number + "_start_date"] = today;
 			localStorage["program" + program_number + "_goal"] = goal_data;
-
 			localStorage["program" + program_number + "_quadMain"] = quad_main;
 			localStorage["program" + program_number + "_chestMain"] = chest_main;
 			localStorage["program" + program_number + "_gluteMain"] = glute_main;
-
 			localStorage["program" + program_number + "_chestMain_max"] = chest_max;
 			localStorage["program" + program_number + "_quadMain_max"] = quad_max;
 			localStorage["program" + program_number + "_gluteMain_max"] = glute_max;
@@ -753,7 +711,6 @@
 		
 	}
 	function get_program(stress_level,days,training_age,goal){
-
 		if(goal == "powerlifting"){
 			//beginner powerlifter
 			if(training_age == "< 2 years"){
@@ -838,9 +795,7 @@
 			}
 		}
 		var program_number = localStorage["program_number"];
-
 		localStorage["program" + program_number] = JSON.stringify(program);
-
 		// location.href = "program_builder.html";
 		
 	}
