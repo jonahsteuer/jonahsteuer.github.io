@@ -72,7 +72,6 @@
 	max-width:65%;
 }
 #modal {
-    display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 250px; /* Location of the box */
@@ -85,41 +84,41 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 /* Modal Content */
-#modal-content {
+#modal-content-power {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 40%;
+    width: 60%;
+}
+#modal-content-powerbuild {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+}
+#modal-content-body {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
 }
 	</style>
 
 <script src = "exercises.js"></script>
 <script>
 	var exercise_data = [];
-	function add_whitespace(str, char_num){
-		for(var i = 0; str.length < char_num; i++){
-			str += " ";
-		}
-
-		return str;
-
-	}
-	window.onload = function(){
-		// localStorage.clear();
-
-		var br = document.createElement("br");
-		var div = document.getElementById("programs");
-		var new_program = document.getElementById("new_programs");
-
-		var program_count = Number(localStorage["program_number"]);
-		for(var i = 1; i <= program_count; i++){
-			var card = document.createElement("div");
-			card.setAttribute("class","w3-card w3-col w3-center");
+	function create_card(br, div, new_program, i){
+		var card = document.createElement("div");
+			card.setAttribute("class","w3-card w3-col w3-center w3-content");
 			card.setAttribute("style", "width:33%;height:300px;");
+			card.setAttribute("id","" + i);
 
 			var program_name = document.createElement("h3");
 			program_name.setAttribute("class","w3-container w3-center");
+			program_name.setAttribute("id","name" + i);
 			var name_node = document.createTextNode(localStorage["program" + i + "_name"]);
 			program_name.appendChild(name_node);
 
@@ -157,116 +156,29 @@
 			var glute_str = add_whitespace(glute_main + ":",23) + glute_max;
 			var glute_node = document.createTextNode(glute_str);
 			glute_div.appendChild(glute_node);
-
-			var modal = document.getElementById("modal");
-
-			var modal_content = document.getElementById("modal-content");
-			if(localStorage["program" + i + "_goal"] == "powerlifting" || localStorage["program" + i + "_goal"] == "powerbuilding"){
-				//create modal for these two
-
-				//squat variations
-				var squat_variation = document.createElement("select");
-				squat_variation.setAttribute("class","w3-select w3-col");
-
-				var squat_option1 = document.createElement("option");
-				var squat_node1 = document.createTextNode("Paused Squat");
-				squat_option1.appendChild(squat_node1);
-
-				var squat_option2 = document.createElement("option");
-				var squat_node2 = document.createTextNode("Pin Squat");
-				squat_option2.appendChild(squat_node2);
-
-				var squat_option3 = document.createElement("option");
-				var squat_node3 = document.createTextNode("Tempo Squat");
-				squat_option3.appendChild(squat_node3);
-
-				squat_variation.appendChild(squat_option1);
-				squat_variation.appendChild(squat_option2);
-				squat_variation.appendChild(squat_option3);
-
-				//bench variations
-				var bench_variation = document.createElement("select");
-				bench_variation.setAttribute("class","w3-select w3-col");
-
-				var bench_option1 = document.createElement("option");
-				var bench_node1 = document.createTextNode("Paused Bench");
-				bench_option1.appendChild(bench_node1);
-
-				var bench_option2 = document.createElement("option");
-				var bench_node2 = document.createTextNode("Spoto Press");
-				bench_option2.appendChild(bench_node2);
-
-				var bench_option3 = document.createElement("option");
-				var bench_node3 = document.createTextNode("Pin Press");
-				bench_option3.appendChild(bench_node3);
-
-				bench_variation.appendChild(bench_option1);
-				bench_variation.appendChild(bench_option2);
-				bench_variation.appendChild(bench_option3);
-
-				//deadlift variations
-				var deadlift_variation = document.createElement("select");
-				deadlift_variation.setAttribute("class","w3-select w3-col");
-
-				var deadlift_option1 = document.createElement("option");
-				var deadlift_node1 = document.createTextNode("Paused Deadlift");
-				deadlift_option1.appendChild(deadlift_node1);
-
-				var deadlift_option2 = document.createElement("option");
-				var deadlift_node2 = document.createTextNode("Deficit Deadlift");
-				deadlift_option2.appendChild(deadlift_node2);
-
-				var deadlift_option3 = document.createElement("option");
-				var deadlift_node3 = document.createTextNode("Wide Stance Snatch-Grip Deadlift");
-				deadlift_option3.appendChild(deadlift_node3);
-
-				var deadlift_option4 = document.createElement("option");
-				var deadlift_node4 = document.createTextNode("Paused Deadlift");
-				deadlift_option4.appendChild(deadlift_node4);
-
-				deadlift_variation.appendChild(deadlift_option1);
-				deadlift_variation.appendChild(deadlift_option2);
-				deadlift_variation.appendChild(deadlift_option3);
-				deadlift_variation.appendChild(deadlift_option4);
-
-				//squat accessories
-				var squat_accessory = document.createElement("input");
-				squat_accessory.setAttribute("class","w3-radio w3-col");
-
-				squat_label1 = document.createElement("label");
-				label_node1 = document.createTextNode("Leg Press");
-				squat_label1.appendChild(label_node1);
-
-				squat_label2 = document.createElement("label");
-				label_node2 = document.createTextNode("Bulgarian Split Squat");
-				squat_label2.appendChild(label_node2);
-
-				squat_label3 = document.createElement("label");
-				label_node3 = document.createTextNode("Walking Lunges");
-				squat_label3.appendChild(label_node3);
-
-				squat_accessory.appendChild(squat_label1);
-				squat_accessory.appendChild(squat_label2);
-				squat_accessory.appendChild(squat_label3);
-
-				var bench_accessory = document.createElement("input");
-				bench_accessory.setAttribute("class","w3-radio w3-col");
-
-				var deadlift_accessory = document.createElement("input");
-				deadlift_accessory.setAttribute("class","w3-radio w3-col");
-
-
-			}
-
+			
 
 			var program_button = document.createElement("button");
 			program_button.setAttribute("class","w3-button w3-black w3-hover-red");
 			program_button.setAttribute("id","pop_btn");
-			program_button.onclick = function() {
-    			modal.style.display = "block";
-			}
+			if(localStorage["program" + i + "_goal"] == "powerlifting"){
+				var modal = document.getElementById("modal-content-power");
+				
+			}else if(localStorage["program" + i + "_goal"] == "powerbuilding"){
+				var modal = document.getElementById("modal-content-powerbuild");
 
-			var program_node = document.createTextNode("Start Program");
+			}else{
+				var modal = document.getElementById("modal-content-body");
+			}
+			var full_modal = document.getElementById("modal");
+			program_button.onclick = function() {
+					full_modal.setAttribute("style","display:block;");
+    				modal.setAttribute("style","display:block;");
+    				console.log(program_button.parentElement.id);
+    				var button = document.getElementById("blank");
+    				button.id = program_button.parentElement.id;
+				}
+			var program_node = document.createTextNode("Continue");
 			program_button.appendChild(program_node);
 
 			program_maxes.appendChild(br);
@@ -283,11 +195,31 @@
 			card.appendChild(program_maxes);
 			card.appendChild(program_button);
 			div.insertBefore(card, div.childNodes[0]);
-
+	}
+	function add_whitespace(str, char_num){
+		for(var i = 0; str.length < char_num; i++){
+			str += " ";
 		}
+
+		return str;
+
+	}
+	window.onload = function(){
+		// localStorage.clear();
+
+		var br = document.createElement("br");
+		var div = document.getElementById("programs");
+		var new_program = document.getElementById("new_programs");
+
+		var program_count = Number(localStorage["program_number"]);
+		for(var i = 1; i <= program_count; i++){
+			create_card(br, div, new_program, i);
+		}
+
+	}
 				
 			
-	}
+	
 	function firstCharUpper(string){
 		//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
 		return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -315,6 +247,46 @@
 		section.appendChild(div);
 		document.getElementById("exercise_search").value = "";
 	}
+	function show_program(id){
+
+		var squat_var = document.getElementById("squat_var").value;
+		var bench_var = document.getElementById("bench_var").value;
+		var deadlift_var = document.getElementById("deadlift_var").value;
+
+		var squat_access = document.getElementById("squat_access").value;
+		var bench_access = document.getElementById("bench_access").value;
+		var deadlift_access = document.getElementById("deadlift_access").value;
+
+		var card = document.getElementById("name" + id).parentElement;
+		
+		var modal = document.getElementById(id).parentElement;
+		var full_modal = modal.parentElement;
+		modal.setAttribute("style","display:none;");
+		full_modal.setAttribute("style","display:none;");
+		var following = document.createElement("div");
+		following.setAttribute("class","w3-container w3-yellow");
+		following.setAttribute("style","width:40%;");
+		var following_node = document.createTextNode("Following");
+		following.appendChild(following_node);
+		var name = document.getElementById("name" + id);
+		card.insertBefore(following, name);
+		
+		localStorage["squat_var" + id] = squat_var;
+		localStorage["bench_var" + id] = bench_var;
+		localStorage["deadlift_var" + id] = deadlift_var;
+
+		localStorage["squat_access" + id] = squat_access;
+		localStorage["bench_access" + id] = bench_access;
+		localStorage["deadlift_access" + id] = deadlift_access;
+		localStorage["clicked_program"] = id;
+
+		location.href = "your_program.html";
+	}
+	function clear_programs(){
+		localStorage.clear();
+		location.href = "program_builder.html";
+	}
+
 	
 </script>
 </head>
@@ -389,14 +361,114 @@
 </div>
 								<!-- Your Programs -->
 
-<div id = "modal">
-	<div id = "modal-content">Your program
+<div id = "modal" style="display: none;">
+	<div id = "modal-content-power" style="display: none;">
+
+		<h3>Choose a variation for each lift: </h3>
+		<br>
+		
+		
+			<strong>Squat Variation:</strong>
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<select id = "squat_var" class="w3-select" >
+				<option>Paused Squat</option>
+				<option>Pin Squat</option>
+				<option>Tempo Squat</option>
+			</select>	
+			</div>
+			<div class = "w3-col w3-container" style="width: 60%;">
+				<pre>Description...</pre>
+			</div>
+		</div>
+		
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Bench Variation:</strong>
+				<select id = "bench_var" class="w3-select">
+					<option>Paused Bench</option>
+					<option>Pin Press</option>
+					<option>Spoto Press</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>  Description...<pre>
+			</div>
+		</div>	
+
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Deadlift Variation:</strong>
+				<select id = "deadlift_var" class="w3-select">
+					<option>Paused Deadlift</option>
+					<option>Low Block Pull</option>
+					<option>Deficit Deadlift</option>
+					<option>Snatch-Grip Deadlift</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>Description...</pre>
+			</div>
+		</div>		
+		<br>
+		<h3> Choose an accessory for each lift: </h3>
+		<br>
+		
+		<div class = "w3-row">
+			<div  class = "w3-col" style="width: 40%;">
+				<strong>Squat Accessory:</strong>
+				<select id = "squat_access" class="w3-select">
+					<option>Bulgarian Split-Squat</option>
+					<option>Leg Press</option>
+					<option>Walking Lunges</option>
+				</select>
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>Description...</pre>
+			</div>	
+		</div>
+		
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Bench Accessory:</strong>
+				<select id = "bench_access" class="w3-select">
+					<option>Face pull</option>
+					<option>Close-Grip Bench</option>
+					<option>Dips</option>
+					<option>Incline Bench</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>  Description...</pre>
+			</div>
+		</div>	
+
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Deadlift Accessory:</strong>
+				<select id = "deadlift_access" class="w3-select">
+					<option>Stiff-Legged Deadlift</option>
+					<option>Good Morning</option>
+					<option>High Block Pull</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>  Description...</pre>
+			</div>
+		</div>			
+		<br>
+		<button id = "blank" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id);">Done</button>
+	</div>
+	<div id = "modal-content-powerbuild" style="display: none;">
 		
 						
 		
 	</div>
-	
-
+	<div id = "modal-content-body" style="display: none;">
+		
+						
+		
+	</div>
 </div>
 
 <div class = "w3-content w3-card" style="max-width: 1000px">	
@@ -415,6 +487,7 @@
 			</a>
 			
 		</div>
+		<button class = "w3-button w3-black w3-hover-red" onclick = "clear_programs();">Clear Programs</button>
 
 </div>
 
