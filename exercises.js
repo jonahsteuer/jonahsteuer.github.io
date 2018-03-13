@@ -170,6 +170,20 @@ var muscle_exercises = {
 "Dumbbell Fly",
 "Pec-Deck"
 ],
+"horizontal_pull":[
+"T-Bar Row",
+"Chest-Supported Row",
+"Seal Row",
+"Barbell Row",
+"Dumbbell Row",
+"One-Arm Dumbbell Row",
+"Cable Row"
+],
+"vert_pull":[
+"Pulldown",
+"Pull-Up",
+"Chin-Up"
+],
 "lat_compounds":[
 "Pulldown",
 "T-Bar Row",
@@ -191,6 +205,14 @@ var muscle_exercises = {
 "lat_isolations": [
 "Pull-Over",
 "Rope Pull-Over",
+],
+"front_delts" : [
+"Arnold Press",
+"Shoulder Press",
+"Barbell Shoulder Press",
+"Dumbbell Shoulder Press",
+"Overhead Press",
+"OHP"
 ],
 "front_delt_compounds": [
 "Arnold Press",
@@ -308,46 +330,74 @@ var muscle_exercises = {
 "Oblique Twist",
 "Dip Bar Leg Raise",
 "V-Spread Toe Touches",
+],
+"triceps_optional":[
+"Tricep Kickback",
+"Barbell Tricep Extension",
+"Dumbbell Tricep Extension",
+"Standing Tricep Extension",
+"Tricep Pushdown",
+"One-Arm Dumbbell Skull-Crusher",
+"Dumbbell Skull-Crusher",
+"Barbell Skull-Crusher",
+],
+"biceps_optional":[
+"Barbell Curl",
+"Dumbbell Curl",
+"Preacher Curl",
+"One-Arm Preacher Curl",
+"Hammer Curl",
+"Concentration Curl",
+"Incline Dumbbell Curl",
+"Reverse Barbell Curl",
+"Reverse Dumbbell Curl",
+],
+"calves_optional":[
+"Standing Calf Raise",
+"Single-Leg Standing Calf Raise",
+"Leg Press Calf Raise",
+"Barbell Calf Raise",
+"Dumbbell Calf Raise",
+"Seated Calf Raise"
 ]
 
 }
-var bench_variations = [
+
+var bench_accessories = [
+"Close-Grip Bench Press",
 "Paused Bench Press",
 "Spoto Press",
 "Pin Press",
-"Floor Press"
-];
-var bench_accessories = [
-"Close-Grip Bench Press",
 "Incline Bench Press",
+"Floor Press",
 "Face Pull",
+"Barbell Row",
 "Chest-Supported Row"
 ];
 
-var squat_variations = [
+var squat_accessories = [
 "Front Squat",
 "Paused Squat",
 "Pin Squat",
 "High-bar Squat",
-];
-var squat_accessories = [
+"Low-bar Squat",
 "Belt Squat",
 "Leg Press",
 "Bulgarian Split Squat"
 ];
 
-var deadlift_variations = [
+var deadlift_accessories = [
 "Paused Deadlift",
 "Snatch-Grip Deadlift",
 "Sumo Deadlift",
 "Conventional Deadlift",
 "Deficit Deadlift",
 "Block Pull",
-];
-var deadlift_accessories = [
-"Romanian Deadlift",
-"Stiff-Legged Deadlift",
-"Good Morning",
+"Rack Pull",
 "Barbell Shrug",
 "Barbell Row"
 ];
+
+
+
+
