@@ -112,89 +112,89 @@
 	var exercise_data = [];
 	function create_card(br, div, new_program, i){
 		var card = document.createElement("div");
-			card.setAttribute("class","w3-card w3-col w3-center w3-content");
-			card.setAttribute("style", "width:33%;height:300px;");
-			card.setAttribute("id","" + i);
+		card.setAttribute("class","w3-card w3-col w3-center w3-content");
+		card.setAttribute("style", "width:33%;height:300px;");
+		card.setAttribute("id","" + i);
 
-			var program_name = document.createElement("h3");
-			program_name.setAttribute("class","w3-container w3-center");
-			program_name.setAttribute("id","name" + i);
-			var name_node = document.createTextNode(localStorage["program" + i + "_name"]);
-			program_name.appendChild(name_node);
+		var program_name = document.createElement("h3");
+		program_name.setAttribute("class","w3-container w3-center");
+		program_name.setAttribute("id","name" + i);
+		var name_node = document.createTextNode(localStorage["program" + i + "_name"]);
+		program_name.appendChild(name_node);
 
-			var start_date = document.createTextNode("Started on " + localStorage["program" + i + "_start_date"]);
+		var start_date = document.createTextNode("Started on " + localStorage["program" + i + "_start_date"]);
 
-			var header_node = document.createTextNode("Maxes");
+		var header_node = document.createTextNode("Maxes");
 
-			var program_maxes = document.createElement("div");
-			program_maxes.setAttribute("class","w3-container w3-left-align");
+		var program_maxes = document.createElement("div");
+		program_maxes.setAttribute("class","w3-container w3-left-align");
 
-			
+		
 
-			var quad_main = localStorage["program" + i + "_quadMain"];
-			var chest_main = localStorage["program" + i + "_chestMain"];
-			var glute_main = localStorage["program" + i + "_gluteMain"];
+		var quad_main = localStorage["program" + i + "_quadMain"];
+		var chest_main = localStorage["program" + i + "_chestMain"];
+		var glute_main = localStorage["program" + i + "_gluteMain"];
 
-			var quad_max = localStorage["program" + i + "_quadMain_max"];
-			var chest_max = localStorage["program" + i + "_chestMain_max"];
-			var glute_max = localStorage["program" + i + "_gluteMain_max"];
+		var quad_max = localStorage["program" + i + "_quadMain_max"];
+		var chest_max = localStorage["program" + i + "_chestMain_max"];
+		var glute_max = localStorage["program" + i + "_gluteMain_max"];
 
-			var quad_div = document.createElement("pre");
-			
-			var quad_str = quad_main + ":";
-			quad_str = add_whitespace(quad_str, 23)  + quad_max;
-			var quad_node = document.createTextNode(quad_str);
-			console.log(quad_node);
-			quad_div.appendChild(quad_node);
+		var quad_div = document.createElement("pre");
+		
+		var quad_str = quad_main + ":";
+		quad_str = add_whitespace(quad_str, 23)  + quad_max;
+		var quad_node = document.createTextNode(quad_str);
+		console.log(quad_node);
+		quad_div.appendChild(quad_node);
 
-			var chest_div = document.createElement("pre");
-			var chest_str = add_whitespace(chest_main + ":",23) +  chest_max;		
-			var chest_node = document.createTextNode(chest_str);
-			chest_div.appendChild(chest_node);
+		var chest_div = document.createElement("pre");
+		var chest_str = add_whitespace(chest_main + ":",23) +  chest_max;		
+		var chest_node = document.createTextNode(chest_str);
+		chest_div.appendChild(chest_node);
 
-			var glute_div = document.createElement("pre");
-			var glute_str = add_whitespace(glute_main + ":",23) + glute_max;
-			var glute_node = document.createTextNode(glute_str);
-			glute_div.appendChild(glute_node);
-			
+		var glute_div = document.createElement("pre");
+		var glute_str = add_whitespace(glute_main + ":",23) + glute_max;
+		var glute_node = document.createTextNode(glute_str);
+		glute_div.appendChild(glute_node);
+		
 
-			var program_button = document.createElement("button");
-			program_button.setAttribute("class","w3-button w3-black w3-hover-red");
-			program_button.setAttribute("id","pop_btn");
-			if(localStorage["program" + i + "_goal"] == "powerlifting"){
-				var modal = document.getElementById("modal-content-power");
-				
-			}else if(localStorage["program" + i + "_goal"] == "powerbuilding"){
-				var modal = document.getElementById("modal-content-powerbuild");
 
-			}else{
-				var modal = document.getElementById("modal-content-body");
-			}
-			var full_modal = document.getElementById("modal");
-			program_button.onclick = function() {
-					full_modal.setAttribute("style","display:block;");
-    				modal.setAttribute("style","display:block;");
-    				console.log(program_button.parentElement.id);
-    				var button = document.getElementById("blank");
-    				button.id = program_button.parentElement.id;
-				}
-			var program_node = document.createTextNode("Continue");
-			program_button.appendChild(program_node);
+		
+		var program_button = document.createElement("button");
+		program_button.setAttribute("class","w3-button w3-black w3-hover-red");
+		program_button.setAttribute("id","program_button"+i);
 
-			program_maxes.appendChild(br);
-			program_maxes.appendChild(quad_div);
-			program_maxes.appendChild(br);
-			program_maxes.appendChild(chest_div);
-			program_maxes.appendChild(br);
-			program_maxes.appendChild(glute_div);
+		var program_node = document.createTextNode("Continue");
+		program_button.appendChild(program_node);
 
-			card.appendChild(program_name);
-			card.appendChild(start_date);
-			card.appendChild(br);
-			card.appendChild(header_node);
-			card.appendChild(program_maxes);
-			card.appendChild(program_button);
-			div.insertBefore(card, div.childNodes[0]);
+		program_maxes.appendChild(br);
+		program_maxes.appendChild(quad_div);
+		program_maxes.appendChild(br);
+		program_maxes.appendChild(chest_div);
+		program_maxes.appendChild(br);
+		program_maxes.appendChild(glute_div);
+
+		card.appendChild(program_name);
+		card.appendChild(start_date);
+		card.appendChild(br);
+		card.appendChild(header_node);
+		card.appendChild(program_maxes);
+		card.appendChild(program_button);
+		div.insertBefore(card, div.childNodes[0]);
+
+		
+		if(localStorage["program" + i + "_goal"] == "powerlifting"){
+			var modal = document.getElementById("modal-content-power");
+			var modal_button = document.getElementById("button-power");
+		}else if(localStorage["program" + i + "_goal"] == "powerbuilding"){
+			var modal = document.getElementById("modal-content-powerbuild");
+			var modal_button = document.getElementById("button-powerbuild");
+
+		}else{
+			var modal = document.getElementById("modal-content-body");
+			var modal_button = document.getElementById("button-body");
+		}
+		setContinue(i, modal, modal_button);
 	}
 	function add_whitespace(str, char_num){
 		for(var i = 0; str.length < char_num; i++){
@@ -217,9 +217,70 @@
 		}
 
 	}
-				
+	function setContinue(card_num, modal, modal_button){
+		var program_button = document.getElementById("program_button"+card_num);
+		keys = Object.keys(localStorage);
+		
+		if(keys.includes("isFollowingProgram"+ card_num) == true){
+			var isFollowingProgram = JSON.parse(localStorage["isFollowingProgram" + card_num]);
+		}
+		
+		
+		if(keys.includes("isFollowingProgram"+ card_num) == false){//Open Modal if never opened
 			
-	
+			program_button.onclick = function() {
+				
+				for(var key in keys){
+
+					var beginning = keys[key].substring(0,keys[key].length - 1);
+					
+					if(beginning == "isFollowingProgram"){
+						localStorage[keys[key]] = JSON.stringify(false);
+					}
+
+				}
+				localStorage["isFollowingProgram" + card_num] = JSON.stringify(true);
+				var full_modal = modal.parentElement;
+				full_modal.setAttribute("style","display:block;");
+				modal.setAttribute("style","display:block;");
+				modal_button.id = card_num;
+				
+			}
+		}else if(isFollowingProgram == true){//show program if following
+		
+			addFollowing(card_num);
+			program_button.onclick = function() {
+
+				show_program(card_num, false);
+			}
+		}else if(isFollowingProgram == false){//show program and is following if wasnt following
+						program_button.onclick = function() {//make following and others false
+				for(var key in keys){
+
+					var beginning = keys[key].substring(0,keys[key].length - 1);
+					
+					if(beginning == "isFollowingProgram"){
+						localStorage[keys[key]] = JSON.stringify(false);
+					}
+
+				}
+				localStorage["isFollowingProgram" + card_num] = JSON.stringify(true);
+				
+				show_program(card_num, false);
+			}				
+					
+	}			
+		
+	function addFollowing(card_num){
+		var following = document.createElement("div");
+		following.setAttribute("class","w3-container w3-yellow");
+		following.setAttribute("style","width:40%;");
+		var following_node = document.createTextNode("Following");
+		following.appendChild(following_node);
+		var name = document.getElementById("name" + card_num);
+		var card = name.parentElement;
+		card.insertBefore(following, name);
+	}
 	function firstCharUpper(string){
 		//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
 		return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -247,39 +308,35 @@
 		section.appendChild(div);
 		document.getElementById("exercise_search").value = "";
 	}
-	function show_program(id){
+	function show_program(program_num,fromButton){
+		if(fromButton === true){
+			var squat_var = document.getElementById("squat_var").value;
+			var bench_var = document.getElementById("bench_var").value;
+			var deadlift_var = document.getElementById("deadlift_var").value;
 
-		var squat_var = document.getElementById("squat_var").value;
-		var bench_var = document.getElementById("bench_var").value;
-		var deadlift_var = document.getElementById("deadlift_var").value;
+			var squat_access = document.getElementById("squat_access").value;
+			var bench_access = document.getElementById("bench_access").value;
+			var deadlift_access = document.getElementById("deadlift_access").value;
 
-		var squat_access = document.getElementById("squat_access").value;
-		var bench_access = document.getElementById("bench_access").value;
-		var deadlift_access = document.getElementById("deadlift_access").value;
+			var card = document.getElementById("name" + program_num).parentElement;
+			
+			var modal = document.getElementById(program_num).parentElement;
+			var full_modal = modal.parentElement;
+			modal.setAttribute("style","display:none;");
+			full_modal.setAttribute("style","display:none;");
+			localStorage["squat_var" + program_num] = squat_var;
+			localStorage["bench_var" + program_num] = bench_var;
+			localStorage["deadlift_var" + program_num] = deadlift_var;
 
-		var card = document.getElementById("name" + id).parentElement;
+			localStorage["squat_access" + program_num] = squat_access;
+			localStorage["bench_access" + program_num] = bench_access;
+			localStorage["deadlift_access" + program_num] = deadlift_access;
+			
+			
+		}
 		
-		var modal = document.getElementById(id).parentElement;
-		var full_modal = modal.parentElement;
-		modal.setAttribute("style","display:none;");
-		full_modal.setAttribute("style","display:none;");
-		var following = document.createElement("div");
-		following.setAttribute("class","w3-container w3-yellow");
-		following.setAttribute("style","width:40%;");
-		var following_node = document.createTextNode("Following");
-		following.appendChild(following_node);
-		var name = document.getElementById("name" + id);
-		card.insertBefore(following, name);
 		
-		localStorage["squat_var" + id] = squat_var;
-		localStorage["bench_var" + id] = bench_var;
-		localStorage["deadlift_var" + id] = deadlift_var;
-
-		localStorage["squat_access" + id] = squat_access;
-		localStorage["bench_access" + id] = bench_access;
-		localStorage["deadlift_access" + id] = deadlift_access;
-		localStorage["clicked_program"] = id;
-
+		localStorage["clicked_program"] = program_num;
 		location.href = "your_program.html";
 	}
 	function clear_programs(){
@@ -457,17 +514,17 @@
 			</div>
 		</div>			
 		<br>
-		<button id = "blank" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id);">Done</button>
+		<button id = "button-power" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Done</button>
 	</div>
 	<div id = "modal-content-powerbuild" style="display: none;">
 		
 						
-		
+		<button id = "button-powerbuild" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Done</button>
 	</div>
 	<div id = "modal-content-body" style="display: none;">
 		
 						
-		
+		<button id = "button-body" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Done</button>
 	</div>
 </div>
 
@@ -487,6 +544,7 @@
 			</a>
 			
 		</div>
+
 		<button class = "w3-button w3-black w3-hover-red" onclick = "clear_programs();">Clear Programs</button>
 
 </div>
