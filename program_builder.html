@@ -50,7 +50,6 @@
   padding: 0;
   margin: 0;
 }
-
 #goal_card{
 	position: relative;
 	height:180px;
@@ -115,30 +114,22 @@
 		card.setAttribute("class","w3-card w3-col w3-center w3-content");
 		card.setAttribute("style", "width:33%;height:300px;");
 		card.setAttribute("id","" + i);
-
 		var program_name = document.createElement("h3");
 		program_name.setAttribute("class","w3-container w3-center");
 		program_name.setAttribute("id","name" + i);
 		var name_node = document.createTextNode(localStorage["program" + i + "_name"]);
 		program_name.appendChild(name_node);
-
 		var start_date = document.createTextNode("Started on " + localStorage["program" + i + "_start_date"]);
-
 		var header_node = document.createTextNode("Maxes");
-
 		var program_maxes = document.createElement("div");
 		program_maxes.setAttribute("class","w3-container w3-left-align");
-
 		
-
 		var quad_main = localStorage["program" + i + "_quadMain"];
 		var chest_main = localStorage["program" + i + "_chestMain"];
 		var glute_main = localStorage["program" + i + "_gluteMain"];
-
 		var quad_max = localStorage["program" + i + "_quadMain_max"];
 		var chest_max = localStorage["program" + i + "_chestMain_max"];
 		var glute_max = localStorage["program" + i + "_gluteMain_max"];
-
 		var quad_div = document.createElement("pre");
 		
 		var quad_str = quad_main + ":";
@@ -146,34 +137,27 @@
 		var quad_node = document.createTextNode(quad_str);
 		console.log(quad_node);
 		quad_div.appendChild(quad_node);
-
 		var chest_div = document.createElement("pre");
 		var chest_str = add_whitespace(chest_main + ":",23) +  chest_max;		
 		var chest_node = document.createTextNode(chest_str);
 		chest_div.appendChild(chest_node);
-
 		var glute_div = document.createElement("pre");
 		var glute_str = add_whitespace(glute_main + ":",23) + glute_max;
 		var glute_node = document.createTextNode(glute_str);
 		glute_div.appendChild(glute_node);
 		
-
-
 		
 		var program_button = document.createElement("button");
 		program_button.setAttribute("class","w3-button w3-black w3-hover-red");
 		program_button.setAttribute("id","program_button"+i);
-
 		var program_node = document.createTextNode("Continue");
 		program_button.appendChild(program_node);
-
 		program_maxes.appendChild(br);
 		program_maxes.appendChild(quad_div);
 		program_maxes.appendChild(br);
 		program_maxes.appendChild(chest_div);
 		program_maxes.appendChild(br);
 		program_maxes.appendChild(glute_div);
-
 		card.appendChild(program_name);
 		card.appendChild(start_date);
 		card.appendChild(br);
@@ -181,7 +165,6 @@
 		card.appendChild(program_maxes);
 		card.appendChild(program_button);
 		div.insertBefore(card, div.childNodes[0]);
-
 		
 		if(localStorage["program" + i + "_goal"] == "powerlifting"){
 			var modal = document.getElementById("modal-content-power");
@@ -189,7 +172,6 @@
 		}else if(localStorage["program" + i + "_goal"] == "powerbuilding"){
 			var modal = document.getElementById("modal-content-powerbuild");
 			var modal_button = document.getElementById("button-powerbuild");
-
 		}else{
 			var modal = document.getElementById("modal-content-body");
 			var modal_button = document.getElementById("button-body");
@@ -200,22 +182,17 @@
 		for(var i = 0; str.length < char_num; i++){
 			str += " ";
 		}
-
 		return str;
-
 	}
 	window.onload = function(){
 		// localStorage.clear();
-
 		var br = document.createElement("br");
 		var div = document.getElementById("programs");
 		var new_program = document.getElementById("new_programs");
-
 		var program_count = Number(localStorage["program_number"]);
 		for(var i = 1; i <= program_count; i++){
 			create_card(br, div, new_program, i);
 		}
-
 	}
 	function setContinue(card_num, modal, modal_button){
 		var program_button = document.getElementById("program_button"+card_num);
@@ -230,16 +207,6 @@
 			
 			program_button.onclick = function() {
 				
-				for(var key in keys){
-
-					var beginning = keys[key].substring(0,keys[key].length - 1);
-					
-					if(beginning == "isFollowingProgram"){
-						localStorage[keys[key]] = JSON.stringify(false);
-					}
-
-				}
-				localStorage["isFollowingProgram" + card_num] = JSON.stringify(true);
 				var full_modal = modal.parentElement;
 				full_modal.setAttribute("style","display:block;");
 				modal.setAttribute("style","display:block;");
@@ -250,27 +217,24 @@
 		
 			addFollowing(card_num);
 			program_button.onclick = function() {
-
 				show_program(card_num, false);
 			}
 		}else if(isFollowingProgram == false){//show program and is following if wasnt following
 						program_button.onclick = function() {//make following and others false
 				for(var key in keys){
-
 					var beginning = keys[key].substring(0,keys[key].length - 1);
 					
 					if(beginning == "isFollowingProgram"){
 						localStorage[keys[key]] = JSON.stringify(false);
 					}
-
 				}
 				localStorage["isFollowingProgram" + card_num] = JSON.stringify(true);
 				
 				show_program(card_num, false);
 			}				
 					
-	}			
-		
+		}			
+	}
 	function addFollowing(card_num){
 		var following = document.createElement("div");
 		following.setAttribute("class","w3-container w3-yellow");
@@ -308,29 +272,58 @@
 		section.appendChild(div);
 		document.getElementById("exercise_search").value = "";
 	}
-	function show_program(program_num,fromButton){
+	function show_program(program_num,fromButton, ){
 		if(fromButton === true){
-			var squat_var = document.getElementById("squat_var").value;
-			var bench_var = document.getElementById("bench_var").value;
-			var deadlift_var = document.getElementById("deadlift_var").value;
+			for(var key in keys){
+				var beginning = keys[key].substring(0,keys[key].length - 1);
+				
+				if(beginning == "isFollowingProgram"){
+					localStorage[keys[key]] = JSON.stringify(false);
+				}
+			}
+			localStorage["isFollowingProgram" + program_num] = JSON.stringify(true);
 
-			var squat_access = document.getElementById("squat_access").value;
-			var bench_access = document.getElementById("bench_access").value;
-			var deadlift_access = document.getElementById("deadlift_access").value;
+			var goal = localStorage["program" + program_num + "_goal"];
+			if(goal == "powerlifting" || goal == "powerbuilding"){
+				var squat_var = document.getElementById("squat_var").value;
+				var bench_var = document.getElementById("bench_var").value;
+				var deadlift_var = document.getElementById("deadlift_var").value;
+				var squat_access = document.getElementById("squat_access").value;
+				var bench_access = document.getElementById("bench_access").value;
+				var deadlift_access = document.getElementById("deadlift_access").value;
 
+				localStorage["squat_var" + program_num] = squat_var;
+				localStorage["bench_var" + program_num] = bench_var;
+				localStorage["deadlift_var" + program_num] = deadlift_var;
+				localStorage["squat_access" + program_num] = squat_access;
+				localStorage["bench_access" + program_num] = bench_access;
+				localStorage["deadlift_access" + program_num] = deadlift_access;
+			}else{
+				var chest_main = document.getElementById("chest_main").value;
+				var quad_main = document.getElementById("quad_main").value;
+				var glute_main = document.getElementById("glute_main").value;
+
+				var vertPull_main = document.getElementById("vertPull_main").value;
+				var horzPull_main = document.getElementById("horzPull_main").value;
+
+				var frontDelt_main = document.getElementById("frontDelt_main").value;
+				localStorage["chest_main" + program_num] = chest_main;
+				localStorage["quad_main" + program_num = quad_main];
+				localStorage["glute_main" + program_num] = glute_main;
+
+				localStorage["vertPull_main" + program_num] = vertPull_main;
+				localStorage["horzPull_main" + program_num] = horzPull_main;
+
+				localStorage["frontDelt_main" + program_num]= frontDelt_main;
+			}
+			
 			var card = document.getElementById("name" + program_num).parentElement;
 			
 			var modal = document.getElementById(program_num).parentElement;
 			var full_modal = modal.parentElement;
 			modal.setAttribute("style","display:none;");
 			full_modal.setAttribute("style","display:none;");
-			localStorage["squat_var" + program_num] = squat_var;
-			localStorage["bench_var" + program_num] = bench_var;
-			localStorage["deadlift_var" + program_num] = deadlift_var;
-
-			localStorage["squat_access" + program_num] = squat_access;
-			localStorage["bench_access" + program_num] = bench_access;
-			localStorage["deadlift_access" + program_num] = deadlift_access;
+			
 			
 			
 		}
@@ -343,45 +336,35 @@
 		localStorage.clear();
 		location.href = "program_builder.html";
 	}
-
 	
 </script>
 </head>
 <body>
 							<!-- navigation bar -->
 	<div class = "w3-container w3-black w3-top">
-
 	
 	<a href="#" target = "_top">
-
 		<button class = "w3-btn w3-hover-red" >
 			Home
 		</button>
-
 	</a>
 	
-
 	<button class = "w3-btn w3-hover-red">
 		About
 	</button>
-
 	<a href="log_workout.html">
 	<button class = "w3-btn w3-hover-red">Log Workout</button>
 	</a>
-
 	<div id = "dropdown">
 		<button id = dropdown-btn class = "w3-btn w3-hover-red">
 			Track nutrition
 			 <i class="fa fa-caret-down"></i>
 		</button>
-
 		<div id = "dropdown-content">
 			<a href="log_weight.html">Log weight</a>
 			<a href="#">Log calories</a>
 		</div>
 	</div>
-
-
 	<a href="max_calc.html">
 	<button class = "w3-btn w3-hover-red">
 		1RM Calculator
@@ -396,7 +379,6 @@
 			Data
 			<i class = "fa fa-caret-down"></i>
 		</button>
-
 		<div id = "dropdown-content">
 			<a href="lifting_data.html"> Lifting Data</a>
 			<a href="nutrition_data.html"> Nutrition Data</a>
@@ -404,23 +386,33 @@
 	</div>
 	
 </div> 
-
 <br>
 <br>
-
 										<!-- content -->
-
 				<!-- what is so special about personlized programs -->
 <div class = "w3-continer w3-content">
 	<h2 class = "w3-center">Why use personalized programs?</h2>
 	<p class = "w3-justify">Anyone can put together a bunch of exercises with specific set and rep ranges and claim they have the best program. Although this may work very well for the individual who made the program, it might not work for you. Research has shown that everyone resonds to training in a different way. For example, some people might be able to grow their chest very easily off of only a few sets of bench, where as others might have to do much more to get the same adaptation. Factors such as, training age(how long you've been lifting), genetics, and simply individual goals, play a huge role in what program a lifter should run. Workout tracker takes all of these factors into account and creates the best program for you. </p>
 	
 </div>
-								<!-- Your Programs -->
-
+<div class = "w3-content w3-card" style="max-width: 1000px">	
+	<div class = "w3-container w3-black " style="width: 280px;">
+		<h2>Your Programs</h2>
+	</div>
+	
+		<div class="w3-row-padding w3-margin-left w3-margin-top" id = "programs">
+			<!-- <div class = "w3-col w3-row w3-card" id = "stored_programs" style="width: 25%;"></div> -->
+			<a id = "new_program" href="generate_program.html">
+				<div class = "w3-card w3-button w3-col" style="width:33%;height:300px;">
+					<div style="width:100%; height:200px;font-size:200px;">&#65291; </div>
+				</div>
+			</a>
+			
+		</div>
+		<button class = "w3-button w3-black w3-hover-red" onclick = "clear_programs();">Clear Programs</button>
+</div>								<!-- Your Programs -->
 <div id = "modal" style="display: none;">
 	<div id = "modal-content-power" style="display: none;">
-
 		<h3>Choose a variation for each lift: </h3>
 		<br>
 		
@@ -452,7 +444,6 @@
 				<pre>  Description...<pre>
 			</div>
 		</div>	
-
 		<div class = "w3-row">
 			<div class = "w3-col" style="width: 40%;">
 				<strong>Deadlift Variation:</strong>
@@ -499,7 +490,6 @@
 				<pre>  Description...</pre>
 			</div>
 		</div>	
-
 		<div class = "w3-row">
 			<div class = "w3-col" style="width: 40%;">
 				<strong>Deadlift Accessory:</strong>
@@ -514,40 +504,191 @@
 			</div>
 		</div>			
 		<br>
-		<button id = "button-power" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Done</button>
+		<button id = "button-power" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Show Program</button>
 	</div>
 	<div id = "modal-content-powerbuild" style="display: none;">
+		<h3>Choose a variation for each lift: </h3>
+		<br>
 		
+		
+			<strong>Squat Variation:</strong>
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<select id = "squat_var" class="w3-select" >
+				<option>Paused Squat</option>
+				<option>Pin Squat</option>
+				<option>Tempo Squat</option>
+			</select>	
+			</div>
+			<div class = "w3-col w3-container" style="width: 60%;">
+				<pre>Description...</pre>
+			</div>
+		</div>
+		
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Bench Variation:</strong>
+				<select id = "bench_var" class="w3-select">
+					<option>Paused Bench</option>
+					<option>Pin Press</option>
+					<option>Spoto Press</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>  Description...</pre>
+			</div>
+		</div>	
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Deadlift Variation:</strong>
+				<select id = "deadlift_var" class="w3-select">
+					<option>Paused Deadlift</option>
+					<option>Low Block Pull</option>
+					<option>Deficit Deadlift</option>
+					<option>Snatch-Grip Deadlift</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>Description...</pre>
+			</div>
+		</div>		
+		<br>
+		<h3> Choose an accessory for each lift: </h3>
+		<br>
+		
+		<div class = "w3-row">
+			<div  class = "w3-col" style="width: 40%;">
+				<strong>Squat Accessory:</strong>
+				<select id = "squat_access" class="w3-select">
+					<option>Bulgarian Split-Squat</option>
+					<option>Leg Press</option>
+					<option>Walking Lunges</option>
+				</select>
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>Description...</pre>
+			</div>	
+		</div>
+		
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Bench Accessory:</strong>
+				<select id = "bench_access" class="w3-select">
+					<option>Face pull</option>
+					<option>Close-Grip Bench</option>
+					<option>Dips</option>
+					<option>Incline Bench</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>  Description...</pre>
+			</div>
+		</div>	
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Deadlift Accessory:</strong>
+				<select id = "deadlift_access" class="w3-select">
+					<option>Stiff-Legged Deadlift</option>
+					<option>Good Morning</option>
+					<option>High Block Pull</option>
+				</select>	
+			</div>
+			<div class = "w3-col" style="width: 60%;">
+				<pre>  Description...</pre>
+			</div>
+		</div>			
+		<br>
 						
-		<button id = "button-powerbuild" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Done</button>
+		<button id = "button-powerbuild" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Show Program</button>
 	</div>
 	<div id = "modal-content-body" style="display: none;">
+		<h3>Choose a main movement for each muscle group: </h3>
+		<br>
 		
-						
-		<button id = "button-body" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Done</button>
-	</div>
-</div>
-
-<div class = "w3-content w3-card" style="max-width: 1000px">	
-	<div class = "w3-container w3-black " style="width: 280px;">
-
-		<h2>Your Programs</h2>
-	</div>
-
-	
-		<div class="w3-row-padding w3-margin-left w3-margin-top" id = "programs">
-			<!-- <div class = "w3-col w3-row w3-card" id = "stored_programs" style="width: 25%;"></div> -->
-			<a id = "new_program" href="generate_program.html">
-				<div class = "w3-card w3-button w3-col" style="width:33%;height:300px;">
-					<div style="width:100%; height:200px;font-size:200px;">&#65291; </div>
-				</div>
-			</a>
+		
+			<strong>Quads Main:</strong>
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<select id = "quad_main" class="w3-select" >
+				<option>High-Bar Squat</option>
+				<option>Low-Bar Squat</option>
+				<option>Leg Press</option>
+				<option>Front Squat</option>
+				<option>Hack Squat</option>
+			</select>	
+			</div>
 			
 		</div>
-
-		<button class = "w3-button w3-black w3-hover-red" onclick = "clear_programs();">Clear Programs</button>
-
+		
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Chest Main:</strong>
+				<select id = "chest_main" class="w3-select">
+					<option>Bench Press</option>
+					<option>Incline Bench Press</option>
+					<option>Dumbell Bench Press</option>
+				</select>	
+			</div>
+			
+		</div>	
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Pull Main:</strong>
+				<select id = "glute_main" class="w3-select">
+					<option>Block/Rack Pull</option>
+					<option>Deadlift</option>
+					<option>Stiff-Legged Deadlift</option>
+				</select>	
+			</div>
+			
+		</div>		
+		
+		<div class = "w3-row">
+			<div  class = "w3-col" style="width: 40%;">
+				<strong>Horizontal Pull</strong>
+				<select id = "horzPull_main" class="w3-select">
+					<option>T-Bar Row</option>
+					<option>Chest-Supported Row</option>
+					<option>Seal Row</option>
+					<option>Barbell Row</option>
+					<option>Dumbbell Row</option>
+					<option>One-Arm Dumbbell Row</option>
+					<option>Cable Row</option>
+				</select>
+			</div>
+			
+		
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Vertical Pull:</strong>
+				<select id = "vertPull_main" class="w3-select">
+					<option>Pulldown</option>
+					<option>Pull-Up</option>
+					<option>Chin-Up</option>
+				</select>	
+			</div>
+			
+		</div>	
+		<div class = "w3-row">
+			<div class = "w3-col" style="width: 40%;">
+				<strong>Front Delts:</strong>
+				<select id = "frontDelt_main" class="w3-select">
+					<option>Arnold Press</option>
+					<option>Shoulder Press</option>
+					<option>Barbell Shoulder Press</option>
+					<option>Dumbbell Shoulder Press</option>
+					<option>Overhead Press</option>
+					<option>OHP</option>
+				</select>	
+			</div>
+			
+		</div>			
+		<br>
+						
+		<button id = "button-body" class="w3-button w3-black w3-hover-red" style="width: 15%;" onclick="show_program(this.id, true);">Show Program</button>
+	</div>
 </div>
+
 
 </body>
 </html>

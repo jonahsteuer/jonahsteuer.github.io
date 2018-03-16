@@ -59,17 +59,18 @@ table,td,th{
 
 <script>
 	
-
-	function predicted_weight_rpe(exercise,reps){
+	function predicted_weight(exercise,reps){
 		var program_num = localStorage["clicked_program"];
-		
+
+		var quad_main = localStorage["program" + program_num + "_quadMain"];
+		var chest_main = localStorage["program" + program_num + "_quadMain"];
+		var glute_main = localStorage["program" + program_num + "_quadMain"];
+
 		var squat_max = localStorage["program" + program_num + "_quadMain_max"];
 		var bench_max = localStorage["program" + program_num + "_chestMain_max"];
 		var deadlift_max = localStorage["program" + program_num + "_gluteMain_max"];
-		var variations = {"Squat":["squat","Paused Squat", "Pin Squat","Tempo Squat","Leg Press"], "Bench":["bench","Incline Bench","Dumbell Bench Press","Paused Bench", "Pin Press", "Spoto Press"], "Deadlift":["deadlift","Paused Deadlift","Low Block Pull","Deficit Deadlift","Snatch-Grip Deadlift"]};
-
-		var versions = { "overload":["Low Block Pull"], "competition":["squat","bench","deadlift"], "easy variation":["Paused Squat","Paused Bench", "Paused Deadlift","Pin Squat","Pin Press","Tempo Squat","Spoto Press"], "hard variation":["Snatch-Grip Deadlift","Deficit Deadlift"]}
-
+		var variations = {"Squat":[quad_main,"squat","Paused Squat", "Front Squat", "High-Bar Squat", "Pin Squat","Tempo Squat","Leg Press"], "Bench":[chest_main, "bench","Incline Bench","Dumbell Bench Press","Paused Bench", "Pin Press", "Spoto Press"], "Deadlift":[glute_main, "deadlift","Paused Deadlift","Low Block Pull","Deficit Deadlift","Stiff-Legged Deadlift","Snatch-Grip Deadlift"]};
+		var versions = { "overload":["Low Block Pull"], "competition":[quad_main, glute_main, chest_main], "easy variation":["Paused Squat","Paused Bench", "Paused Deadlift","Pin Squat","Pin Press","Tempo Squat","Spoto Press"], "hard variation":["Snatch-Grip Deadlift","Deficit Deadlift", "Stiff-Legged Deadlift"]}
 		var values = Object.values(variations);
 		var keys = Object.keys(variations);
 		for(var i in keys){
@@ -86,10 +87,8 @@ table,td,th{
 						break;
 					}
 				}
-
 			}
 		}
-
 		var version_keys = Object.keys(versions);
 		var version_values = Object.values(versions);
 		for(var i in version_keys){
@@ -108,18 +107,13 @@ table,td,th{
 			return Math.round(max * percent);
 		}
 		
-
 	}
 	function add_exer_row(card, exercise, reps,i){
 		var children = card.children;
-
-
 		var id = "table" + i;
 	
 		var table = children.namedItem(id);
 		
-
-
 		var tr = document.createElement("tr");
 		
 		var td_exercise = document.createElement("td");
@@ -134,40 +128,39 @@ table,td,th{
 		td_reps.setAttribute("class","w3-center");
 		var td_sets = document.createElement("td");
 		td_sets.setAttribute("class","w3-center");
-
 		if(typeof exercise == "string"){
 			var exer_node = document.createTextNode(exercise);
 		}else{
 			var exer_node = exercise;
 		}
 		
-		console.log(reps);
 		var reps = reps.split("x");
 		var set_node = document.createTextNode(reps[0]);
 		var rep_node = document.createTextNode(reps[1]);
+		var recc_node = document.createTextNode(predicted_weight(exercise,reps[1]));
 
-		var recc_node = document.createTextNode(predicted_weight_rpe(exercise,reps[1]));
+		var weight_input = document.createElement("input");
+		weight_input.setAttribute("type","text");
+		weight_input.setAttribute("placeholder","Weight Lifted");
+		weight_input.setAttribute("class","w3-input");
+
 		td_recc_weight.appendChild(recc_node);
-
 		td_exercise.appendChild(exer_node)
 		td_sets.appendChild(set_node)
 		td_reps.appendChild(rep_node);
-
-
+		td_weight.appendChild(weight_input);
 		tr.appendChild(td_exercise);
 		tr.appendChild(td_sets);
 		tr.appendChild(td_reps);
 		tr.appendChild(td_recc_weight);
-
+		tr.appendChild(td_weight);
 		table.appendChild(tr);
 	}
 	function add_whitespace(str, char_num){
 		for(var i = 0; str.length < char_num; i++){
 			str += " ";
 		}
-
 		return str;
-
 	}
 	function firstCharUpper(string){
 		//find a word and match to any string that contains zero or more ocurrances of non-whitespace characters and find all matches in the string
@@ -175,19 +168,27 @@ table,td,th{
 	}
 	window.onload = function(){
 		var program_num = localStorage["clicked_program"];
+		if(localStorage["program" + program_num + "_goal"] == "powerlifting" || localStorage["program" + program_num + "_goal"] == "powerbuilding"){
+			var squat_var = localStorage["squat_var" + program_num];
+			
+			var bench_var = localStorage["bench_var" + program_num];
+			var deadlift_var = localStorage["deadlift_var" + program_num];
+			var squat_access = localStorage["squat_access" + program_num];
+			var bench_access = localStorage["bench_access" + program_num];
+			var deadlift_access = localStorage["deadlift_access" + program_num];
+		}else{
+			var chest_main = localStorage["chest_main" + program_num];
+			var quad_main = localStorage["quad_main" + program_num];
+			var glute_main = localStorage["glute_main" + program_num];
 
-		var squat_var = localStorage["squat_var" + program_num];
+			var vert_pull_main = localStorage["vertPull_main" + program_num];
+			var horizontal_pull_main = localStorage["horzPull_main" + program_num];
+
+			var front_delt_main = localStorage["frontDelt_main" + program_num];
+		}
 		
-		var bench_var = localStorage["bench_var" + program_num];
-		var deadlift_var = localStorage["deadlift_var" + program_num];
-
-		var squat_access = localStorage["squat_access" + program_num];
-		var bench_access = localStorage["bench_access" + program_num];
-		var deadlift_access = localStorage["deadlift_access" + program_num];
-
 		var program = JSON.parse(localStorage["program" + program_num]);
 		console.log(program);
-
 		var content = document.getElementById("program_section");
 		var br = document.createElement("br");
 		for(var week = 1; week <= program.length; week ++ ){
@@ -195,7 +196,6 @@ table,td,th{
 			var card = document.createElement("div");
 			card.setAttribute("class","w3-content w3-card w3-border w3-round-xlarge");
 			card.setAttribute("style","width:800px;");
-
 			//week header
 			var week_head = document.createElement("div");
 			week_head.setAttribute("class","w3-container w3-black");
@@ -205,14 +205,10 @@ table,td,th{
 			h2.appendChild(head_node);
 			week_head.appendChild(h2)
 			card.appendChild(week_head);
-
 			
 			
-
 			
-
 			
-
 			var program_keys = Object.keys(program[week - 1]);
 			var program_values = Object.values(program[week - 1]);
 			for(var i in program_keys){
@@ -220,7 +216,6 @@ table,td,th{
 				var table = document.createElement("table");
 				table.setAttribute("id","table" + week + i);
 				var row = document.createElement("tr");
-
 				var exercise_head = document.createElement("th");
 				exercise_head.setAttribute("style","width:20%;")			
 				var exercise_head_node = document.createTextNode("Exercises");
@@ -244,22 +239,20 @@ table,td,th{
 				var rpe_head = document.createElement("th");		
 				var rpe_head_node = document.createTextNode("RPE");
 				rpe_head.appendChild(rpe_head_node);
-
 				row.appendChild(exercise_head);
 				row.appendChild(set_head);
 				row.appendChild(rep_head);
 				row.appendChild(recc_weight_head);
 				row.appendChild(weight_head);
 				row.appendChild(rpe_head);
-
 				
 				table.appendChild(row);
 			
 			
 				//day header
 				var dayHead = document.createElement("h4");
+				dayHead.setAttribute("style","text-decoration:underline;font-weight:bold;")
 				dayHead.setAttribute("class","w3-padding");
-
 				var last_char = program_keys[i].slice(-1);
 				
 				program_keys[i] = program_keys[i].substring(0, program_keys[i].length - 1);
@@ -274,14 +267,12 @@ table,td,th{
 				if(program_values[i] == "rest"){
 					var div = document.createElement("div");
 					div.setAttribute("class","w3-container w3-margin-left");
-
 					var rest_node = document.createTextNode("Rest Day");
 					div.appendChild(rest_node);
 					card.appendChild(div);
 				}else{
 					var day_keys = Object.keys(program_values[i]);
 					var day_values = Object.values(program_values[i]);
-
 					for(var exer in day_keys){//exercises
 						var index = day_keys[exer].indexOf("_");
 						var end_tag = day_keys[exer].substr(index);
@@ -302,7 +293,6 @@ table,td,th{
 							}else{
 								//create exercise options
 								var options = muscle_exercises[day_keys[exer]];
-
 								var select = document.createElement("select");
 								select.setAttribute("class", "w3-select w3-center");
 								select.setAttribute("style", "width:100%;");
@@ -311,27 +301,21 @@ table,td,th{
 									
 									var option_node = document.createTextNode(options[z]);
 									option.appendChild(option_node);
-
 									select.appendChild(option);
 								}
 								
 								add_exer_row(card, select, day_values[exer],id);
 								
 							}
-
-
 						}else{
 							add_exer_row(card, day_keys[exer], day_values[exer],id);
 						}
 					}
-
 				}
 				
 			}
-
 			content.appendChild(card);
 		}	
-
 	}
 </script>
 
