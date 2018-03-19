@@ -150,26 +150,10 @@ var exercises = [
 ];
 
 var muscle_exercises = {
-"chest_compounds":[
-"Bench Press",
-"Dumbbell Bench Press",
-"Decline Bench Press",
-"Dumbbell Decline Bench Press",
-"Incline Bench Press",
-"Dumbbell Incline Bench Press",
-"Push Up",
-"Incline PushUp",
-"Decline PushUp",
-"Wide-Grip PushUp"
-],
-"chest_isolations":[
-"Cable Fly",
-"Incline Cable Fly",
-"Decline Cable Fly",
-"Incline Dumbbell Fly",
-"Dumbbell Fly",
-"Pec-Deck"
-],
+
+
+
+
 "horizontal_pull":[
 "T-Bar Row",
 "Chest-Supported Row",
@@ -202,10 +186,7 @@ var muscle_exercises = {
 "Behind-Neck Pull-Up",
 "Close-Grip Pull-Up",
 ],
-"lat_isolations": [
-"Pull-Over",
-"Rope Pull-Over",
-],
+
 "front_delts" : [
 "Arnold Press",
 "Shoulder Press",
@@ -222,25 +203,21 @@ var muscle_exercises = {
 "Overhead Press",
 "OHP"
 ],
-"front_delt_isolations": "Front Raise",
-"lateral_delt_exercises": [
-"Upright Row",
-"Cable Upright Row",
-"Lateral Raise",
-"Cable Lateral Raise"
+
+
+"chest_compound":[
+"Bench Press",
+"Dumbbell Bench Press",
+"Decline Bench Press",
+"Dumbbell Decline Bench Press",
+"Incline Bench Press",
+"Dumbbell Incline Bench Press",
+"Push Up",
+"Incline PushUp",
+"Decline PushUp",
+"Wide-Grip PushUp"
 ],
-"rear_delt_exercises" : [
-"Reverse Pec-Deck",
-"Reverse Dumbbell Fly",
-"Reverse Cable Fly"
-],
-"upper_back_exercises" : [
-"Face Pulls",
-"Barbell Shrug",
-"Dumbell Shrug",
-"Power Shrug",
-],
-"quad_compounds" : [
+"quad_compound" : [
 "High-bar Squat",
 "Low-bar Squat",
 "Front Squat",
@@ -260,34 +237,41 @@ var muscle_exercises = {
 "Belt Squat",
 "Goblet Squat"
 ],
-"quad_isolations" : [
-"Leg Extension",
-"Single-Leg Leg Extension",
+"rearDelts_compound":[
+"Cable Face Pulls",
+"Dumbbell Face Pulls",
+"High Row"
 ],
-"hamstring_compounds" : [
+"hamstring_compound" : [
 "Good Morning",
 "Romanian Deadlift",
 "Stiff-Legged Deadlift",
 "Dumbbell Stiff-Legged Deadlift",
 ],
-"hamstring_isolations" : [
+"hamstring_isolation" : [
 "Leg Curl",
 "Single-Leg Leg Curl",
 "Glute/Ham Raise",
 ],
-"tricep_exercises" : [
+"quad_isolation" : [
+"Leg Extension",
+"Single-Leg Leg Extension",
+],
+"lat_isolation": [
+"Pull-Over",
+"Rope Pull-Over",
+],
+"triceps_isolation":[
 "Tricep Kickback",
 "Barbell Tricep Extension",
 "Dumbbell Tricep Extension",
 "Standing Tricep Extension",
 "Tricep Pushdown",
-"Close-Grip Bench Press",
-"Dip",
 "One-Arm Dumbbell Skull-Crusher",
 "Dumbbell Skull-Crusher",
 "Barbell Skull-Crusher",
 ],
-"bicep_exercises" : [
+"biceps_isolation":[
 "Barbell Curl",
 "Dumbbell Curl",
 "Preacher Curl",
@@ -298,13 +282,38 @@ var muscle_exercises = {
 "Reverse Barbell Curl",
 "Reverse Dumbbell Curl",
 ],
-"calf_exercises" : [
+
+"sideDelts_isolation": [
+"Upright Row",
+"Cable Upright Row",
+"Lateral Raise",
+"Cable Lateral Raise"
+],
+"traps_isolation":[
+"Barbell Shrug",
+"Dumbell Shrug",
+"Power Shrug"
+],
+"calves_isolation" : [
 "Standing Calf Raise",
 "Single-Leg Standing Calf Raise",
 "Leg Press Calf Raise",
 "Barbell Calf Raise",
 "Dumbbell Calf Raise",
 "Seated Calf Raise"
+],
+"rearDelts_isolation" : [
+"Reverse Pec-Deck",
+"Reverse Dumbbell Fly",
+"Reverse Cable Fly"
+],
+"chest_isolation":[
+"Cable Fly",
+"Incline Cable Fly",
+"Decline Cable Fly",
+"Incline Dumbbell Fly",
+"Dumbbell Fly",
+"Pec-Deck"
 ],
 "ab_exercises" : [
 "SitUp",
@@ -331,35 +340,7 @@ var muscle_exercises = {
 "Dip Bar Leg Raise",
 "V-Spread Toe Touches",
 ],
-"triceps_optional":[
-"Tricep Kickback",
-"Barbell Tricep Extension",
-"Dumbbell Tricep Extension",
-"Standing Tricep Extension",
-"Tricep Pushdown",
-"One-Arm Dumbbell Skull-Crusher",
-"Dumbbell Skull-Crusher",
-"Barbell Skull-Crusher",
-],
-"biceps_optional":[
-"Barbell Curl",
-"Dumbbell Curl",
-"Preacher Curl",
-"One-Arm Preacher Curl",
-"Hammer Curl",
-"Concentration Curl",
-"Incline Dumbbell Curl",
-"Reverse Barbell Curl",
-"Reverse Dumbbell Curl",
-],
-"calves_optional":[
-"Standing Calf Raise",
-"Single-Leg Standing Calf Raise",
-"Leg Press Calf Raise",
-"Barbell Calf Raise",
-"Dumbbell Calf Raise",
-"Seated Calf Raise"
-]
+
 
 }
 
@@ -372,7 +353,8 @@ var bench_accessories = [
 "Floor Press",
 "Face Pull",
 "Barbell Row",
-"Chest-Supported Row"
+"Chest-Supported Row",
+"Dip"
 ];
 
 var squat_accessories = [

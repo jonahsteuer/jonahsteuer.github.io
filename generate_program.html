@@ -745,84 +745,173 @@
 	function split_volume_body(week1, training_age, main_volume, compound_volume, isolation_volume){
 		var main_keys = Object.keys(main_volume);
 		var main_values = Object.values(main_volume);
-
 		var compound_keys = Object.keys(compound_volume);
 		var compound_values = Object.values(compound_volume);
-
 		var isolation_keys = Object.keys(isolation_volume);
 		var isolation_values = Object.values(isolation_volume);
-
 		console.log(week1);
 		if(training_age == "beginner"){
 			for(var i in main_keys){
+				var day1 = {};
+				var day2 = {};
+				var day4 = {};
+				var day5 = {};
+				var day6 = {};		
+				switch(main_keys[i]){
+					
+					case "quads_main":
+						day2[main_keys[i]] = main_values[i][0];
+						day6[main_keys[i]] = main_values[i][1];
 
-				if(keys[i] == "quad_main"){//add to day 2 and day 6
-					week1["day2"] += values[i][0];
-					week1["day6"] += values[i][1];
-				}else if(keys[i] == "chest_main"){
-					week1["day1"] += values[i][0];
-					week1["day5"] += values[i][1];
-				}else if(keys[i] == "glute_main"){
-					week1["day2"] += values[i][0];
-					week1["day6"] += values[i][1];
-				}
+						week1["day2"].push(day2);
+						week1["day6"].push(day6);
+						break;
+					case "chest_main":
+						day1[main_keys[i]] = main_values[i][0];
+						day5[main_keys[i]] = main_values[i][1];
+
+						week1["day1"].push(day1);
+						week1["day5"].push(day5);
+						break;
+					case "glute_main":
+						day2[main_keys[i]] = main_values[i][0];
+						day6[main_keys[i]] = main_values[i][0];
+
+						week1["day2"].push(day2);
+						week1["day6"].push(day6);
+						break;
+					case "frontDelts_main":
+						day1[main_keys[i]] = main_values[i][0];
+						day5[main_keys[i]] = main_values[i][1];
+
+						week1["day1"].push(day1);
+						week1["day5"].push(day5);
+						break;
+					case "vertPull_main":
+						day1[main_keys[i]] = main_values[i][0];
+						day4[main_keys[i]] = main_values[i][1];
+
+						week1["day1"].push(day1);
+						week1["day4"].push(day4);
+						break;
+					case "horzPull_main":
+						day4[main_keys[i]] = main_values[i][0];
+						day5[main_keys[i]] = main_values[i][0];
+
+						week1["day4"].push(day4);
+						week1["day5"].push(day5);
+						break;
+					}
+				
 				
 			}
 			for(var i in compound_keys){
+				var day1 = {};
+				var day2 = {};					
+				var day4 = {};
+				var day5 = {};
+				var day6 = {};
 				switch(compound_keys[i]){
+					
 					case "quad_compound":
-						week1["day2"] += compound_values[i][0];
-					case "chest_compound":
-						week1["day4"]+= compound_values[i][0];
-					case "glute_compound":
-						week1["day6"] += compound_values[i][0];
-					case "frontDelts_compound":
-						week1["day1"] += compound_values[i][0];
-						week1["day5"] += compound_values[i][1];
-					case "vertPull_compound":
-						week1["day1"] += compound_values[i][0];
-						week1["day4"] += compound_values[i][1];
-					case "horzPull_compound":
-						week1["day4"] += compound_values[i][0];
-						week1["day5"] += compound_values[i][1];
+						day2[compound_keys[i]] = compound_values[i][0];
 
+						week1["day2"].push(day2);
+						break;
+					case "chest_compound":
+						day4[compound_keys[i]] = compound_values[i][0];
+
+						week1["day4"].push(day4);
+						break;
+					case "glute_compound":
+						day6[compound_keys[i]] = compound_values[i][0];
+
+						week1["day6"].push(day6);
+						break;
+					
+					
 					case "rearDelts_compound":
-						week1["day6"] += compound_values[i][0];
+						day6[compound_keys[i]] = compound_values[i][0];
+
+						week1["day6"].push(day6);
+						break;
 				}
 			}
 			for(var i in isolation_keys){
+				var day1 = {};
+				var day2 = {};
+				var day4 = {};
+				var day5 = {};
+				var day6 = {};
 				switch(isolation_keys[i]){
+					
 					case "quad_isolation":
-						week1["day6"] += isolation_values[i][0];
+						day6[isolation_keys[i]] = isolation_values[i][0];
+						week1["day6"].push(day6);
+						break;
 					case "chest_isolation":
-						week1["day5"] += isolation_values[i][0];
+						day5[isolation_keys[i]] = isolation_values[i][0];
+						week1["day5"].push(day5)
+						break;
 					case "hamstring_isolation":
-						week1["day2"] += isolation_values[i][0];
+						day2[isolation_keys[i]] = isolation_values[i][0];
+						week1["day2"].push(day2)
+						break;
 					case "rearDelts_isolation":
-						week1["day2"] += isolation_values[i][0];
+						day2[isolation_keys[i]] = isolation_values[i][0];
+						week1["day2"].push(day2)
+						break;
 					case "lat_isolation":
-						week1["day4"] += isolation_values[i][0];
+						day4[isolation_keys[i]] = isolation_values[i][0];
+						week1["day6"].push(day4)
+						break;
 					case "sideDelts_isolation":
-						week1["day1"] += isolation_values[i][0];
-						week1["day5"] += isolation_values[i][1];
+						day6[isolation_keys[i]] = isolation_values[i][0];
+						day1[isolation_keys[i]] = isolation_values[i][1];
+						
+						week1["day6"].push(day6);
+						week1["day1"].push(day1);						
+						break;
 					case "biceps_isolation":
-						week1["day2"] += isolation_values[i][0];
-						week1["day5"] += isolation_values[i][1];
-						week1["day4"] += isolation_values[i][2];
+						day2[isolation_keys[i]] = isolation_values[i][0];
+						day5[isolation_keys[i]] = isolation_values[i][1];
+						day4[isolation_keys[i]] = isolation_values[i][2];
+
+						week1["day2"].push(day2);
+						week1["day5"].push(day5);
+						week1["day4"].push(day4);
+						break;
 					case "triceps_isolation":
-						week1["day1"] += isolation_values[i][0];
-						week1["day4"] += isolation_values[i][1];
-						week1["day6"] += isolation_values[i][2];
+						day1[isolation_keys[i]] = isolation_values[i][0];
+						day4[isolation_keys[i]] = isolation_values[i][1];
+						day6[isolation_keys[i]] = isolation_values[i][2];
+
+						week1["day1"].push(day1);
+						week1["day4"].push(day4);
+						week1["day6"].push(day6);
+						break;
 					case "traps_isolation":
-						week1["day4"] += isolation_values[i][0];
-						week1["day1"] += isolation_values[i][1];
+						day4[isolation_keys[i]] = isolation_values[i][0];
+						day1[isolation_keys[i]] = isolation_values[i][1];
+						
+
+						week1["day4"].push(day4);
+						week1["day1"].push(day1);
+						
+						break;
 					case "calves_isolation":
-						week1["day2"] += isolation_values[i][0];
-						week1["day6"] += isolation_values[i][1];
+						day2[isolation_keys[i]] = isolation_values[i][0];
+						day6[isolation_keys[i]] = isolation_values[i][1];
+						
 
+						week1["day2"].push(day2);
+						week1["day6"].push(day6);
+						break;
 				}	
-
 			}
+			console.log(week1);
+			var keys = Object.keys(week1);
+			var values = Object.values(week1);
 			var all_weeks = [];
 			for(var i = 0; i < 4; i++){
 				var week = {};
@@ -844,9 +933,7 @@
 				all_weeks.push(week);
 			}
 		}else if(training_age == "intermediate"){
-
 		}else{
-
 		}
 		return all_weeks;
 	}
@@ -898,7 +985,7 @@
 			var accessory_volume = {"squat_accessory":["3x10-8"], "deadlift_accessory":["5x6-4"], "bench_accessory": ["3x8-6"]};
 			var other_volume = {"vert_pull":["2x6-8","2x10-12"], "front_delts":["3x6-4","2x8-6"], "horizontal_pull":["2x6-8","2x10-12"], };
 		}
-		var optional_volume = {"biceps_optional":["4x10-12","4x12-15"], "triceps_optional":["3x10-12","3x12-15"], "calves_optional":["4x12-15","4x15-20"]};
+		var optional_volume = {"biceps_isolation":["4x10-12","4x12-15"], "triceps_isolation":["3x10-12","3x12-15"], "calves_isolation":["4x12-15","4x15-20"]};
 		//split: upper, lower, rest, upper, lower, rest rest
 		//exercise order: main/variation, accessory, other, optional
 		
@@ -913,23 +1000,20 @@
 	function get_bodybuild_begin(stress){//focus on building strength
 	
 		if(stress == "low"){
-			var main_volume = {"quad_main":["5x5", "4x8"], "glute_main": ["4x5", "3x8"], "chest_main":["5x5", "4x8"]};
+			var main_volume = {"quad_main":["5x5", "4x8"], "glute_main": ["4x5", "3x8"], "chest_main":["5x5", "4x8"], "vertPull_main":["3x10","4x12"], "horzPull_main":["3x10","4x12"], "frontDelts_main":["3x8","3x10"]};
 			
-			var compound_volume = {"quad_compound":["3x10"], "chest_compound": ["3x10"], "vertPull_compound":["3x10","4x12"], "horzPull_compound":["3x10","4x12"], "frontDelts_compound":["3x8","3x10"],"rearDelts_compound":["3x12"]};
-
-			var isolation_volume = {"quad_isolation":["3x12-15"], "chest_isolation":["4x12-15"], "lat_isolation":["3x12-15"],"sideDelts_isolation":["4x12-15","3-12-15"], "hamstring_isolation":["4x12-15"], "triceps_isolation":["3x12-15","4x12-15","3x12-15"],"biceps_isolation":["4x12-15","4x12-15","4x12-15"], "traps_isolation":["4x12-15","4x12-15"], "rearDelts_isolation":["3x12-15"], "calves_isolation":["4x12-15","4x12-15"]};
+			var compound_volume = {"quad_compound":["3x10"], "chest_compound": ["3x10"],"rearDelts_compound":["3x12"]};
+			var isolation_volume = {"quad_isolation":["3x12-15"], "chest_isolation":["4x12-15"], "lat_isolation":["3x12-15"],"sideDelts_isolation":["4x12-15","3x12-15"], "hamstring_isolation":["4x12-15"], "triceps_isolation":["3x12-15","4x12-15","3x12-15"],"biceps_isolation":["4x12-15","4x12-15","4x12-15"], "traps_isolation":["4x12-15","4x12-15"], "rearDelts_isolation":["3x12-15"], "calves_isolation":["4x12-15","4x12-15"]};
 		}else if(stress == "moderate"){
-			var main_volume = {"quad_main":["4x5_main", "4x8_main"], "glute_main": ["3x5_main", "3x8_main"], "chest_main":["4x5_main", "4x8_main"]};
+			var main_volume = {"quad_main":["4x5", "4x8"], "glute_main": ["3x5", "3x8"], "chest_main":["4x5", "4x8"], "vertPull_main":["3x10","3x12"], "horzPull_main":["3x10","3x12"], "frontDelts_main":["3x8","3x10"]};
 			
-			var compound_volume = {"quad_compound":["3x10"], "chest_compound": ["3x10"], "vertPull_compound":["3x10","3x12"], "horzPull_compound":["3x10","3x12"], "frontDelts_compound":["3x8","3x10"],"rearDelts_compound":["3x12"]};
-
-			var isolation_volume = {"quad_isolation":["2x12-15"], "chest_isolation":["3x12-15"], "lat_isolation":["3x12-15"],"sideDelts_isolation":["4x12-15","3-12-15"], "hamstring_isolation":["4x12-15"], "triceps_isolation":["3x12-15","4x12-15","3x12-15"],"biceps_isolation":["4x12-15","4x12-15","4x12-15"], "traps_isolation":["4x12-15","4x12-15"], "rearDelts_isolation":["3x12-15"],"calves_isolation":["4x12-15","4x12-15"]};
+			var compound_volume = {"quad_compound":["3x10"], "chest_compound": ["3x10"], "rearDelts_compound":["3x12"]};
+			var isolation_volume = {"quad_isolation":["2x12-15"], "chest_isolation":["3x12-15"], "lat_isolation":["3x12-15"],"sideDelts_isolation":["4x12-15","3x12-15"], "hamstring_isolation":["4x12-15"], "triceps_isolation":["3x12-15","4x12-15","3x12-15"],"biceps_isolation":["4x12-15","4x12-15","4x12-15"], "traps_isolation":["4x12-15","4x12-15"], "rearDelts_isolation":["3x12-15"],"calves_isolation":["4x12-15","4x12-15"]};
 		}else if(stress == "high"){
-			var main_volume = {"quad_main":["4x5", "3x8"], "glute_main": ["3x5", "2x8"], "chest_main":["4x5", "3x8"]};
+			var main_volume = {"quad_main":["4x5", "3x8"], "glute_main": ["3x5", "2x8"], "chest_main":["4x5", "3x8"],"vertPull_main":["2x10","3x12"], "horzPull_main":["3x10","3x12"], "frontDelts_main":["3x8","3x10"]};
 			
-			var compound_volume = {"quad_compound":["3x10"], "chest_compound": ["3x10"], "vertPull_compound":["2x10","3x12"], "horzPull_compound":["3x10","3x12"], "frontDelts_compound":["3x8","3x10"],"rearDelts_compound":["3x12"]};
-
-			var isolation_volume = {"quad_isolation":["2x12-15"], "chest_isolation":["3x12-15"], "lat_isolation":["2x12-15"],"sideDelts_isolation":["4x12-15","3-12-15"], "hamstring_isolation":["3x12-15"], "triceps_isolation":["3x12-15","4x12-15","3x12-15"],"biceps_isolation":["4x12-15","4x12-15","4x12-15"], "traps_isolation":["4x12-15","4x12-15"], "rearDelts_isolation":["3x12-15"], "calves_isolation":["4x12-15","4x12-15"]};
+			var compound_volume = {"quad_compound":["3x10"], "chest_compound": ["3x10"], "rearDelts_compound":["3x12"]};
+			var isolation_volume = {"quad_isolation":["2x12-15"], "chest_isolation":["3x12-15"], "lat_isolation":["2x12-15"],"sideDelts_isolation":["4x12-15","3x12-15"], "hamstring_isolation":["3x12-15"], "triceps_isolation":["3x12-15","4x12-15","3x12-15"],"biceps_isolation":["4x12-15","4x12-15","4x12-15"], "traps_isolation":["4x12-15","4x12-15"], "rearDelts_isolation":["3x12-15"], "calves_isolation":["4x12-15","4x12-15"]};
 		}
 	
 		//split: upper, lower, rest, upper, lower, rest rest
@@ -941,9 +1025,7 @@
 		var program = split_volume_body(week1, "beginner", main_volume, compound_volume, isolation_volume);
 		return program;
 	}
-
 	function get_bodybuild_intermed(stress){//mike israetel style program
-
 	}
 	function submit_data(){
 		is_selected();

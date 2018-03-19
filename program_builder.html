@@ -282,7 +282,6 @@
 				}
 			}
 			localStorage["isFollowingProgram" + program_num] = JSON.stringify(true);
-
 			var goal = localStorage["program" + program_num + "_goal"];
 			if(goal == "powerlifting" || goal == "powerbuilding"){
 				var squat_var = document.getElementById("squat_var").value;
@@ -291,7 +290,6 @@
 				var squat_access = document.getElementById("squat_access").value;
 				var bench_access = document.getElementById("bench_access").value;
 				var deadlift_access = document.getElementById("deadlift_access").value;
-
 				localStorage["squat_var" + program_num] = squat_var;
 				localStorage["bench_var" + program_num] = bench_var;
 				localStorage["deadlift_var" + program_num] = deadlift_var;
@@ -302,18 +300,14 @@
 				var chest_main = document.getElementById("chest_main").value;
 				var quad_main = document.getElementById("quad_main").value;
 				var glute_main = document.getElementById("glute_main").value;
-
 				var vertPull_main = document.getElementById("vertPull_main").value;
 				var horzPull_main = document.getElementById("horzPull_main").value;
-
 				var frontDelt_main = document.getElementById("frontDelt_main").value;
 				localStorage["chest_main" + program_num] = chest_main;
-				localStorage["quad_main" + program_num = quad_main];
+				localStorage["quad_main" + program_num] = quad_main;
 				localStorage["glute_main" + program_num] = glute_main;
-
 				localStorage["vertPull_main" + program_num] = vertPull_main;
 				localStorage["horzPull_main" + program_num] = horzPull_main;
-
 				localStorage["frontDelt_main" + program_num]= frontDelt_main;
 			}
 			

@@ -58,14 +58,59 @@ table,td,th{
 <script src = "exercises.js"></script>
 
 <script>
-	
+	function addMain(card, id, exercise, beginning, reps){
+		console.log(beginning);
+		if(beginning == "chest"){
+			add_exer_row(card, chest_main, reps, id);
+		}else if(beginning == "quad"){
+			add_exer_row(card, quad_main, reps, id);
+		}else if(beginning == "glute"){
+			add_exer_row(card, glute_main, reps, id);
+		}else if(beginning == "vertPull"){
+			add_exer_row(card, vert_pull_main, reps, id);
+		}else if(beginning == "horzPull"){
+			add_exer_row(card, horizontal_pull_main, reps, id);
+		}else if(beginning == "frontDelts"){
+			add_exer_row(card, front_delt_main, reps, id);
+		}
+	}
+	function addVariation(card, id, exercise, reps){
+		if(exercise == "squat_variation"){
+			add_exer_row(card, squat_var, reps,id);
+		}else if(exercise == "bench_variation"){
+			add_exer_row(card, bench_var, reps,id);
+		}else if(exercise == "deadlift_variation"){
+			add_exer_row(card, deadlift_var,reps,id);
+		}else if(exercise == "squat_accessory"){
+			add_exer_row(card, squat_access, reps,id);
+		}else if(exercise == "bench_accessory"){
+			add_exer_row(card, bench_access, reps,id);
+		}else if(exercise == "deadlift_accessory"){
+			add_exer_row(card, deadlift_access, reps,id);
+		}
+	}
+	function addSelect(card, id, exercise, end_tag, options){
+			//create exercise options
+
+			console.log(options);
+			var select = document.createElement("select");
+			select.setAttribute("class", "w3-select w3-center");
+			select.setAttribute("style", "width:100%;");
+			for(var z in options){
+				var option = document.createElement("option");
+				
+				var option_node = document.createTextNode(options[z]);
+				option.appendChild(option_node);
+				select.appendChild(option);
+			}
+			
+			add_exer_row(card, select, exercise,id);
+		
+								
+	}
 	function predicted_weight(exercise,reps){
 		var program_num = localStorage["clicked_program"];
-
-		var quad_main = localStorage["program" + program_num + "_quadMain"];
-		var chest_main = localStorage["program" + program_num + "_quadMain"];
-		var glute_main = localStorage["program" + program_num + "_quadMain"];
-
+	
 		var squat_max = localStorage["program" + program_num + "_quadMain_max"];
 		var bench_max = localStorage["program" + program_num + "_chestMain_max"];
 		var deadlift_max = localStorage["program" + program_num + "_gluteMain_max"];
@@ -138,12 +183,10 @@ table,td,th{
 		var set_node = document.createTextNode(reps[0]);
 		var rep_node = document.createTextNode(reps[1]);
 		var recc_node = document.createTextNode(predicted_weight(exercise,reps[1]));
-
 		var weight_input = document.createElement("input");
 		weight_input.setAttribute("type","text");
 		weight_input.setAttribute("placeholder","Weight Lifted");
 		weight_input.setAttribute("class","w3-input");
-
 		td_recc_weight.appendChild(recc_node);
 		td_exercise.appendChild(exer_node)
 		td_sets.appendChild(set_node)
@@ -169,22 +212,20 @@ table,td,th{
 	window.onload = function(){
 		var program_num = localStorage["clicked_program"];
 		if(localStorage["program" + program_num + "_goal"] == "powerlifting" || localStorage["program" + program_num + "_goal"] == "powerbuilding"){
-			var squat_var = localStorage["squat_var" + program_num];
+			squat_var = localStorage["squat_var" + program_num];
 			
-			var bench_var = localStorage["bench_var" + program_num];
-			var deadlift_var = localStorage["deadlift_var" + program_num];
-			var squat_access = localStorage["squat_access" + program_num];
-			var bench_access = localStorage["bench_access" + program_num];
-			var deadlift_access = localStorage["deadlift_access" + program_num];
+			bench_var = localStorage["bench_var" + program_num];
+			deadlift_var = localStorage["deadlift_var" + program_num];
+			squat_access = localStorage["squat_access" + program_num];
+			bench_access = localStorage["bench_access" + program_num];
+			deadlift_access = localStorage["deadlift_access" + program_num];
 		}else{
-			var chest_main = localStorage["chest_main" + program_num];
-			var quad_main = localStorage["quad_main" + program_num];
-			var glute_main = localStorage["glute_main" + program_num];
-
-			var vert_pull_main = localStorage["vertPull_main" + program_num];
-			var horizontal_pull_main = localStorage["horzPull_main" + program_num];
-
-			var front_delt_main = localStorage["frontDelt_main" + program_num];
+			chest_main = localStorage["chest_main" + program_num];
+			quad_main = localStorage["quad_main" + program_num];
+			glute_main = localStorage["glute_main" + program_num];
+			vert_pull_main = localStorage["vertPull_main" + program_num];
+			horizontal_pull_main = localStorage["horzPull_main" + program_num];
+			front_delt_main = localStorage["frontDelt_main" + program_num];
 		}
 		
 		var program = JSON.parse(localStorage["program" + program_num]);
@@ -274,38 +315,20 @@ table,td,th{
 					var day_keys = Object.keys(program_values[i]);
 					var day_values = Object.values(program_values[i]);
 					for(var exer in day_keys){//exercises
-						var index = day_keys[exer].indexOf("_");
-						var end_tag = day_keys[exer].substr(index);
+						var _index = day_keys[exer].indexOf("_");
+						var beginning = day_keys[exer].substring(0,_index);
+						var end_tag = day_keys[exer].substr(_index);
 						var id = "" + week + i;
-						if(index > -1){//if not an exercise
-							if(day_keys[exer] == "squat_variation"){
-								add_exer_row(card, squat_var, day_values[exer],id);
-							}else if(day_keys[exer] == "bench_variation"){
-								add_exer_row(card, bench_var, day_values[exer],id);
-							}else if(day_keys[exer] == "deadlift_variation"){
-								add_exer_row(card, deadlift_var, day_values[exer],id);
-							}else if(day_keys[exer] == "squat_accessory"){
-								add_exer_row(card, squat_access, day_values[exer],id);
-							}else if(day_keys[exer] == "bench_accessory"){
-								add_exer_row(card, bench_access, day_values[exer],id);
-							}else if(day_keys[exer] == "deadlift_accessory"){
-								add_exer_row(card, deadlift_access, day_values[exer],id);
+						if(_index > -1){//if not specified exercise
+							if(end_tag == "_main"){
+								addMain(card,id,day_keys[exer],beginning, day_values[exer]);
+							
+							}else if(end_tag == "_variation" || end_tag == "_accessory"){
+								addVariation(card,id,day_keys[exer], day_values[exer]);
 							}else{
-								//create exercise options
-								var options = muscle_exercises[day_keys[exer]];
-								var select = document.createElement("select");
-								select.setAttribute("class", "w3-select w3-center");
-								select.setAttribute("style", "width:100%;");
-								for(var z in options){
-									var option = document.createElement("option");
-									
-									var option_node = document.createTextNode(options[z]);
-									option.appendChild(option_node);
-									select.appendChild(option);
-								}
-								
-								add_exer_row(card, select, day_values[exer],id);
-								
+								var options =  muscle_exercises[day_keys[exer]];
+								console.log("Exercise = ",day_keys[exer],"options = ",options);
+								addSelect(card,id, day_values[exer], end_tag, options);
 							}
 						}else{
 							add_exer_row(card, day_keys[exer], day_values[exer],id);
