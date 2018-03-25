@@ -54,8 +54,8 @@
 
 <script>
 	function addOne(){
-var clickSection = document.getElementById("clicks");
-clickSection.innerHTML += 1;
+var clickSection = document.getElementById("clicks").innerHTML;
+clickSection.innerHTML  = Number(clickSection) + 1;
 }
 	</script>
 </head>
@@ -127,7 +127,7 @@ clickSection.innerHTML += 1;
 <br>
 	<div class = "w3-container w3-center">
 <button class = "w3-black w3-hover-red" onclick = "addOne();">CLick Me!!</button>
-Clicks: <div id = "clicks"> </div>
+Clicks: <div id = "clicks">0</div>
 	</div>
 
 
