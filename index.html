@@ -71,15 +71,21 @@
 	<button class = "w3-btn w3-hover-red">
 		About
 	</button>
-	<a href="log_workout.html">
-		<button class = "w3-btn w3-hover-red">
+	<a href="workout_tracker.html">
+		<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
 			Log Workout
+			<i class="fa fa-caret-down"></i>
 		</button>
+
+		<div id = "dropdown-content">
+			<a href="calender.html">Calender central</a>
+			
+		</div>
 	</a>
 	
 
 	<div id = "dropdown">
-		<button id = dropdown-btn class = "w3-btn w3-hover-red">
+		<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
 			Track nutrition
 			 <i class="fa fa-caret-down"></i>
 		</button>
@@ -100,9 +106,17 @@
 		<button class = "w3-btn w3-hover-red "> Program builder </button>	
 	</a>
 
-	<a href="lifting_data.html">
-		<button class = "w3-btn w3-hover-red "> Lifting Data </button>	
-	</a>
+	<div id = "dropdown">
+		<button id = "dropdown-btn" class = "w3-btn w3-hover-red">
+			Data
+			<i class = "fa fa-caret-down"></i>
+		</button>
+
+		<div id = "dropdown-content">
+			<a href="lifting_data.html"> Lifting Data</a>
+			<a href="nutrition_data.html"> Nutrition Data</a>
+		</div>
+	</div>
 	
 	
 </div> 
